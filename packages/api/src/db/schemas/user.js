@@ -42,7 +42,9 @@ const userSchema = new Schema({
 
   batchId: { // link to 'batches' collection
     type: Schema.Types.ObjectId,
-    required: () => this.role === 'student', // this field must be present if role is 'student'
+    required: function roleIsStudent() { // this field must be present if role is 'student'
+      return this.role === 'student';
+    },
   },
 });
 

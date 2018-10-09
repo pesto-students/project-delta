@@ -1,20 +1,39 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+
+// Custom imports
+import { PORT, DB_URL } from '../config';
+import routes from './routes';
+import winston from '../winston.config';
 
 dotenv.config();
 const app = express();
-const { PORT } = process.env;
 
-app.use(morgan('dev'));
+app.use(morgan('combined', { stream: winston.stream }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use('/', routes);
 
-app.get('/', (req, res) => {
-  res.send('Welcome to Delta API');
-});
+// We only want to start the server from here if this script is run directly
+// In other cases, such as integration tests, we want to start the server elsewhere
+//   so we can stop it when the tests are done
+if (!module.parent) {
+  if (!PORT) throw new Error('port not specified');
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`); // eslint-disable-line no-console
+  });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  if (!DB_URL) throw new Error('database url not specified');
+  mongoose.connect(DB_URL, { useNewUrlParser: true }, (err) => {
+    if (err) throw err;
+    console.log(`Connected to database at ${DB_URL}`); // eslint-disable-line no-console
+  });
+}
+
+// because integration test module needs a reference to server
+module.exports = app;
