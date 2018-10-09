@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "test": "jest --watchAll"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
