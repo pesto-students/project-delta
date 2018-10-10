@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
+    "build": "rm -rf build && babel src -d build",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
