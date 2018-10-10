@@ -1,19 +1,22 @@
 language: node_js
 node_js:
-- '8'
-script:
-- yarn test
+- '9'
 matrix:
   include:
   - name: Delta Students
     env: PACKAGE_LOCATION=packages/students PACKAGE_NAME=deltapesto
   - name: Delta API
     env: PACKAGE_LOCATION=packages/api PACKAGE_NAME=deltapesto-api
+  - name: Delta Instructors
+    env: PACKAGE_LOCATION=packages/instructors PACKAGE_NAME=deltapesto-instructors
 script:
 - cd $PACKAGE_LOCATION
+- yarn test
+- yarn build
 deploy:
   provider: heroku
   api_key:
     secure: MPFBXdZ7jtWuPn6sJHHwMSh7cJBjqxzRJ4PB8TzQV6CAnf0Nk7XpYv56BfWbJYmiSaJw76XK7vZYVNYUsombhu1xQYhCl8W7VKFrctiRZxU+qlUCRBq5KixY3FYaoV62L5Z8RnDAl5K7tga/DBPWndmY8XkMkblmBfEeJs9jx3ORFBh4bOrWlzfTLbDNKRDyKN8hrJTzWWWfGDSb/HxzVQL4dTVFwbvJ2rdCGBiaLLTfcp8oyxf4CSaGZll66ja9vJYhPvhnXYbuMrUBgRBaKsAxKUPYG71u+qoCsYpGaXhXhutI0dlw6aNIZk+gesaOfiXRM3Vk7ydXeVJ3Ps7ngn0R7KkKKXoI1ZNIEU1A6OosdntQ4HtLsRrcp4dy7+A7zxqcuhRfDfrFtF67Gfjek3ugP4tXwO60hf3jsqzz5fCH3CCSXpMdbNDiuQlx9xu5jdmfTl7iuk7oMEh1U0ACjSSt5djnt7mFr0ixziO/+AQkpRxFXrwYm08erPgeAybbpaDH86WeuaWQqdCT18Q0EyRGN+5kQGx3kmW45gSDWD5YIzTaMKpwdinqWsbzMu31rIYqhjzxugEuhwcxLDbaq/9Nsz9yRWUzuruWde5gYs1wLQSO8w0ud/xWwdM9/xpAZHd1e0l73RJJQXETb1JVq6ptLV6Hwyv/JzEMbJWwOLI=
+  skip_cleanup: true
   app:
     master: "$PACKAGE_NAME"
