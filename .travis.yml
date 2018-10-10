@@ -9,10 +9,14 @@ matrix:
     env: PACKAGE_LOCATION=packages/api PACKAGE_NAME=deltapesto-api
   - name: Delta Instructors
     env: PACKAGE_LOCATION=packages/instructors PACKAGE_NAME=deltapesto-instructors
+
 script:
 - cd $PACKAGE_LOCATION
 - yarn test
-- yarn build
+
+before_deploy:
+- yarn run build
+
 deploy:
   provider: heroku
   api_key:
