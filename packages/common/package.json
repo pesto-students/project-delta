@@ -1,8 +1,8 @@
 {
-  "name": "students",
+  "name": "delta-common",
   "version": "1.0.0",
-  "description": "App for students",
-  "main": "src/index.js",
+  "description": "Shared UI Module",
+  "main": "src/components/index.js",
   "author": "Delta Team",
   "private": true,
   "browserslist": [
@@ -12,23 +12,15 @@
     "not ie < 9"
   ],
   "scripts": {
-    "start": "node server.js",
-    "start:dev": "webpack-dev-server src/index.js --mode development",
-    "build": "webpack --mode production",
     "test": "jest && yarn lint",
     "lint": "eslint ./"
   },
   "dependencies": {
-    "delta-common": "file:../../packages/common",
-    "express": "^4.16.3",
+    "@material-ui/core": "^3.2.0",
+    "@material-ui/icons": "^3.0.1",
     "prop-types": "^15.6.0",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^4.0.8",
-    "redux": "^4.0.0"
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -37,8 +29,6 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^23.6.0",
-    "babel-loader": "^8.0.4",
-    "css-loader": "^1.0.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "enzyme-to-json": "^3.3.4",
@@ -47,12 +37,6 @@
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "html-webpack-plugin": "^3.2.0",
-    "jest": "^23.6.0",
-    "open-browser-webpack-plugin": "^0.0.5",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.19.0",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.8"
+    "jest": "^23.6.0"
   }
 }
