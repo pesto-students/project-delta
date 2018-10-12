@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 import { Colors } from './Theme';
 
 const styles = () => ({
@@ -17,6 +18,13 @@ const styles = () => ({
   },
 });
 
-const BlockButton = ({ classes, ...props }) => <Button fullWidth variant="contained" className={classes.button} {...props} />;
+const BlockButton = ({ classes, className, ...props }) => (
+  <Button
+    fullWidth
+    variant="contained"
+    className={classNames(classes.textField, className)}
+    {...props}
+  />
+);
 
 export default withStyles(styles)(BlockButton);
