@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { BlockButton } from '../../shared-components/BlockButton';
+import BlockButton from '../../shared-components/BlockButton';
 
 ReactDOM.render(
   <h1>
