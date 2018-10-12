@@ -11,6 +11,9 @@
     "packages/*"
   ],
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb": "^17.1.0",
     "husky": "^1.1.1",
     "lint-staged": "^7.3.0",
     "wsrun": "^2.2.1"

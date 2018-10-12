@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { TestComponent } from 'delta-common';
+import { BlockButton } from '../../shared-components/BlockButton';
 
 ReactDOM.render(
-  <h1>Welcome to Project Delta Instructors <TestComponent /></h1>,
+  <h1>
+    Welcome to Project Delta Instructors
+    <BlockButton> Instructor</BlockButton>
+  </h1>,
   document.getElementById('root'),
 );
