@@ -13,16 +13,13 @@ const styles = () => ({
       backgroundColor: '#0069d9',
     },
   },
-  buttonFocused: {
-    backgroundColor: '#0069d9',
-  },
 });
 
 const BlockButton = ({ classes, className, ...props }) => (
   <Button
     fullWidth
     variant="contained"
-    className={classNames(classes.textField, className)}
+    className={classNames(classes.button, className)}
     {...props}
   />
 );
