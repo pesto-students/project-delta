@@ -3,12 +3,27 @@ import React, { Component } from 'react';
 
 import { LoginHeader } from './Header';
 import { LoginFooter } from './Footer';
-import BlockButton from '../../../shared-components/BlockButton';
-import InputOutlined from '../../../shared-components/InputOutlined';
+import LoginForm from './LoginForm';
 import './style.css';
 
 class LoginContainer extends Component {
+  state = {
+    email: '',
+    isLoggingIn: false,
+  }
+
+  onLogin = (event) => {
+    event.preventDefault();
+  }
+
+  onEmailChange = (event) => {
+    this.setState({
+      email: event.target.value,
+    });
+  }
+
   render() {
+    const { email, isLoggingIn } = this.state;
     return (
       <div className="login-container">
         <Grid container justify="center" style={{ height: '100%' }}>
@@ -19,10 +34,10 @@ class LoginContainer extends Component {
           <Grid item xs={12} md={8} lg={7}>
             <Grid container justify="center">
               <Grid item xs={12} md={8} lg={6}>
-                <p style={{ textAlign: 'center' }}>
-                  Thank you for your interest in applying to Pesto!
+                <p className="text-center">
+                  Welcome to Project Delta!
                 </p>
-                <p style={{ textAlign: 'center' }}>
+                <p className="text-center">
                   Enter your email below to get started.
                 </p>
               </Grid>
@@ -32,12 +47,12 @@ class LoginContainer extends Component {
           <Grid item xs={10} md={8} lg={7}>
             <Grid container justify="center">
               <Grid item xs={12} md={8} lg={6}>
-                <form>
-                  <InputOutlined id="email" type="email" label="Email" />
-                  <div style={{ margin: '8px', marginTop: '20px' }}>
-                    <BlockButton type="submit" style={{ minHeight: '50px', fontSize: '15px' }}>Signin</BlockButton>
-                  </div>
-                </form>
+                <LoginForm
+                  email={email}
+                  isLoggingIn={isLoggingIn}
+                  onLogin={this.onLogin}
+                  onEmailChange={this.onEmailChange}
+                />
               </Grid>
             </Grid>
           </Grid>
