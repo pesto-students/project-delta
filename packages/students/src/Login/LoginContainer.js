@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { LoginHeader } from './Header';
 import { LoginFooter } from './Footer';
 import LoginForm from './LoginForm';
+import { HTTP } from '../Services/http';
 import './style.css';
 
 class LoginContainer extends Component {
@@ -12,7 +13,15 @@ class LoginContainer extends Component {
   }
 
   handleLogin = (email, clearForm) => {
-    clearForm();
+    const requestBody = { email };
+    HTTP.POST('', requestBody)
+      .then(() => {
+        // console.log(res);
+        clearForm();
+      })
+      .catch(() => {
+        // console.log(err);
+      });
   }
 
   render() {
