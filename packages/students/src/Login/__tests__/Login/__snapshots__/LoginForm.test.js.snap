@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LoginForm /> matches saved snapshot 1`] = `
+<form
+  data-testid="loginForm"
+  onSubmit={[Function]}
+>
+  <WithStyles(InputOutlined)
+    data-testid="email"
+    id="email"
+    label="Email"
+    name="email"
+    onChange={[Function]}
+    type="email"
+    value=""
+  />
+  <div
+    className="login-button"
+  >
+    <WithStyles(BlockButton)
+      data-testid="signin"
+      isLoading={false}
+      type="submit"
+    >
+      Signin
+    </WithStyles(BlockButton)>
+  </div>
+</form>
+`;
