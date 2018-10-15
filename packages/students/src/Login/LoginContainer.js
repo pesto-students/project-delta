@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import React, { Component } from 'react';
-import validator from 'validator';
+import isEmail from 'validator/lib/isEmail';
 
 import { LoginHeader } from './Header';
 import { LoginFooter } from './Footer';
@@ -17,8 +17,8 @@ class LoginContainer extends Component {
   }
 
   LOGIN_STATUS = {
-    LOGIN_SUCCESS: 'success',
-    LOGIN_FAILED: 'error',
+    SUCCESS: 'success',
+    FAILED: 'error',
   }
 
   MESSAGES = {
@@ -26,6 +26,8 @@ class LoginContainer extends Component {
     UNKNOWN_ERROR: 'Unknown error occurred. Please try again after some time.',
     MAIL_SUCCESS: 'Magic sign in link sent to your email. Click the link to sign in.',
   }
+
+  clearForm = () => {}
 
   updateState = (loginStatus, message) => {
     this.setState({
@@ -36,8 +38,8 @@ class LoginContainer extends Component {
   }
 
   handleLogin = (email, clearForm) => {
-    if (!validator.isEmail(email)) {
-      this.updateState(this.LOGIN_STATUS.LOGIN_FAILED, this.MESSAGES.INVALID_EMAIL);
+    if (!isEmail(email)) {
+      this.updateState(this.LOGIN_STATUS.FAILED, this.MESSAGES.INVALID_EMAIL);
       return;
     }
     this.clearForm = clearForm;
@@ -53,25 +55,27 @@ class LoginContainer extends Component {
   }
 
   handleError = () => {
-    this.updateState(this.LOGIN_STATUS.LOGIN_FAILED, this.MESSAGES.UNKNOWN_ERROR);
+    this.updateState(this.LOGIN_STATUS.FAILED, this.MESSAGES.UNKNOWN_ERROR);
   }
 
   handleSuccess = (res) => {
+    let status = this.LOGIN_STATUS.FAILED;
+    let message = this.MESSAGES.UNKNOWN_ERROR;
+
     if (res.status === 200) {
       this.clearForm();
-      this.updateState(this.LOGIN_STATUS.LOGIN_SUCCESS, this.MESSAGES.MAIL_SUCCESS);
+      status = this.LOGIN_STATUS.SUCCESS;
+      message = this.MESSAGES.MAIL_SUCCESS;
     } else if (res.status === 400) {
-      this.updateState(this.LOGIN_STATUS.LOGIN_FAILED, this.MESSAGES.INVALID_EMAIL);
-    } else {
-      this.updateState(this.LOGIN_STATUS.LOGIN_FAILED, this.MESSAGES.UNKNOWN_ERROR);
+      status = this.LOGIN_STATUS.FAILED;
+      message = this.MESSAGES.INVALID_EMAIL;
     }
+
+    this.updateState(status, message);
   }
 
   removeNotification = () => {
-    this.setState({
-      loginStatus: '',
-      message: '',
-    });
+    this.updateState('', '');
   }
 
   render() {
