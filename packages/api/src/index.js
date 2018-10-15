@@ -10,6 +10,8 @@ import { PORT, DB_URL } from '../config';
 import routes from './routes';
 import winston from '../winston.config';
 
+const { noPort, noDBUrl } = require('../constants/ERR_MSGS');
+
 dotenv.config();
 const app = express();
 
@@ -23,14 +25,20 @@ app.use('/', routes);
 // In other cases, such as integration tests, we want to start the server elsewhere
 //   so we can stop it when the tests are done
 if (!module.parent) {
-  if (!PORT) throw new Error('port not specified');
+  if (!PORT) {
+    throw new Error(noPort); // Port not specified message
+  }
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`); // eslint-disable-line no-console
   });
 
-  if (!DB_URL) throw new Error('database url not specified');
+  if (!DB_URL) {
+    throw new Error(noDBUrl); // DB URL not specified message
+  }
   mongoose.connect(DB_URL, { useNewUrlParser: true }, (err) => {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
     console.log(`Connected to database at ${DB_URL}`); // eslint-disable-line no-console
   });
 }

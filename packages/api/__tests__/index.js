@@ -35,6 +35,7 @@ let server;
 const serverUrl = `http://localhost:${PORT}`;
 
 beforeAll((done) => {
+  jest.setTimeout(10000);
   mongoose.connect(DB_URL, { useNewUrlParser: true }, () => {
     server = app.listen(PORT, () => {
       // save current contents of users collection, and insert some dummy users

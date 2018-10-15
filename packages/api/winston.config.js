@@ -1,4 +1,5 @@
-const winston = require('winston');
+import winston from 'winston';
+
 const path = require('path');
 
 const options = {
@@ -7,7 +8,7 @@ const options = {
     filename: path.join(__dirname, '/logs/app.log'),
     handleExceptions: true,
     json: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 5 * 1024 * 1024, // 5MB
     maxFiles: 5,
     colorize: false,
   },
@@ -27,7 +28,7 @@ const logger = winston.createLogger({
 });
 
 logger.stream = {
-  write(message, encoding) {  // eslint-disable-line
+  write(message) {
     logger.info(message);
   },
 };
