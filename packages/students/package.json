@@ -26,6 +26,7 @@
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.0",
+    "validator": "^10.8.0",
     "shared-components": "^0.0.1"
   },
   "devDependencies": {
