@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import LoginContainer from '../../../Login/LoginContainer';
+import LoginContainer from '../LoginContainer';
 
 describe('<LoginForm />', () => {
   it('should render <LoginHeader />', () => {
