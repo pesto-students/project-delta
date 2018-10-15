@@ -1,0 +1,22 @@
+.login-container {
+  flex-grow: 1;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.login-button {
+  margin: 8px;
+  margin-top: 20px;
+}
+
+.login-button button {
+  min-height: 50px;
+  font-size: 15px;
+}
+
+.notification-margin {
+  margin-bottom: 20px;
+}

@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import { BlockButton } from '../../shared-components/BlockButton';
+import App from './components/appComponent';
 
 ReactDOM.render(
-  <h1>
-    Welcome to Project Delta Students
-    <BlockButton> Student</BlockButton>
-  </h1>,
+  <BrowserRouter><App /></BrowserRouter>,
   document.getElementById('root'),
 );

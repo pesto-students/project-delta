@@ -11,6 +11,5 @@ app.get('/*', (request, response) => {
 });
 
 app.listen(PORT, error => (
-  error ? console.error(error)
-    : console.info(`Listening on port ${PORT}.`)
+  error ? console.error(error) : console.info(`Listening on port ${PORT}.`) // eslint-disable-line
 ));
