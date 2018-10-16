@@ -8,7 +8,7 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const path = require('path');
 
-const strUtil = require('../shared/str_util');
+const strUtil = require('util-fns/str_util');
 
 const COMMON_PLUGINS_DIR = path.join(__dirname, 'plugins', 'common');
 const SCHEMAS_DIR = path.join(__dirname, 'schemas');
