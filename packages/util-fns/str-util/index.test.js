@@ -1,8 +1,4 @@
-import {
-  trimTrailingUnderscores,
-  snakeToCamelCase,
-  capitalizeLetterAtIndexN,
-} from '../str_util';
+const { trimTrailingUnderscores, snakeToCamelCase, capitalizeLetterAtIndexN } = require('.');
 
 describe('trimTrailingUnderscore', () => {
   it('should not change a string that has no trailing underscores', () => {
