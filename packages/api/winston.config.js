@@ -1,5 +1,4 @@
-import winston from 'winston';
-
+const winston = require('winston');
 const path = require('path');
 
 const options = {
