@@ -27,11 +27,14 @@ if (allowedModes.indexOf(envConfig.MODE) === -1) {
   throw new Error(`Environment variable 'MODE' must be one of ${allowedModes.join(', ')}`);
 }
 
+const fifteenMins = 15 * 60;
+const fourWeeksInMs = 4 * 7 * 24 * 60 * 60 * 1000;
+
 const commonConfig = {
   PORT: 5000,
-  EMAIL_VERIFICATION_TOKEN_EXPIRY: 15 * 60, // 15 minutes
+  EMAIL_VERIFICATION_TOKEN_EXPIRY: fifteenMins,
   LOGIN_TOKEN_EXPIRY: '28d',
-  LOGIN_COOKIE_EXPIRY: 4 * 7 * 24 * 60 * 60 * 1000, // 4 weeks
+  LOGIN_COOKIE_EXPIRY: fourWeeksInMs,
 };
 
 module.exports = {
