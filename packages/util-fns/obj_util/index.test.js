@@ -1,7 +1,18 @@
 const { mapObj } = require('.');
 
 describe('mapObj', () => {
-  it('never changes an empty object', () => {
+  it('simply passes through args that are not objects', () => {
+    /* eslint-disable no-unused-vars */
+    expect(mapObj(null, _ => 'a')).toBe(null);
+    expect(mapObj(undefined, _ => 'a')).toBe(undefined);
+    expect(mapObj(true, _ => 'a')).toBe(true);
+    expect(mapObj(123, _ => 'a')).toBe(123);
+    expect(mapObj('abc', _ => 'a')).toBe('abc');
+    expect(mapObj([], _ => 'a')).toEqual([]);
+    /* eslint-enable no-unused-vars */
+  });
+
+  it('should never change an empty object', () => {
     expect(mapObj({})).toEqual({});
     expect(mapObj({}, _ => 'a')).toEqual({}); // eslint-disable-line no-unused-vars
     expect(mapObj({}, _ => 'a', _ => 'b')).toEqual({}); // eslint-disable-line no-unused-vars
