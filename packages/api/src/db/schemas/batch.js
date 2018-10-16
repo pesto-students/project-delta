@@ -8,7 +8,15 @@ const batchSchema = new Schema({
     minlength: 1,
   },
 
-  number: {
+  batchNumber: {
+    type: Number,
+    unique: true,
+    required: true,
+    min: 1,
+    validator: Number.isInteger,
+  },
+
+  NumberOfDays: {
     type: Number,
     required: true,
     min: 1,
@@ -18,6 +26,11 @@ const batchSchema = new Schema({
   startDate: {
     type: Date,
     required: true,
+  },
+
+  endDate: {
+    type: Date,
+    required: false,
   },
 });
 
