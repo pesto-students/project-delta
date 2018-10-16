@@ -64,9 +64,23 @@ afterAll((done) => {
 describe('/generateToken', () => {
   const url = `${serverUrl}/generateToken`;
 
+  it('should send a 400 response when request contains a falsy origin header', (done) => {
+    request({
+      url,
+      method: 'POST',
+      headers: { origin: '' },
+      body: { email: 'anirudh.nimmagadda@gmail.com' },
+      json: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(400);
+      done();
+    });
+  });
+
   it('should send a 400 response when request contains no email', (done) => {
     request({
       url,
+      headers: { origin: 'http://localhost' },
       method: 'POST',
     }).catch((e) => {
       expect(e.statusCode).toBe(400);
@@ -78,6 +92,7 @@ describe('/generateToken', () => {
     request({
       url,
       method: 'POST',
+      headers: { origin: 'http://localhost' },
       body: { email: 'abc' },
       json: true,
     }).catch((e) => {
@@ -90,6 +105,7 @@ describe('/generateToken', () => {
     request({
       url,
       method: 'POST',
+      headers: { origin: 'http://localhost' },
       body: { email: 'anirudh.nimmagadda@gmail.com' },
       json: true,
       resolveWithFullResponse: true,
