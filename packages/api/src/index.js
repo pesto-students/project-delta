@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 // Custom imports
 import { PORT, DB_URL } from '../config';
 import routes from './routes';
+import profileRoutes from './routes/profileRoutes';
 import winston from '../winston.config';
 
 const { noPort, noDBUrl } = require('../constants/ERR_MSGS');
@@ -20,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/', routes);
-
+app.use('/api/profile', profileRoutes);
 // We only want to start the server from here if this script is run directly
 // In other cases, such as integration tests, we want to start the server elsewhere
 //   so we can stop it when the tests are done
