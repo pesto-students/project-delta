@@ -30,7 +30,9 @@ function isAuthenticated(req, res, next) {
 }
 
 routes.post('/generateToken', (req, res) => {
-  if (!Reflect.has(req.body, 'email')) {
+  if (!req.header('origin')) {
+    res.status(400).json({ error: ERR_MSGS.missingOriginHeader });
+  } else if (!Reflect.has(req.body, 'email')) {
     res.status(400).json({ error: ERR_MSGS.missingEmail });
   } else if (typeof req.body.email !== 'string' || !isEmail(req.body.email)) {
     res.status(400).json({ error: ERR_MSGS.invalidEmail });
@@ -40,7 +42,7 @@ routes.post('/generateToken', (req, res) => {
       email,
       tokenType: TOKEN_TYPES.emailToken,
     }, config.EMAIL_VERIFICATION_TOKEN_EXPIRY)
-      .then(token => mailService.sendMail(email, token))
+      .then(token => mailService.sendMail(email, token, req.headers.origin))
       .then(() => res.json({ tokenStatus: 'success', email }))
       .catch((e) => {
         winston.error(`From: ${req.ip} - ${req.method} - ${req.originalUrl} -${e.message} - {tokenStatus: failed}`);
