@@ -11,7 +11,9 @@ profileRoutes.post('/createUser', (req, res) => {
   if (!profileValidation(body).passed) {
     return res.status(400).json({ error: profileValidation(body).msg });
   }
-  body.batchId = body.batchId.toString();
+  if (body.role === 'student') {
+    body.batchId = body.batchId.toString();
+  }
   const user = new User(body);
   return user.save()
     .then((doc) => {
