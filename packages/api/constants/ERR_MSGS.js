@@ -1,4 +1,5 @@
 module.exports = {
+  missingOriginHeader: 'REQUEST_MISSING_ORIGIN_HEADER',
   invalidToken: 'TOKEN_INVALID',
   missingToken: 'TOKEN_MISSING',
   expiredToken: 'TOKEN_EXPIRED',
