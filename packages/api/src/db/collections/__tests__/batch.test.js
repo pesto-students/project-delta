@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import moment from 'moment';
+import addDays from 'date-fns/add_days';
 import { DB_URL } from '../../../../config';
 
 import { getAllBatches, insertBatch } from '../batch';
@@ -11,22 +11,22 @@ describe('Mongo Queries: Batch', () => {
       city: 'Chennai',
       batchNumber: 3,
       NumberOfDays: 20,
-      startDate: moment().toDate(),
-      endDate: moment().add(20, 'days').toDate(),
+      startDate: new Date(),
+      endDate: addDays(new Date(), 20),
     },
     {
       city: 'Delhi',
       batchNumber: 1,
       NumberOfDays: 20,
-      startDate: moment().toDate(),
-      endDate: moment().add(20, 'days').toDate(),
+      startDate: new Date(),
+      endDate: addDays(new Date(), 20),
     },
     {
       city: 'Mumbai',
       batchNumber: 2,
       NumberOfDays: 20,
-      startDate: moment().toDate(),
-      endDate: moment().add(20, 'days').toDate(),
+      startDate: new Date(),
+      endDate: addDays(new Date(), 20),
     },
   ];
 
@@ -61,8 +61,8 @@ describe('Mongo Queries: Batch', () => {
       city: 'Chennai',
       batchNumber: 4,
       NumberOfDays: 20,
-      startDate: moment().toDate(),
-      endDate: moment().add(20, 'days').toDate(),
+      startDate: new Date(),
+      endDate: addDays(new Date(), 20),
     };
 
     afterEach(async () => {
