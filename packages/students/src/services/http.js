@@ -22,7 +22,7 @@ export const HTTP = {
   POST: (urlPath, body, headers = {}) => {
     const finalHeaders = processHeaders(headers);
 
-    fetch(`${API_URL}${urlPath}`, {
+    return fetch(`${API_URL}${urlPath}`, {
       method: 'POST',
       headers: finalHeaders,
       body: processBody(body, finalHeaders),
