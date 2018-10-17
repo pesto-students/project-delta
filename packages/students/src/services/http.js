@@ -1,4 +1,4 @@
-import { mapObj } from 'util-fns/obj-util';
+import { mapObj } from '@ack_inc/util';
 import { API_URL } from '../config';
 
 const makeObjKeysLowerCase = obj => mapObj(obj, key => key.toLowerCase());
