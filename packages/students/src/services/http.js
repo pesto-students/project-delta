@@ -1,13 +1,10 @@
-import { mapObj } from '@ack_inc/util';
 import { API_URL } from '../config';
-
-const makeObjKeysLowerCase = obj => mapObj(obj, key => key.toLowerCase());
 
 // adds json-content-type and origin headers if not present
 const processHeaders = headers => ({
   'content-type': 'application/json; charset=utf-8',
   origin: window.origin,
-  ...makeObjKeysLowerCase(headers),
+  ...headers,
 });
 
 // JSON.stringifies if appropriate, else passes it through
