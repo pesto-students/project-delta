@@ -1,14 +1,14 @@
 {
   "name": "util-fns",
   "version": "1.0.0",
-  "description": "",
+  "description": "Some utility functions for string and object manipulation",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "posttest": "yarn lint",
     "lint": "eslint ./"
   },
-  "author": "",
+  "author": "Anirudh Nimmagadda <anirudh.nimmagadda@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^5.7.0",
