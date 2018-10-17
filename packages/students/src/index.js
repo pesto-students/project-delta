@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { BlockButton } from '../../shared-components/BlockButton';
+import { LoginContainer } from './components/Login/LoginContainer';
+import './main.css';
 
 ReactDOM.render(
-  <h1>
-    Welcome to Project Delta Students
-    <BlockButton> Student</BlockButton>
-  </h1>,
+  <LoginContainer />,
   document.getElementById('root'),
 );
