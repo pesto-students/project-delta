@@ -2,7 +2,6 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
 // Custom imports
@@ -12,7 +11,6 @@ import winston from '../winston.config';
 
 const { noPort, noDBUrl } = require('../constants/ERR_MSGS');
 
-dotenv.config();
 const app = express();
 
 app.use(morgan('combined', { stream: winston.stream }));
