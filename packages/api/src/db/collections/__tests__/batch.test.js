@@ -37,6 +37,7 @@ describe('Mongo Queries: Batch', () => {
 
   afterAll(async () => {
     await Batch.remove({});
+    await mongoose.disconnect();
   });
 
   describe('getAllBatches', () => {
