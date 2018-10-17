@@ -19,7 +19,7 @@ function profileValidation(user) {
     return { passed: false, msg: ERR_MSGS.noRole };
   }
   if (user.role.toLowerCase() === 'student') {
-    if (!Reflect.has(user, 'batchId') || user.batchId.length < 12) {
+    if (!Reflect.has(user, 'batchId') || user.batchId.length < 24) {
       return { passed: false, msg: ERR_MSGS.noBatchId };
     }
   }
