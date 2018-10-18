@@ -9,10 +9,7 @@ const mailService = require('../services/mail');
 const models = require('../db');
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 const TOKEN_TYPES = require('../../constants/TOKEN_TYPES');
-const isAuthenticated = require('../helper/auth/isAuthenticated');
-// Checks that the user who sent the request has a valid token
-// If authenticated, the decoded token is made available to next middleware at req.decoded
-// else, a 400 response is returned, and the next middleware is not called
+const { isAuthenticated } = require('../helper/auth/isAuthenticated');
 
 routes.post('/generateToken', (req, res) => {
   if (!req.header('origin')) {
