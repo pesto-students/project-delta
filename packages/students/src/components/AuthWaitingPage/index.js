@@ -19,8 +19,8 @@ export class AuthWaitingComponent extends React.Component {
   }
 
   componentDidMount() {
-    const curUrlParts = window.location.pathname.toString().split('/');
-    const token = curUrlParts[curUrlParts.length - 1];
+    // eslint-disable-next-line react/destructuring-assignment
+    const { token } = this.props.match.params;
 
     httpService.POST('/verifyToken', { token }, { 'Content-Type': 'application/json' }, false)
       .then(this.handleVerifyTokenResponse)
