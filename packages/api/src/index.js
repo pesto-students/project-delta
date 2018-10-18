@@ -10,6 +10,7 @@ import { PORT, DB_URL, ALLOWED_ORIGINS_FOR_CORS } from '../config';
 import routes from './routes';
 import profileRoutes from './routes/profileRoutes';
 import winston from '../winston.config';
+import { batchRoutes } from './routes/batchRoutes';
 
 const { noPort, noDBUrl } = require('../constants/ERR_MSGS');
 
@@ -26,6 +27,7 @@ app.use(cors({
 
 app.use('/', routes);
 app.use('/api/profile', profileRoutes);
+app.use('/instructor/batch', batchRoutes);
 
 // We only want to start the server from here if this script is run directly
 // In other cases, such as integration tests, we want to start the server elsewhere
