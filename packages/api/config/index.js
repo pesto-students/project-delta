@@ -4,6 +4,7 @@ let envConfig = require('dotenv').config().parsed;
 
 const requiredEnvVars = [
   'MODE',
+  'PORT',
   'DB_URL',
   'JWT_SECRET',
   'SENDGRID_API_KEY',
@@ -31,7 +32,6 @@ const fifteenMins = 15 * 60;
 const fourWeeksInMs = 4 * 7 * 24 * 60 * 60 * 1000;
 
 const commonConfig = {
-  PORT: 5000,
   EMAIL_VERIFICATION_TOKEN_EXPIRY: fifteenMins,
   LOGIN_TOKEN_EXPIRY: '28d',
   LOGIN_COOKIE_EXPIRY: fourWeeksInMs,
