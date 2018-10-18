@@ -40,6 +40,10 @@ const config = {
     ],
   },
   plugins: [htmlPlugin, openPlugin],
+  devServer: {
+    port: 8080,
+    historyApiFallback: true,
+  },
 };
 
 module.exports = config;
