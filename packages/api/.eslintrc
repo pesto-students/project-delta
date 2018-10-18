@@ -2,7 +2,8 @@
     "parser": "babel-eslint",
     "extends": "airbnb",
     "rules": {
-      "import/prefer-default-export": 0
+      "import/prefer-default-export": 0,
+      "no-underscore-dangle": [2, { "allow": ["_id"] }]
     },
     "env": {
       "jest": true,

@@ -201,3 +201,107 @@ describe('/verifyToken', () => {
       });
   });
 });
+
+describe('/api/profile/createUser', () => {
+  const url = `${serverUrl}/api/profile/createUser`;
+  const testUser = {
+    firstName: 'Vipul',
+    lastName: 'Rawat',
+    email: 'vipultests@gmail.com',
+    role: 'instructor',
+  };
+  it('should send a 400 response when request contains no body', (done) => {
+    request({
+      url,
+      method: 'POST',
+      body: {},
+      json: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(400);
+      done();
+    });
+  });
+
+  it('should send a 400 response when request contains invalid email', (done) => {
+    const mockTestUser = Object.assign({}, testUser);
+    mockTestUser.email = 'abc';
+    request({
+      url,
+      method: 'POST',
+      body: mockTestUser,
+      json: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(400);
+      done();
+    });
+  });
+
+  it('should send a 400 response when first name is missing', (done) => {
+    const mockTestUser = Object.assign({}, testUser);
+    delete mockTestUser.firstName;
+    request({
+      url,
+      method: 'POST',
+      body: mockTestUser,
+      json: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(400);
+      done();
+    });
+  });
+
+  it('should send a 400 response when last name is missing', (done) => {
+    const mockTestUser = Object.assign({}, testUser);
+    delete mockTestUser.lastName;
+    request({
+      url,
+      method: 'POST',
+      body: mockTestUser,
+      json: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(400);
+      done();
+    });
+  });
+
+  it('should send a 400 response when email is missing', (done) => {
+    const mockTestUser = Object.assign({}, testUser);
+    delete mockTestUser.email;
+    request({
+      url,
+      method: 'POST',
+      body: mockTestUser,
+      json: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(400);
+      done();
+    });
+  });
+
+  it('should send a 201 response when a student is created', (done) => {
+    request({
+      url,
+      method: 'POST',
+      body: testUser,
+      json: true,
+      resolveWithFullResponse: true,
+    }).then((res) => {
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toMatchObject({ user_created: 'Success', user_email: testUser.email });
+      done();
+    });
+  });
+
+  it('should send a 500 response when a duplicate copy is present', (done) => {
+    request({
+      url,
+      method: 'POST',
+      body: testUser,
+      json: true,
+      resolveWithFullResponse: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(500);
+      done();
+    });
+  });
+});
