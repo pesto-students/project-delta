@@ -3,8 +3,9 @@ const winston = require('winston');
 const { User } = require('../db');
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 const profileValidation = require('../services/profileValidation');
+const { isAuthenticated } = require('../helper/auth/isAuthenticated');
 
-profileRoutes.post('/createUser', (req, res) => {
+profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
   if (!req.body) {
     return res.status(400).json({ error: ERR_MSGS.noProfileData });
   }
