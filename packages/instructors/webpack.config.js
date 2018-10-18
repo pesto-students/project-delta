@@ -42,7 +42,9 @@ const config = {
   plugins: [htmlPlugin, openPlugin],
   devServer: {
     port: 8081,
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
   },
 };
 
