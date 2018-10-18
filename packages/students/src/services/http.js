@@ -1,11 +1,14 @@
 import { API_URL } from '../config';
 
 // adds json-content-type and origin headers if not present
-const processHeaders = headers => ({
-  'content-type': 'application/json; charset=utf-8',
-  origin: window.origin,
-  ...headers,
-});
+const processHeaders = (headers) => {
+  const defaultHeaders = {
+    'content-type': 'application/json; charset=utf-8',
+    origin: window.origin,
+  };
+
+  return { ...defaultHeaders, ...headers };
+};
 
 // JSON.stringifies if appropriate, else passes it through
 const processBody = (body, headers) => (
@@ -23,6 +26,7 @@ export const HTTP = {
       method: 'POST',
       headers: finalHeaders,
       body: processBody(body, finalHeaders),
+      credentials: 'include',
     }).then(response => response.json());
   },
 };

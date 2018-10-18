@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import { LoginContainer } from './components/Login/LoginContainer';
+import App from './components/AppComponent';
+
 import './main.css';
 
 ReactDOM.render(
-  <LoginContainer />,
+  <BrowserRouter><App /></BrowserRouter>,
   document.getElementById('root'),
 );
