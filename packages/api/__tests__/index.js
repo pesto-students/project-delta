@@ -106,7 +106,7 @@ describe('/generateToken', () => {
       url,
       method: 'POST',
       headers: { origin: 'http://localhost' },
-      body: { email: 'anirudh.nimmagadda@gmail.com' },
+      body: { email: 'anirudh12nimmagadda34@mailinator.com' },
       json: true,
       resolveWithFullResponse: true,
     }).then((res) => {
