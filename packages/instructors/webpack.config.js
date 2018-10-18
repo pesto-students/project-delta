@@ -8,7 +8,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 const openPlugin = new OpenBrowserPlugin({
-  url: 'http://localhost:8080',
+  url: 'http://localhost:8081',
 });
 
 const config = {
@@ -40,6 +40,10 @@ const config = {
     ],
   },
   plugins: [htmlPlugin, openPlugin],
+  devServer: {
+    port: 8081,
+    historyApiFallback: true,
+  },
 };
 
 module.exports = config;
