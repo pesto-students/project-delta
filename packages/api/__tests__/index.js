@@ -203,6 +203,7 @@ describe('/verifyToken', () => {
 });
 
 describe('/api/profile/createUser', () => {
+  const verifyTokenUrl = `${serverUrl}/verifyToken`;
   const url = `${serverUrl}/api/profile/createUser`;
   const testUser = {
     firstName: 'Vipul',
@@ -277,31 +278,56 @@ describe('/api/profile/createUser', () => {
       done();
     });
   });
-
-  it('should send a 201 response when a student is created', (done) => {
-    request({
-      url,
-      method: 'POST',
-      body: testUser,
-      json: true,
-      resolveWithFullResponse: true,
-    }).then((res) => {
-      expect(res.statusCode).toBe(201);
-      expect(res.body).toMatchObject({ user_created: 'Success', user_email: testUser.email });
-      done();
+  it('should return 201 on creation of new user', (done) => {
+    tokenService.generate({
+      email: 'vipulrawat007@gmail.com',
+      tokenType: 'EMAIL_VERIFICATION',
+    }).then((token) => {
+      request({
+        url: verifyTokenUrl,
+        method: 'POST',
+        body: { token },
+        json: true,
+        resolveWithFullResponse: true,
+      }).then((res) => {
+        const cooky = res.headers['set-cookie'][0].substr(6, 200);
+        request({
+          url,
+          method: 'POST',
+          body: { ...testUser, token: cooky },
+          json: true,
+          resolveWithFullResponse: true,
+        }).then((result) => {
+          expect(result.statusCode).toBe(201);
+          done();
+        });
+      });
     });
   });
-
   it('should send a 500 response when a duplicate copy is present', (done) => {
-    request({
-      url,
-      method: 'POST',
-      body: testUser,
-      json: true,
-      resolveWithFullResponse: true,
-    }).catch((e) => {
-      expect(e.statusCode).toBe(500);
-      done();
+    tokenService.generate({
+      email: 'vipulrawat007@gmail.com',
+      tokenType: 'EMAIL_VERIFICATION',
+    }).then((token) => {
+      request({
+        url: verifyTokenUrl,
+        method: 'POST',
+        body: { token },
+        json: true,
+        resolveWithFullResponse: true,
+      }).then((res) => {
+        const cooky = res.headers['set-cookie'][0].substr(6, 200);
+        request({
+          url,
+          method: 'POST',
+          body: { ...testUser, token: cooky },
+          json: true,
+          resolveWithFullResponse: true,
+        }).catch((e) => {
+          expect(e.statusCode).toBe(500);
+          done();
+        });
+      });
     });
   });
 });
