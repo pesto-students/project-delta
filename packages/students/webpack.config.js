@@ -17,6 +17,7 @@ const config = {
   ],
   output: {
     path: `${path.resolve(__dirname)}/dist`,
+    publicPath: '/',
     filename: 'bundle.js',
   },
   module: {
@@ -40,6 +41,12 @@ const config = {
     ],
   },
   plugins: [htmlPlugin, openPlugin],
+  devServer: {
+    port: 8080,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
+  },
 };
 
 module.exports = config;

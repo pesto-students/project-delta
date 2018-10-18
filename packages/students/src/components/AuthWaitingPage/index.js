@@ -22,13 +22,8 @@ export class AuthWaitingComponent extends React.Component {
     const curUrlParts = window.location.pathname.toString().split('/');
     const token = curUrlParts[curUrlParts.length - 1];
 
-    httpService.POST('/verifyToken', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: { token },
-    }).then(this.handleVerifyTokenResponse)
+    httpService.POST('/verifyToken', { token }, { 'Content-Type': 'application/json' }, false)
+      .then(this.handleVerifyTokenResponse)
       .catch(console.error); // eslint-disable-line no-console
   }
 
