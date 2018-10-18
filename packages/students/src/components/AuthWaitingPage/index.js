@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 
 import BoxComponent from '../../../../shared-components/BoxWithImgAndText';
 import { HTTP as httpService } from '../../services/http';
-import { getCookie } from '../../services/cookie';
 
 import './blink.css';
 
@@ -34,18 +33,7 @@ export class AuthWaitingComponent extends React.Component {
   }
 
   handleVerifyTokenResponse(res) {
-    if (!res.ok) {
-      this.setState({ waiting: false, authSuccess: false });
-    } else {
-      // Set-Cookie headers of the response would have put token in document.cookie
-      // Extract it from there and place it in localStorage so future requests made by
-      //   our http service can pick it up
-      const token = getCookie('token');
-      if (token !== null) {
-        localStorage.setItem('token', token);
-      }
-      this.setState({ waiting: false, authSuccess: true });
-    }
+    this.setState({ waiting: false, authSuccess: res.ok });
   }
 
   render() {
