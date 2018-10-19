@@ -3,6 +3,7 @@
 export function getUserProfile(id = 'me') { // eslint-disable-line no-unused-vars
   // return httpService.GET(`/users/${id}`);
   return Promise.resolve({
+    _id: '111122223333111122223333',
     email: 'anirudh.nimmagadda@gmail.com',
     firstName: 'Anirudh',
     lastName: 'Nimmagadda',
@@ -10,7 +11,7 @@ export function getUserProfile(id = 'me') { // eslint-disable-line no-unused-var
     profilePicUrl: 'https://lh3.googleusercontent.com/-b2fwL216_m0/AAAAAAAAAAI/AAAAAAAAAAA/ZJocaz5rHUk/photo.jpg',
     batchId: '111111111111222222222222',
     batchCity: 'New Delhi',
-    batchNumber: '2',
+    batchNumber: 2,
   });
 }
 

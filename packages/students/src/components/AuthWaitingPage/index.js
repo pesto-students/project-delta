@@ -13,6 +13,8 @@ export class AuthWaitingComponent extends React.Component {
     this.state = {
       waiting: true,
       authSuccess: false,
+      isNewUser: false,
+      email: null,
     };
 
     this.handleVerifyTokenResponse = this.handleVerifyTokenResponse.bind(this);
@@ -28,7 +30,12 @@ export class AuthWaitingComponent extends React.Component {
   }
 
   handleVerifyTokenResponse(res) {
-    this.setState({ waiting: false, authSuccess: res.ok });
+    this.setState({
+      waiting: false,
+      authSuccess: res.authentication,
+      isNewUser: res.isNewUser,
+      email: res.email,
+    });
   }
 
   render() {
@@ -57,7 +64,7 @@ export class AuthWaitingComponent extends React.Component {
       },
     };
 
-    const { waiting, authSuccess } = this.state;
+    const { waiting, authSuccess, isNewUser } = this.state;
 
     if (waiting) {
       return (
@@ -69,10 +76,21 @@ export class AuthWaitingComponent extends React.Component {
       );
     }
 
-    if (authSuccess) {
-      return <Redirect to="/dashboard" />;
+    if (!authSuccess) {
+      return <Redirect to="/" />;
     }
 
-    return <Redirect to="/" />;
+    if (isNewUser) {
+      return (
+        <Redirect
+          to={{
+            pathname: '/profile',
+            state: { editing: true, user: { email: this.state.email } },
+          }}
+        />
+      );
+    }
+
+    return <Redirect to="/dashboard" />;
   }
 }
