@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { BlockButton } from '../../shared-components/BlockButton';
+import { BatchViewContainer } from './components/Batch/BatchViewContainer';
 
 ReactDOM.render(
-  <h1>
-    Welcome to Project Delta Instructors
-    <BlockButton> Instructor</BlockButton>
-  </h1>,
+  <BatchViewContainer />,
   document.getElementById('root'),
 );

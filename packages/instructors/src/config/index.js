@@ -11,4 +11,6 @@ module.exports = {
         : 'https://deltapesto-api.herokuapp.com'
     );
   },
+
+  DATE_FORMAT: 'MMM D, YYYY',
 };
