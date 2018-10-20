@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import request from 'request-promise-native';
+import { Cookie } from 'request-cookies';
 
 import app from '../src';
 import { PORT, DB_URL } from '../config';
@@ -290,11 +291,13 @@ describe('/api/profile/createUser', () => {
         json: true,
         resolveWithFullResponse: true,
       }).then((res) => {
-        const cooky = res.headers['set-cookie'][0].substr(6, 200);
+        const rawcookies = res.headers['set-cookie'];
+        const cookieWithHeaders = new Cookie(rawcookies[0]);
+        const loginToken = cookieWithHeaders.value;
         request({
           url,
           method: 'POST',
-          body: { ...testUser, token: cooky },
+          body: { ...testUser, token: loginToken },
           json: true,
           resolveWithFullResponse: true,
         }).then((result) => {
@@ -316,11 +319,13 @@ describe('/api/profile/createUser', () => {
         json: true,
         resolveWithFullResponse: true,
       }).then((res) => {
-        const cooky = res.headers['set-cookie'][0].substr(6, 200);
+        const rawcookies = res.headers['set-cookie'];
+        const cookieWithHeaders = new Cookie(rawcookies[0]);
+        const loginToken = cookieWithHeaders.value;
         request({
           url,
           method: 'POST',
-          body: { ...testUser, token: cooky },
+          body: { ...testUser, token: loginToken },
           json: true,
           resolveWithFullResponse: true,
         }).catch((e) => {

@@ -14,22 +14,20 @@ const options = {
   console: { // Logging config for console
     level: 'debug',
     handleExceptions: true,
-    json: false,
-    colorize: true,
   },
 };
 
 const alignedWithColorsAndTime = winston.format.combine(
   winston.format.colorize(),
   winston.format.simple(),
-  winston.format.timestamp(),
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   winston.format.align(),
   winston.format.printf((info) => {
     const {
       timestamp, level, message, ...args
     } = info;
-    const ts = timestamp.slice(0, 19).replace('T', ' ');
-    return `${ts} [${level}]: ${message} ${Object.keys(args).length ? JSON.stringify(args, null, 2) : ''}`;
+    // for more info : https://github.com/winstonjs/winston#creating-custom-formats
+    return `${timestamp} [${level}]: ${message} ${Object.keys(args).length ? JSON.stringify(args, null, 2) : ''}`;
   }),
 );
 
@@ -37,7 +35,7 @@ const logger = winston.createLogger({
   format: alignedWithColorsAndTime,
   transports: [
     new winston.transports.File(options.file),
-    new winston.transports.Console(),
+    new winston.transports.Console(options.console),
   ],
   exitOnError: false, // do not exit on handled exceptions
 });
