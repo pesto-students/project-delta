@@ -1,5 +1,4 @@
 import express from 'express';
-import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -9,14 +8,12 @@ import mongoose from 'mongoose';
 import { PORT, DB_URL, ALLOWED_ORIGINS_FOR_CORS } from '../config';
 import routes from './routes';
 import profileRoutes from './routes/profileRoutes';
-import winston from '../winston.config';
 import { batchRoutes } from './routes/batchRoutes';
 
 const { noPort, noDBUrl } = require('../constants/ERR_MSGS');
 
 const app = express();
 
-app.use(morgan('combined', { stream: winston.stream }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
