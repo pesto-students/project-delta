@@ -8,23 +8,26 @@ import { Batch } from '../../index';
 describe('Mongo Queries: Batch', () => {
   const dummyBatch = [
     {
+      batchId: 'Batch #3',
       city: 'Chennai',
       batchNumber: 3,
-      NumberOfDays: 20,
+      numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     },
     {
+      batchId: 'Batch #1',
       city: 'Delhi',
       batchNumber: 1,
-      NumberOfDays: 20,
+      numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     },
     {
+      batchId: 'Batch #2',
       city: 'Mumbai',
       batchNumber: 2,
-      NumberOfDays: 20,
+      numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     },
@@ -59,9 +62,10 @@ describe('Mongo Queries: Batch', () => {
 
   describe('newBatch', () => {
     const newDocument = {
+      batchId: 'Batch #4',
       city: 'Chennai',
       batchNumber: 4,
-      NumberOfDays: 20,
+      numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     };
