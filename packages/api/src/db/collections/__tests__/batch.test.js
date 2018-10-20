@@ -39,7 +39,7 @@ describe('Mongo Queries: Batch', () => {
   });
 
   afterAll(async () => {
-    await Batch.remove({});
+    await Batch.deleteMany({});
     await mongoose.disconnect();
   });
 
@@ -71,20 +71,20 @@ describe('Mongo Queries: Batch', () => {
     };
 
     afterEach(async () => {
-      await Batch.remove({ batchNumber: newDocument.batchNumber });
+      await Batch.deleteOne({ batchNumber: newDocument.batchNumber });
     });
 
     it('should insert new document', async () => {
       await insertBatch(newDocument);
 
-      const batch = Batch.findOne({ batchNumber: newDocument.batchNumber });
+      const batch = await Batch.findOne({ batchNumber: newDocument.batchNumber });
       expect(batch).toBeDefined();
     });
 
     it('should return new document id', async () => {
       const newId = await insertBatch(newDocument);
 
-      const batch = Batch.findOne({ _id: newId });
+      const batch = await Batch.findOne({ _id: newId });
       expect(batch).toBeDefined();
     });
   });

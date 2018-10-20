@@ -8,7 +8,8 @@
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec babel-node src/index.js",
     "build": "rm -rf build && babel src -d build",
-    "test": "jest && yarn lint",
+    "test": "jest",
+    "posttest": "yarn lint",
     "lint": "eslint ./",
     "test:watch": "jest --watchAll"
   },
