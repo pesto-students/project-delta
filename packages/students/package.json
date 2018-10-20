@@ -12,6 +12,7 @@
     "test": "jest",
     "posttest": "yarn lint",
     "test:coverage": "jest --coverage",
+    "test:related": "jest --bail --findRelatedTests",
     "lint": "eslint ./"
   },
   "dependencies": {
