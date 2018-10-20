@@ -11,6 +11,7 @@ import routes from './routes';
 import profileRoutes from './routes/profileRoutes';
 import winston from '../winston.config';
 import { batchRoutes } from './routes/batchRoutes';
+import dashboardRoutes from './routes/dashboard/index';
 
 const { noPort, noDBUrl } = require('../constants/ERR_MSGS');
 
@@ -28,7 +29,7 @@ app.use(cors({
 app.use('/', routes);
 app.use('/api/profile', profileRoutes);
 app.use('/instructor/batch', batchRoutes);
-
+app.use('/dashboard', dashboardRoutes);
 // We only want to start the server from here if this script is run directly
 // In other cases, such as integration tests, we want to start the server elsewhere
 //   so we can stop it when the tests are done
