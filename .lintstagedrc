@@ -1,7 +1,8 @@
 {
-    "linters": {
-      "*.js": [
-        "eslint"
-      ]
-    }
+  "linters": {
+    "*.js": [
+      "./scripts/pre-commit-test.sh",
+      "eslint"
+    ]
+  }
 }
