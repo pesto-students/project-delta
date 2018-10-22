@@ -22,7 +22,7 @@ export class AuthWaitingComponent extends React.Component {
     // eslint-disable-next-line react/destructuring-assignment
     const { token } = this.props.match.params;
 
-    httpService.POST('/verifyToken', { token }, { 'Content-Type': 'application/json' }, false)
+    httpService.POST('/verifyToken', { token }, undefined, false)
       .then(this.handleVerifyTokenResponse)
       .catch(console.error); // eslint-disable-line no-console
   }
