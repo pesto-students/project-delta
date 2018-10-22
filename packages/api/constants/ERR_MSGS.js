@@ -12,6 +12,7 @@ module.exports = {
   noRole: 'NO_ROLE_PROVIDED',
   noBatchId: 'NO_BATCH_ID_OR_INSUFFCIENT_LENGTH',
   noProfileData: 'NO_PROFILE_DATA_PROVIDED',
+  noBatchData: 'NO_BATCH_DATA_PROVIDED',
   internalServerError: 'Server error',
   noPort: 'Express: Port number is not specified',
   noDBUrl: 'Database: Database url is not specified',

@@ -35,6 +35,7 @@ describe('Mongo Queries: Batch', () => {
 
   beforeAll(async () => {
     mongoose.connect(DB_URL, { useNewUrlParser: true, connectTimeoutMS: 10000 });
+    await Batch.deleteMany({});
     await Batch.insertMany(dummyBatch);
   });
 
@@ -47,16 +48,6 @@ describe('Mongo Queries: Batch', () => {
     it('should return all batch documents', async () => {
       const batchList = await getAllBatches();
       expect(batchList.length).toBe(dummyBatch.length);
-    });
-
-    it('should return documents in desc order of `batchNumber`', async () => {
-      const batchList = await getAllBatches();
-      const sortedBatch = dummyBatch.sort((a, b) => b.batchNumber - a.batchNumber);
-      const lastIndex = sortedBatch.length - 1;
-
-      expect(batchList[0]).toEqual(expect.objectContaining(sortedBatch[0]));
-      expect(batchList[1]).toEqual(expect.objectContaining(sortedBatch[1]));
-      expect(batchList[lastIndex]).toEqual(expect.objectContaining(sortedBatch[lastIndex]));
     });
   });
 
