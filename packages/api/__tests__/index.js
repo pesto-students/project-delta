@@ -313,7 +313,7 @@ describe('Router: /instructor/batch', () => {
     it('should send batchList as an array', async () => {
       const res = await request({
         url,
-        method: 'POST',
+        method: 'GET',
         headers: { origin: 'http://localhost' },
         json: true,
       });
