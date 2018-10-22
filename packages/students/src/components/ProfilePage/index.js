@@ -6,11 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 import { getUserProfile, updateUserProfile } from '../../services/user';
 import { StudentProfileViewComponent } from './StudentProfileView';
+import { StudentProfileEditComponent } from './StudentProfileEdit';
 import { userProfilePropType } from './userProfilePropType';
-
-function StudentProfileEditComponent() {
-  return <div />;
-}
 
 export class ProfilePageComponent extends React.Component {
   constructor(props) {
@@ -18,7 +15,7 @@ export class ProfilePageComponent extends React.Component {
     // eslint-disable-next-line react/destructuring-assignment
     this.state = {
       authFailure: false,
-      editing: true,
+      editing: false,
       loading: true,
       user: {},
       ...this.props.location.state,
