@@ -8,11 +8,5 @@
 }
 
 .login-button {
-  margin: 8px;
   margin-top: 20px;
-}
-
-.login-button button {
-  min-height: 50px;
-  font-size: 15px;
 }

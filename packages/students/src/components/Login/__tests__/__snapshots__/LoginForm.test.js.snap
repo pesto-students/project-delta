@@ -13,16 +13,13 @@ exports[`<LoginForm /> matches saved snapshot 1`] = `
     type="email"
     value=""
   />
-  <div
+  <WithStyles(BlockButtonComponent)
     className="login-button"
+    data-testid="signin"
+    isLoading={false}
+    type="submit"
   >
-    <WithStyles(BlockButtonComponent)
-      data-testid="signin"
-      isLoading={false}
-      type="submit"
-    >
-      Signin
-    </WithStyles(BlockButtonComponent)>
-  </div>
+    Signin
+  </WithStyles(BlockButtonComponent)>
 </form>
 `;
