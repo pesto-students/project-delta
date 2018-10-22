@@ -38,11 +38,9 @@ class LoginForm extends Component {
           onChange={this.onEmailChange}
           value={this.state.email}
         />
-        <div className="login-button">
-          <BlockButton type="submit" data-testid="signin" isLoading={this.props.isLoggingIn}>
-            Signin
-          </BlockButton>
-        </div>
+        <BlockButton className="login-button" type="submit" data-testid="signin" isLoading={this.props.isLoggingIn}>
+          Signin
+        </BlockButton>
       </form>
     );
   }
