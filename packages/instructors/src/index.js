@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { BatchViewContainer } from './components/Batch/BatchViewContainer';
+import { NewBatchContainer } from './components/Batch/NewBatchContainer';
 
 ReactDOM.render(
-  <BatchViewContainer />,
+  <NewBatchContainer />,
   document.getElementById('root'),
 );
