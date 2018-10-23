@@ -15,4 +15,5 @@ module.exports = {
   internalServerError: 'Server error',
   noPort: 'Express: Port number is not specified',
   noDBUrl: 'Database: Database url is not specified',
+  missingInfo: 'Some information is missing',
 };
