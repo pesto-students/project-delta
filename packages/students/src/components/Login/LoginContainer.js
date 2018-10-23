@@ -4,9 +4,7 @@ import isEmail from 'validator/lib/isEmail';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
 import { HTTP } from '../../../../shared-utils/services/http';
-import { LoginFooter } from './Footer';
-import { LoginHeader } from './Header';
-import { LoginForm } from './LoginForm';
+import { LoginForm, LoginFooter, LoginHeader } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
 
 import './style.css';

@@ -1,8 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import React, { Component } from 'react';
 
-import { LoginHeader } from '../Login/Header';
-import { LoginFooter } from '../Login/Footer';
+import { LoginFooter, LoginHeader } from '../../../../shared-components/LoginComponents';
 
 export class DashboardContainer extends Component {
   render() {

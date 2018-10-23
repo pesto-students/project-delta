@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 
-import { LoginForm } from '../LoginForm';
+import { LoginForm } from '../../../../../shared-components/LoginComponents';
 
 const updateInput = (wrapper, instance, newValue) => {
   const input = wrapper.find(instance);
