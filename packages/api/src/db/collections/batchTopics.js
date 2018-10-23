@@ -11,10 +11,4 @@ const getBatchTopics = async (batchId, day) => {
   return batchTopicsList;
 };
 
-// const insertBatch = async (batchInfo) => {
-//   const newBatch = new Batch(batchInfo);
-//   const result = await newBatch.save();
-//   return result.id;
-// };
-
 export { getBatchTopics };
