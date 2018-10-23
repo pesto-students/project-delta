@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Divider from '@material-ui/core/Divider';
 
-import { BlockButton } from '../../../../shared-components/BlockButton';
-import { InputOutlined } from '../../../../shared-components/InputOutlined';
-import './style.css';
+import { BlockButton } from './BlockButton';
+import { InputOutlined } from './InputOutlined';
 
 class LoginForm extends Component {
   state = {
@@ -51,4 +51,18 @@ LoginForm.propTypes = {
   isLoggingIn: PropTypes.bool.isRequired,
 };
 
-export { LoginForm };
+const LoginHeader = () => (
+  <header>
+    <h1>Project Delta</h1>
+    <Divider />
+  </header>
+);
+
+const LoginFooter = () => (
+  <header>
+    <Divider />
+    <h1 className="text-center">Project Delta</h1>
+  </header>
+);
+
+export { LoginForm, LoginHeader, LoginFooter };

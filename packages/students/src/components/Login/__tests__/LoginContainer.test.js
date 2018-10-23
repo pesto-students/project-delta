@@ -3,7 +3,7 @@ import React from 'react';
 
 import { LoginContainer } from '../LoginContainer';
 import { NotificationBlock } from '../../../../../shared-components/NotificationBlock';
-import { HTTP } from '../../../services/http';
+import { HTTP } from '../../../../../shared-utils/services/http';
 import { MSGS } from '../../../constants/MSGS';
 
 describe('<LoginContainer />', () => {
