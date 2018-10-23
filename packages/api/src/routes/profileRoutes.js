@@ -1,10 +1,10 @@
 const profileRoutes = require('express').Router();
-const winston = require('winston');
 const { User } = require('../db');
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 const profileValidation = require('../services/profileValidation');
+const { isAuthenticated } = require('../helper/auth/isAuthenticated');
 
-profileRoutes.post('/createUser', (req, res) => {
+profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
   if (!req.body) {
     return res.status(400).json({ error: ERR_MSGS.noProfileData });
   }
@@ -19,13 +19,12 @@ profileRoutes.post('/createUser', (req, res) => {
   return user.save()
     .then((doc) => {
       if (!doc || doc.length === 0) {
-        winston.error(`!DB- From: ${req.ip} - ${req.method} - ${req.originalUrl} - Error: Unable to create document`);
         return res.status(500).json({ error: ERR_MSGS.internalServerError });
       }
       return res.status(201).json({ user_created: 'Success', user_email: doc.email });
     })
     .catch(() => {
-      res.status(500).json({ error: ERR_MSGS.duplicateKeyError });
+      res.status(500).json({ error: ERR_MSGS.internalServerError });
     });
 });
 
