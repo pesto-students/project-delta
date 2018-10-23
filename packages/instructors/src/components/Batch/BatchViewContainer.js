@@ -41,7 +41,7 @@ class BatchViewContainer extends Component {
     return (
       <React.Fragment>
         <ErrorSnackBar open={error !== ''} onClose={this.clearError} message={error} />
-        <Grid container>
+        <Grid container spacing={16}>
           {batchList.map(batch => (
             <Grid item xs={12} md={4} lg={3} key={batch._id}>
               <BatchCard batchInfo={batch} />
