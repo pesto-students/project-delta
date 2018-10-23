@@ -339,22 +339,3 @@ describe('/api/profile/createUser', () => {
     });
   });
 });
-
-describe('Router: /instructor/batch', () => {
-  describe('POST: /list', () => {
-    const url = `${serverUrl}/instructor/batch/list`;
-
-    it('should send batchList as an array', async () => {
-      const res = await request({
-        url,
-        method: 'POST',
-        headers: { origin: 'http://localhost' },
-        json: true,
-      });
-
-      const expected = { batchList: expect.any(Array) };
-
-      expect(res).toEqual(expect.objectContaining(expected));
-    });
-  });
-});
