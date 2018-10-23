@@ -12,6 +12,9 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
+  root: {
+    flexWrap: 'nowrap',
+  },
   success: {
     backgroundColor: green[600],
   },
@@ -56,7 +59,7 @@ const NotificationBlockComponent = ({
 
   return (
     <SnackbarContent
-      className={classNames(classes[variant], className)}
+      className={classNames(classes[variant], classes.root, className)}
       aria-describedby="client-snackbar"
       message={(
         <div id="client-snackbar" className={classes.message}>
@@ -69,7 +72,6 @@ const NotificationBlockComponent = ({
           key="close"
           aria-label="Close"
           color="inherit"
-          className={classes.close}
           onClick={onClose}
         >
           <CloseIcon className={classes.icon} />
