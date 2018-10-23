@@ -1,12 +1,11 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 
-import { BatchViewContainer } from './Batch/BatchViewContainer';
+import { AppLayout } from './Layout';
 
 function AppComponent() {
   return (
     <React.Fragment>
-      <Route path="/batch" exact component={BatchViewContainer} />
+      <AppLayout />
     </React.Fragment>
   );
 }
