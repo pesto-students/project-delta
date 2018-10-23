@@ -3,7 +3,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import BoxComponent from '../../../../shared-components/BoxWithImgAndText';
-import { HTTP as httpService } from '../../services/http';
+import { HTTP as httpService } from '../../../../shared-utils/services/http';
 
 import './blink.css';
 

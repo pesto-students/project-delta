@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import isEmail from 'validator/lib/isEmail';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
-import { HTTP } from '../../services/http';
+import { HTTP } from '../../../../shared-utils/services/http';
 import { LoginFooter } from './Footer';
 import { LoginHeader } from './Header';
 import { LoginForm } from './LoginForm';
