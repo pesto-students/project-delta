@@ -9,6 +9,7 @@ import { PORT, DB_URL, ALLOWED_ORIGINS_FOR_CORS } from '../config';
 import routes from './routes';
 import profileRoutes from './routes/profileRoutes';
 import { batchRoutes } from './routes/batchRoutes';
+import { batchTopics } from './routes/batchTopics';
 
 const { internalServerError, noPort, noDBUrl } = require('../constants/ERR_MSGS');
 
@@ -25,7 +26,7 @@ app.use(cors({
 app.use('/', routes);
 app.use('/api/profile', profileRoutes);
 app.use('/instructor/batch', batchRoutes);
-
+app.use('/batchTopics', batchTopics);
 // a generic database/server error handler
 // handler *must* have 4 args, so disabling the relevant eslint rule
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
@@ -34,6 +35,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   }
   console.error(err); // eslint-disable-line no-console
 });
+
 
 // We only want to start the server from here if this script is run directly
 // In other cases, such as integration tests, we want to start the server elsewhere
