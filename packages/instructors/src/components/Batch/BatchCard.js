@@ -60,7 +60,7 @@ const BatchCardComponent = ({
           <IconListItem
             className={classes.noPaddingBottom}
             icon={<AssignmentOutlinedIcon />}
-            primary={batchInfo.NumberOfDays}
+            primary={batchInfo.numberOfDays}
             secondary="Number of Days"
           />
           <IconListItem
