@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import request from 'request-promise-native';
+import { Cookie } from 'request-cookies';
 
 import app from '../src';
 import { PORT, DB_URL } from '../config';
@@ -204,6 +205,7 @@ describe('/verifyToken', () => {
 
 describe('/api/profile/createUser', () => {
   const url = `${serverUrl}/api/profile/createUser`;
+  const verifyTokenUrl = `${serverUrl}/verifyToken`;
   const testUser = {
     firstName: 'Vipul',
     lastName: 'Rawat',
@@ -278,30 +280,62 @@ describe('/api/profile/createUser', () => {
     });
   });
 
-  it('should send a 201 response when a student is created', (done) => {
-    request({
-      url,
-      method: 'POST',
-      body: testUser,
-      json: true,
-      resolveWithFullResponse: true,
-    }).then((res) => {
-      expect(res.statusCode).toBe(201);
-      expect(res.body).toMatchObject({ user_created: 'Success', user_email: testUser.email });
-      done();
+  it('should return 201 on creation of new user', (done) => {
+    tokenService.generate({
+      email: 'vipulrawat007@gmail.com',
+      tokenType: 'EMAIL_VERIFICATION',
+    }).then((token) => {
+      request({
+        url: verifyTokenUrl,
+        method: 'POST',
+        body: { token },
+        json: true,
+        resolveWithFullResponse: true,
+      }).then((res) => {
+        const rawcookies = res.headers['set-cookie'];
+        const rawTokenCookie = rawcookies.find(cookie => cookie.startsWith('token'));
+        const cookieWithHeaders = new Cookie(rawTokenCookie);
+        const loginToken = cookieWithHeaders.value;
+        request({
+          url,
+          method: 'POST',
+          body: { ...testUser, token: loginToken },
+          json: true,
+          resolveWithFullResponse: true,
+        }).then((result) => {
+          expect(result.statusCode).toBe(201);
+          done();
+        });
+      });
     });
   });
-
   it('should send a 500 response when a duplicate copy is present', (done) => {
-    request({
-      url,
-      method: 'POST',
-      body: testUser,
-      json: true,
-      resolveWithFullResponse: true,
-    }).catch((e) => {
-      expect(e.statusCode).toBe(500);
-      done();
+    tokenService.generate({
+      email: 'vipulrawat007@gmail.com',
+      tokenType: 'EMAIL_VERIFICATION',
+    }).then((token) => {
+      request({
+        url: verifyTokenUrl,
+        method: 'POST',
+        body: { token },
+        json: true,
+        resolveWithFullResponse: true,
+      }).then((res) => {
+        const rawcookies = res.headers['set-cookie'];
+        const rawTokenCookie = rawcookies.find(cookie => cookie.startsWith('token'));
+        const cookieWithHeaders = new Cookie(rawTokenCookie);
+        const loginToken = cookieWithHeaders.value;
+        request({
+          url,
+          method: 'POST',
+          body: { ...testUser, token: loginToken },
+          json: true,
+          resolveWithFullResponse: true,
+        }).catch((e) => {
+          expect(e.statusCode).toBe(500);
+          done();
+        });
+      });
     });
   });
 });
