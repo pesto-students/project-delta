@@ -26,6 +26,20 @@ const extractResponseBody = (res) => {
 };
 
 export const HTTP = {
+  GET: (urlPath, headers = {}, shouldExtractResponseBody = true) => {
+    const finalHeaders = addDefaultReqHeaders(headers);
+
+    return fetch(`${API_URL}${urlPath}`, {
+      headers: finalHeaders,
+      credentials: 'include',
+    }).then((response) => {
+      if (shouldExtractResponseBody) {
+        return extractResponseBody(response);
+      }
+
+      return response;
+    });
+  },
   POST: (urlPath, body, headers = {}, shouldExtractResponseBody = true) => {
     const finalHeaders = addDefaultReqHeaders(headers);
 
