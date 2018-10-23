@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import { ErrorSnackBar } from '../../../../shared-components/ErrorSnackBar';
 import { MSGS } from '../../constants/MSGS';
-import { HTTP } from '../../services/http';
+import { getBatchList } from '../../services/batch';
 import { BatchCard } from './BatchCard';
 
 class BatchViewContainer extends Component {
@@ -13,7 +13,7 @@ class BatchViewContainer extends Component {
   };
 
   componentDidMount() {
-    HTTP.POST('/instructor/batch/list', {})
+    getBatchList()
       .then(this.updateBatchList)
       .catch(this.handleError);
   }
