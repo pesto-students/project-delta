@@ -3,6 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LayersIcon from '@material-ui/icons/Layers';
+import ClassIcon from '@material-ui/icons/Class';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -28,6 +29,12 @@ const MenuListComponent = ({ classes }) => (
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Batch" />
+    </ListItem>
+    <ListItem button component={NavLink} to="/topics" activeClassName={`${classes.active} white-text`}>
+      <ListItemIcon>
+        <ClassIcon />
+      </ListItemIcon>
+      <ListItemText primary="Topics" />
     </ListItem>
   </React.Fragment>
 );
