@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import request from 'request-promise-native';
 import addDays from 'date-fns/add_days';
 import app from '../src';
-import { PORT, DB_URL } from '../config';
+import { DB_URL } from '../config';
 import { Batch } from '../src/db';
 
 let savedBatches;
@@ -34,12 +34,13 @@ const dummyBatches = [
 ];
 
 let server;
-const serverUrl = `http://localhost:${PORT}`;
+let serverUrl;
 
 beforeAll((done) => {
-  jest.setTimeout(10000);
   mongoose.connect(DB_URL, { useNewUrlParser: true }, () => {
-    server = app.listen(PORT, () => {
+    server = app.listen(() => {
+      serverUrl = `http://localhost:${server.address().port}`;
+
       Batch.find({})
         .then((batch) => {
           savedBatches = batch;
@@ -60,7 +61,10 @@ afterAll((done) => {
 });
 
 describe('GET: /instructor/batch/list', () => {
-  const url = `${serverUrl}/instructor/batch/list`;
+  let url;
+  beforeAll(() => {
+    url = `${serverUrl}/instructor/batch/list`;
+  });
 
   it('should send batchList as an array', async () => {
     const res = await request({
@@ -88,7 +92,7 @@ describe('GET: /instructor/batch/list', () => {
 });
 
 describe('POST: /instructor/batch/create', () => {
-  const url = `${serverUrl}/instructor/batch/create`;
+  let url;
   const testBatch = {
     city: 'New York',
     batchId: 'NY012',
@@ -97,6 +101,10 @@ describe('POST: /instructor/batch/create', () => {
     startDate: new Date(),
     endDate: addDays(new Date(), 28),
   };
+
+  beforeAll(() => {
+    url = `${serverUrl}/instructor/batch/create`;
+  });
 
   it('should add new  batch in the database', async () => {
     const res = await request({

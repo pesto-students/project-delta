@@ -3,7 +3,7 @@ import request from 'request-promise-native';
 import { Cookie } from 'request-cookies';
 
 import app from '../src';
-import { PORT, DB_URL } from '../config';
+import { DB_URL } from '../config';
 import tokenService from '../src/services/token';
 import { User } from '../src/db';
 
@@ -33,12 +33,13 @@ const dummyUsers = [
 ];
 
 let server;
-const serverUrl = `http://localhost:${PORT}`;
+let serverUrl;
 
 beforeAll((done) => {
-  jest.setTimeout(10000);
   mongoose.connect(DB_URL, { useNewUrlParser: true }, () => {
-    server = app.listen(PORT, () => {
+    server = app.listen(() => {
+      serverUrl = `http://localhost:${server.address().port}`;
+
       // save current contents of users collection, and insert some dummy users
       User.find({})
         .then((users) => {
@@ -63,7 +64,11 @@ afterAll((done) => {
 });
 
 describe('/generateToken', () => {
-  const url = `${serverUrl}/generateToken`;
+  let url;
+
+  beforeAll(() => {
+    url = `${serverUrl}/generateToken`;
+  });
 
   it('should send a 400 response when request contains a falsy origin header', (done) => {
     request({
@@ -118,7 +123,11 @@ describe('/generateToken', () => {
 });
 
 describe('/verifyToken', () => {
-  const url = `${serverUrl}/verifyToken`;
+  let url;
+
+  beforeAll(() => {
+    url = `${serverUrl}/verifyToken`;
+  });
 
   it('should send a 400 response when request contains no token', (done) => {
     request({
@@ -204,14 +213,20 @@ describe('/verifyToken', () => {
 });
 
 describe('/api/profile/createUser', () => {
-  const url = `${serverUrl}/api/profile/createUser`;
-  const verifyTokenUrl = `${serverUrl}/verifyToken`;
+  let url;
+  let verifyTokenUrl;
   const testUser = {
     firstName: 'Vipul',
     lastName: 'Rawat',
     email: 'vipultests@gmail.com',
     role: 'instructor',
   };
+
+  beforeAll(() => {
+    url = `${serverUrl}/api/profile/createUser`;
+    verifyTokenUrl = `${serverUrl}/verifyToken`;
+  });
+
   it('should send a 400 response when request contains no body', (done) => {
     request({
       url,
