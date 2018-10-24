@@ -5,6 +5,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 import { BatchViewContainer } from '../Batch/BatchViewContainer';
+import { NewBatchContainer } from '../Batch/NewBatchContainer';
 import { AppHeader } from './Header';
 import { AppSideMenu } from './SideMenu';
 
@@ -45,6 +46,7 @@ class AppLayoutComponent extends React.Component {
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Route path="/batch" exact component={BatchViewContainer} />
+            <Route path="/batch/new" exact component={NewBatchContainer} />
           </main>
         </div>
       </React.Fragment>

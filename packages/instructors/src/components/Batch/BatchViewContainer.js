@@ -1,10 +1,13 @@
 import Grid from '@material-ui/core/Grid';
+import AddIcon from '@material-ui/icons/Add';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { ErrorSnackBar } from '../../../../shared-components/ErrorSnackBar';
 import { MSGS } from '../../constants/MSGS';
 import { getBatchList } from '../../services/batch';
 import { BatchCard } from './BatchCard';
+import { FixedIconButton } from '../../../../shared-components/FixedIconButton';
 
 class BatchViewContainer extends Component {
   state = {
@@ -48,6 +51,7 @@ class BatchViewContainer extends Component {
             </Grid>
           ))}
         </Grid>
+        <FixedIconButton component={Link} to="/batch/new"><AddIcon /></FixedIconButton>
       </React.Fragment>
     );
   }
