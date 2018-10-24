@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { Types } from 'mongoose';
 import { asyncHandler } from '../services/asyncHandler';
 import { getBatchTopics } from '../db/collections/batchTopics';
-import isAuthenticated from '../helper/auth/isAuthenticated';
+import { isAuthenticated } from '../helper/auth/isAuthenticated';
 
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 
