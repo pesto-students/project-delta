@@ -12,8 +12,9 @@ batchRoutes.get('/list', asyncHandler(async (req, res) => {
     const currentDate = new Date();
     const activeBatches = batchList.filter(batch => isAfter(batch.endDate, currentDate));
     res.json({ activeBatches });
+  } else {
+    res.json({ batchList });
   }
-  res.json({ batchList });
 }));
 
 batchRoutes.post('/create', asyncHandler(async (req, res, next) => {
