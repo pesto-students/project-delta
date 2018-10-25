@@ -1,3 +1,4 @@
+// Mocking functions
 // import { HTTP } from '../../../shared-utils/services/http';
 
 export const getTopicList = () => {
@@ -31,3 +32,17 @@ export const getTopicList = () => {
 
   return dummyTopics;
 };
+
+export const createNewTopic = (newTopic) => {
+  // return HTTP.GET('/instructor/batch/list');
+  const topic = {
+    _id: 'jdhfyurj1234jhjhj40',
+    ...newTopic,
+  };
+
+  return topic;
+};
+
+export const updateTopic = topic => topic;
+
+export const deleteTopic = topicId => topicId;
