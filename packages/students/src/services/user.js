@@ -17,5 +17,5 @@ export function getUserProfile(id = 'me') { // eslint-disable-line no-unused-var
 
 export function updateUserProfile(newData, id = 'me') { // eslint-disable-line no-unused-vars
   // return httpService.POST(`/users/${id}`, newData);
-  return Promise.resolve(newData);
+  return Promise.resolve({ ...newData, _id: '111122223333111122223333' });
 }

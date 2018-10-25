@@ -62,6 +62,8 @@ export class StudentProfileEditComponent extends React.Component {
   }
 
   render() {
+    const isNewUser = this.state._id === undefined;
+
     return (
       <Grid container justify="center">
         <Grid item xs={12} md={8}>
@@ -144,7 +146,7 @@ export class StudentProfileEditComponent extends React.Component {
               </Grid>
 
               <button type="submit" onClick={this.handleSubmit}>Save</button>
-              <button type="button" onClick={this.props.handleCancelBtnClick}>Cancel</button>
+              <button type="button" disabled={isNewUser} onClick={this.props.handleCancelBtnClick}>Cancel</button>
             </Grid>
           </form>
         </Grid>
