@@ -1,0 +1,2 @@
+export const REQUEST_TOPICS = 'REQUEST_TOPICS';
+export const RECEIVE_TOPICS = 'RECEIVE_TOPICS';
