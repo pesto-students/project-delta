@@ -1,5 +1,7 @@
 import sharedConfig from '../../../shared-utils/config';
 
+const { API_URL, DATE_FORMAT } = sharedConfig;
+
 const FIREBASE = {
   apiKey: 'AIzaSyAKkYpQxqGCEfsF_XRsmS1IgOVAo5_nOKc',
   authDomain: 'project-delta-220322.firebaseapp.com',
@@ -9,6 +11,12 @@ const FIREBASE = {
   messagingSenderId: '43481274221',
 };
 
-const { API_URL, DATE_FORMAT } = sharedConfig;
 
-export { API_URL, DATE_FORMAT, FIREBASE };
+const DEFAULT_PROFILE_PIC_URL = '/images/default-profile-pic.jpg';
+
+export {
+  API_URL,
+  DATE_FORMAT,
+  DEFAULT_PROFILE_PIC_URL,
+  FIREBASE,
+};
