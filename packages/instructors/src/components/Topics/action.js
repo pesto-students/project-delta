@@ -5,8 +5,9 @@ import {
   REQUEST_TOPICS_UPDATE,
   REQUEST_TOPIC_EDIT,
   RECEIVE_TOPIC_EDIT,
+  RECEIVE_TOPIC_DELETE,
 } from '../../constants/Topics';
-import { getTopicList, createNewTopic, updateTopic } from '../../services/topics';
+import { getTopicList, createNewTopic, updateTopic, deleteTopic } from '../../services/topics';
 
 const requestTopics = () => ({
   type: REQUEST_TOPICS,
@@ -48,10 +49,21 @@ const receiveTopicEdit = topicInfo => ({
   topicInfo,
 });
 
+const receiveTopicDelete = topicId => ({
+  type: RECEIVE_TOPIC_DELETE,
+  topicId,
+});
+
 const updateTopicList = topicInfo => async (dispatch) => {
   dispatch(requestTopicsUpdate());
   await updateTopic(topicInfo);
   dispatch(receiveTopicEdit(topicInfo));
 };
 
-export { fetchTopics, addNewTopic, requestTopicEdit, updateTopicList };
+const deleteTopicFromList = topicId => async (dispatch) => {
+  dispatch(requestTopicsUpdate());
+  await deleteTopic(topicId);
+  dispatch(receiveTopicDelete(topicId));
+};
+
+export { fetchTopics, addNewTopic, requestTopicEdit, updateTopicList, deleteTopicFromList };

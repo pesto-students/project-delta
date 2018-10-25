@@ -6,6 +6,7 @@ import {
   ADD_TOPIC,
   REQUEST_TOPIC_EDIT,
   RECEIVE_TOPIC_EDIT,
+  RECEIVE_TOPIC_DELETE,
 } from '../../constants/Topics';
 
 const initialState = {
@@ -76,6 +77,13 @@ export const topics = (state = initialState, action) => {
         topicList: updatedList,
       };
     }
+
+    case RECEIVE_TOPIC_DELETE:
+      return {
+        ...state,
+        isUpdating: false,
+        topicList: state.topicList.filter(topic => topic._id !== action.topicId),
+      };
 
     default:
       return state;
