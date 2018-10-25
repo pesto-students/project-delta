@@ -3,23 +3,14 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
-import { addNewTopic } from './action';
 import { TopicForm } from './TopicForm';
 
-class TopicCreate extends Component {
+class TopicModify extends Component {
   state = {
     errorStatus: '',
     message: '',
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.isUpdating && !this.props.isUpdating && this.clearForm !== undefined) {
-      this.clearForm();
-    }
   }
 
   updateError = (errorStatus, message) => {
@@ -29,9 +20,12 @@ class TopicCreate extends Component {
     });
   }
 
-  handleSubmit = (data, clearForm) => {
-    this.clearForm = clearForm;
-    this.props.addNewTopic(data);
+  handleSubmit = (data) => {
+    if (this.props.isEditAvailable) {
+      this.props.updateTopicList(data);
+    } else {
+      this.props.addNewTopic(data);
+    }
   }
 
   removeNotification = () => {
@@ -40,7 +34,8 @@ class TopicCreate extends Component {
 
   render() {
     const { errorStatus, message } = this.state;
-    const { isUpdating } = this.props;
+    const { isUpdating, isEditAvailable, editableTopic } = this.props;
+
     return (
       <Card>
         <CardHeader title="Add new topic" />
@@ -54,8 +49,11 @@ class TopicCreate extends Component {
             />
           }
           <TopicForm
+            key={editableTopic._id}
             isLoading={isUpdating}
             handleSubmit={this.handleSubmit}
+            isEditAvailable={isEditAvailable}
+            editableTopic={editableTopic}
           />
         </CardContent>
       </Card>
@@ -63,17 +61,12 @@ class TopicCreate extends Component {
   }
 }
 
-TopicCreate.propTypes = {
+TopicModify.propTypes = {
   isUpdating: PropTypes.bool.isRequired,
+  isEditAvailable: PropTypes.bool.isRequired,
+  editableTopic: PropTypes.shape().isRequired,
   addNewTopic: PropTypes.func.isRequired,
+  updateTopicList: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  isUpdating: state.topics.isUpdating,
-});
-
-const mapDispatchToProps = dispatch => ({
-  addNewTopic: bindActionCreators(addNewTopic, dispatch),
-});
-
-export const TopicsCreateContainer = connect(mapStateToProps, mapDispatchToProps)(TopicCreate);
+export { TopicModify };

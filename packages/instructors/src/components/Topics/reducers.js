@@ -4,12 +4,16 @@ import {
   RECEIVE_TOPICS_UPDATE,
   REQUEST_TOPICS_UPDATE,
   ADD_TOPIC,
+  REQUEST_TOPIC_EDIT,
+  RECEIVE_TOPIC_EDIT,
 } from '../../constants/Topics';
 
 const initialState = {
   isFetched: false,
   isUpdating: false,
   topicList: [],
+  isEditAvailable: false,
+  editableTopic: {},
 };
 
 export const topics = (state = initialState, action) => {
@@ -44,8 +48,34 @@ export const topics = (state = initialState, action) => {
       return {
         ...state,
         topicList: [action.newTopic, ...state.topicList],
+        editableTopic: action.newTopic,
         isUpdating: false,
       };
+
+    case REQUEST_TOPIC_EDIT:
+      return {
+        ...state,
+        isEditAvailable: true,
+        editableTopic: state.topicList.find(topic => topic._id === action.topicId),
+      };
+
+    case RECEIVE_TOPIC_EDIT: {
+      const { topicInfo } = action;
+      const updatedList = state.topicList.map((topic) => {
+        if (topic._id === topicInfo._id) {
+          return topicInfo;
+        }
+        return topic;
+      });
+
+      return {
+        ...state,
+        isUpdating: false,
+        isEditAvailable: false,
+        editableTopic: {},
+        topicList: updatedList,
+      };
+    }
 
     default:
       return state;
