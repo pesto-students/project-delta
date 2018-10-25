@@ -22,6 +22,11 @@ const topicSchema = new Schema({
     validator: Number.isInteger,
   },
 
+  archive: { // Represent deleted documents
+    type: Boolean,
+    required: true,
+  },
+
   // id of instructor who created this topic
   userId: { // link to 'users' collection
     type: Schema.Types.ObjectId,
