@@ -145,7 +145,7 @@ export class StudentProfileEditComponent extends React.Component {
                 </select>
               </Grid>
 
-              <button type="submit" onClick={this.handleSubmit}>Save</button>
+              <button type="submit">Save</button>
               <button type="button" disabled={isNewUser} onClick={this.props.handleCancelBtnClick}>Cancel</button>
             </Grid>
           </form>
