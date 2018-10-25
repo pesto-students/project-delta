@@ -3,8 +3,10 @@ import {
   REQUEST_TOPICS,
   ADD_TOPIC,
   REQUEST_TOPICS_UPDATE,
+  REQUEST_TOPIC_EDIT,
+  RECEIVE_TOPIC_EDIT,
 } from '../../constants/Topics';
-import { getTopicList, createNewTopic } from '../../services/topics';
+import { getTopicList, createNewTopic, updateTopic } from '../../services/topics';
 
 const requestTopics = () => ({
   type: REQUEST_TOPICS,
@@ -36,4 +38,20 @@ const addNewTopic = newTopic => async (dispatch) => {
   dispatch(addTopic(topic));
 };
 
-export { fetchTopics, addNewTopic };
+const requestTopicEdit = topicId => ({
+  type: REQUEST_TOPIC_EDIT,
+  topicId,
+});
+
+const receiveTopicEdit = topicInfo => ({
+  type: RECEIVE_TOPIC_EDIT,
+  topicInfo,
+});
+
+const updateTopicList = topicInfo => async (dispatch) => {
+  dispatch(requestTopicsUpdate());
+  await updateTopic(topicInfo);
+  dispatch(receiveTopicEdit(topicInfo));
+};
+
+export { fetchTopics, addNewTopic, requestTopicEdit, updateTopicList };

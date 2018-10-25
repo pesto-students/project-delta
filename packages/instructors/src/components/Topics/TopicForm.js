@@ -5,11 +5,18 @@ import { BlockButton } from '../../../../shared-components/BlockButton';
 import { InputOutlined } from '../../../../shared-components/InputOutlined';
 
 class TopicForm extends Component {
-  state = {
-    name: '',
-    category: '',
-    day: '',
-  };
+  constructor(props) {
+    super(props);
+
+    const defaultState = {
+      name: '',
+      category: '',
+      day: '',
+    };
+
+    const { isEditAvailable, editableTopic } = this.props;
+    this.state = isEditAvailable ? { ...editableTopic } : { ...defaultState };
+  }
 
   onInputChange = (event) => {
     this.setState({
@@ -23,15 +30,7 @@ class TopicForm extends Component {
       ...this.state,
       day: Number(this.state.day),
     };
-    this.props.handleSubmit(updatedState, this.clearForm);
-  };
-
-  clearForm = () => {
-    this.setState({
-      name: '',
-      category: '',
-      day: '',
-    });
+    this.props.handleSubmit(updatedState);
   };
 
   render() {
@@ -69,6 +68,8 @@ class TopicForm extends Component {
 
 TopicForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  isEditAvailable: PropTypes.bool.isRequired,
+  editableTopic: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
 

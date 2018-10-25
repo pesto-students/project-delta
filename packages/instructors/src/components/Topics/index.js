@@ -2,7 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import React from 'react';
 
 import { TopicsList } from './TopicsList';
-import { TopicsCreateContainer } from './TopicCreate';
+import { TopicModifyContainer } from './TopicModifyContainer';
 
 class TopicsMasterContainer extends React.Component {
   render() {
@@ -12,7 +12,7 @@ class TopicsMasterContainer extends React.Component {
           <TopicsList />
         </Grid>
         <Grid item xs={12} md={4} lg={5}>
-          <TopicsCreateContainer />
+          <TopicModifyContainer />
         </Grid>
       </Grid>
     );
