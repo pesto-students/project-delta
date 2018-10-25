@@ -118,6 +118,8 @@ describe('POST: /instructor/batch/create', () => {
   });
 
   it('should not add new batch when some contraint on DB fails', async () => {
+    // This request will cause an error to be logged to console by API's generic error handler
+    // Nothing to worry about
     try {
       await request({
         url,
