@@ -13,3 +13,7 @@ body {
 .primary-text {
   color: #007bff !important;
 }
+
+.danger-text {
+  color: #e96666 !important;
+}
