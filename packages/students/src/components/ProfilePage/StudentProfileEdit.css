@@ -1,0 +1,8 @@
+label.profile-pic {
+  opacity: 0.8;
+}
+
+label.profile-pic:hover {
+  cursor: pointer;
+  opacity: 0.3;
+}
