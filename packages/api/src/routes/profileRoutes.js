@@ -59,7 +59,9 @@ profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
       res.status(500).json({ error: ERR_MSGS.internalServerError });
     });
 });
-
+/* Update request accepts whole body but should contain only the fields in User schema
+* The input fields are meant to be disabled on front end such as city, batchNumber, email
+*/
 profileRoutes.put('/user/:id', isAuthenticated, extractUser, async (req, res) => {
   const { id } = req.params;
   const { user } = req;
