@@ -8,32 +8,32 @@ const { extractUser } = require('../helper/user');
 profileRoutes.get('/user/:id', isAuthenticated, extractUser, async (req, res) => {
   const { id } = req.params;
   const { user } = req;
-  if (user) {
-    const {
-      email, firstName, lastName, profilePicUrl, batchId, role,
-    } = user;
-    if (id.toLowerCase() === 'me') {
-      const projection = {
-        city: 1,
-        batchNumber: 1,
-      };
-      const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
-      const { city, batchNumber } = batchOfUser;
-      const finalUserDetails = {
-        email,
-        firstName,
-        lastName,
-        profilePicUrl,
-        batchId,
-        role,
-        city,
-        batchNumber,
-      };
-      res.json(finalUserDetails);
-    }
-    res.status(400);
+  if (!user) {
+    res.status(400).json({ error: ERR_MSGS.profileNotExist });
   }
-  res.status(400).json({ error: ERR_MSGS.profileNotExist });
+  const {
+    email, firstName, lastName, profilePicUrl, batchId, role,
+  } = user;
+  if (id.toLowerCase() === 'me') {
+    const projection = {
+      city: 1,
+      batchNumber: 1,
+    };
+    const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
+    const { city, batchNumber } = batchOfUser;
+    const finalUserDetails = {
+      email,
+      firstName,
+      lastName,
+      profilePicUrl,
+      batchId,
+      role,
+      city,
+      batchNumber,
+    };
+    res.json(finalUserDetails);
+  }
+  res.status(400).end();
 });
 
 profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
@@ -58,6 +58,28 @@ profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
     .catch(() => {
       res.status(500).json({ error: ERR_MSGS.internalServerError });
     });
+});
+
+profileRoutes.put('/user/:id', isAuthenticated, extractUser, async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  if (!user) {
+    res.status(400).json({ error: ERR_MSGS.profileNotExist });
+  }
+  if (id.toLowerCase() === 'me') {
+    await User.findOneAndUpdate(
+      { email: user.email },
+      req.body,
+      { new: true },
+      (err, newUserDetails) => {
+        if (err) {
+          res.status(500).json({ error: ERR_MSGS.internalServerError });
+        }
+        return res.json(newUserDetails);
+      },
+    );
+  }
+  res.status(400).end();
 });
 
 module.exports = profileRoutes;

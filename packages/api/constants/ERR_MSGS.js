@@ -16,5 +16,5 @@ module.exports = {
   noPort: 'Express: Port number is not specified',
   noDBUrl: 'Database: Database url is not specified',
   missingInfo: 'Some information passed is missing',
-  profileDontExist: 'Profile does not exist',
+  profileNotExist: 'Profile does not exist',
 };
