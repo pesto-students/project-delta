@@ -85,7 +85,7 @@ export class AuthWaitingComponent extends React.Component {
         <Redirect
           to={{
             pathname: '/profile',
-            state: { editing: true, user: { email: this.state.email } },
+            state: { editing: true, loading: false, user: { email: this.state.email } },
           }}
         />
       );
