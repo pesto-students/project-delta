@@ -6,10 +6,10 @@ const winston = require('winston');
 const config = require('../../config');
 const tokenService = require('../services/token');
 const mailService = require('../services/mail');
-const models = require('../db');
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 const TOKEN_TYPES = require('../../constants/TOKEN_TYPES');
 const { isAuthenticated } = require('../helper/auth/isAuthenticated');
+const { extractUser } = require('../helper/user');
 
 routes.post('/generateToken', (req, res) => {
   if (!req.header('origin')) {
@@ -33,8 +33,9 @@ routes.post('/generateToken', (req, res) => {
   }
 });
 
-routes.post('/verifyToken', isAuthenticated, (req, res) => {
+routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
   const { email, tokenType } = req.decoded;
+
   if (tokenType === TOKEN_TYPES.emailToken) {
     // give the user a longer-lived token that can be used for future auto-login
     tokenService.generate({ email, tokenType: TOKEN_TYPES.loginToken }, config.LOGIN_TOKEN_EXPIRY)
@@ -44,12 +45,11 @@ routes.post('/verifyToken', isAuthenticated, (req, res) => {
           //   deleted by the browser at the end of the session
           maxAge: config.LOGIN_COOKIE_EXPIRY,
         });
-        return models.User.findOne({ email });
-      })
-      .then((user) => {
+
         res.json({
           authentication: 'success',
-          isNewUser: user === null,
+          isNewUser: req.user === null,
+          email,
         });
       })
       .catch((e) => {
@@ -57,10 +57,11 @@ routes.post('/verifyToken', isAuthenticated, (req, res) => {
         res.status(500).json({ error: ERR_MSGS.internalServerError });
       });
   } else if (tokenType === TOKEN_TYPES.loginToken) {
-    // user already has a login token, so just acknowledge the sign-in
+    // user already has a login token; we'll just pass it through
     res.json({
       authentication: 'success',
-      isNewUser: false,
+      isNewUser: req.user === null,
+      email,
     });
   } else {
     // We sent a token containing invalid data to the user
