@@ -10,10 +10,10 @@ module.exports = {
   noLastName: 'NO_LASTNAME_PROVIDED',
   noProfilePicture: 'NO_PROFILE_PICTURE',
   noRole: 'NO_ROLE_PROVIDED',
-  noBatchId: 'NO_BATCH_ID_OR_INSUFFCIENT_LENGTH',
+  noBatchId: 'NO_OR_BAD_BATCH_ID',
   noProfileData: 'NO_PROFILE_DATA_PROVIDED',
   internalServerError: 'Server error',
   noPort: 'Express: Port number is not specified',
   noDBUrl: 'Database: Database url is not specified',
-  missingInfo: 'Some information is missing',
+  missingInfo: 'Some information passed is missing',
 };
