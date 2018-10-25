@@ -18,16 +18,33 @@ class TopicsListComponent extends React.Component {
     this.props.fetchTopics();
   }
 
-  componentDidUpdate() {
+  getColumns = () => {
+    const columns = [{
+      name: 'Name',
+      options: {
+        filter: false,
+      },
+    }, {
+      name: 'Category',
+    }, {
+      name: 'Day',
+    }];
 
+    return columns;
   }
+
+  formatData = topic => ([
+    topic.name,
+    topic.category,
+    topic.day,
+  ]);
 
   render() {
     const { options } = this.state;
     const { topicList } = this.props.topics;
 
-    const data = topicList.map(Object.values);
-    const columns = ['_id', 'Name', 'Category', 'Day'];
+    const data = topicList.map(this.formatData);
+    const columns = this.getColumns();
     return (
       <MUIDataTable
         title="Topic's Master"

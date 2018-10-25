@@ -28,7 +28,7 @@ const MenuListComponent = ({ classes }) => (
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText primary="Batch" />
+      <ListItemText primary="Batches" />
     </ListItem>
     <ListItem button component={NavLink} to="/topics" activeClassName={`${classes.active} white-text`}>
       <ListItemIcon>
