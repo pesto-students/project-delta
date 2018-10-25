@@ -4,7 +4,7 @@ const tokenService = require('../../services/token');
 // If authenticated, the decoded token is made available to next middleware at req.decoded
 // else, a 400 response is returned, and the next middleware is not called
 function isAuthenticated(req, res, next) {
-  const token = req.headers.Authorization || req.query.token
+  const token = req.headers.authorization || req.query.token
         || req.cookies.token || req.body.token;
   if (!token) {
     res.status(400).json({ error: invalidToken });

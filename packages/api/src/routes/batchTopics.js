@@ -3,17 +3,16 @@ import { Types } from 'mongoose';
 import { asyncHandler } from '../services/asyncHandler';
 import { getBatchTopics } from '../db/collections/batchTopics';
 import { isAuthenticated } from '../helper/auth/isAuthenticated';
-
-const ERR_MSGS = require('../../constants/ERR_MSGS');
+import { missingInfo, noBatchId } from '../../constants/ERR_MSGS';
 
 const batchTopics = Router();
 
 batchTopics.get('/list', isAuthenticated, asyncHandler(async (req, res) => {
   const { batchId, day } = req.query;
   if (!batchId || !day) {
-    return res.status(400).json({ error: ERR_MSGS.missingInfo });
+    return res.status(400).json({ error: missingInfo });
   } else if (!Types.ObjectId.isValid(batchId)) {
-    return res.status(400).json({ error: ERR_MSGS.noBatchId });
+    return res.status(400).json({ error: noBatchId });
   }
 
   const batchTopicsList = await getBatchTopics(batchId, day);

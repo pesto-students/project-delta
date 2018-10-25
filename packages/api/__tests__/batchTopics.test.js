@@ -73,9 +73,12 @@ describe('GET: /batchTopics/list', () => {
   it('should send batch topics as an array', async () => {
     const res = await request({
       url,
-      qs: { batchId: '111111111111111111111111', day: 1, token: tempToken },
+      qs: { batchId: '111111111111111111111111', day: 1 },
       method: 'GET',
-      headers: { origin: 'http://localhost' },
+      headers: {
+        origin: 'http://localhost',
+        authorization: tempToken,
+      },
       json: true,
     });
     const expected = { batchTopicsList: expect.any(Array) };
