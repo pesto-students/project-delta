@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
+import { DEFAULT_PROFILE_PIC_URL as defaultProfilePicUrl } from '../../config';
 import { userProfilePropType } from './userProfilePropType';
 
 import './StudentProfileView.css';
@@ -33,7 +34,7 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
       <Grid item container className="profile" xs={12} md={8} lg={7} justify="center" spacing={40}>
         <Grid item xs={6} md={3} className="profile-pic">
           <img
-            src={userData.profilePicUrl || '/images/default-profile-pic.jpg'}
+            src={userData.profilePicUrl || defaultProfilePicUrl}
             alt={`${userData.firstName} ${userData.lastName}`}
             title="Profile Picture"
           />
