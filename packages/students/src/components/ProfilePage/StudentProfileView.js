@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import { LoginHeader } from '../Login/Header';
-import { LoginFooter } from '../Login/Footer';
+import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { userProfilePropType } from './userProfilePropType';
 
 import './StudentProfileView.css';
