@@ -70,7 +70,7 @@ profileRoutes.put('/user/:id', isAuthenticated, extractUser, async (req, res) =>
     await User.findOneAndUpdate(
       { email: user.email },
       req.body,
-      { new: true },
+      { new: true, runValidators: true },
       (err, newUserDetails) => {
         if (err) {
           res.status(500).json({ error: ERR_MSGS.internalServerError });
