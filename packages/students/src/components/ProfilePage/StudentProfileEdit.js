@@ -1,18 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 import { getActiveBatches } from '../../services/batch';
+import { DEFAULT_PROFILE_PIC_URL as defaultProfilePicUrl } from '../../config';
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { userProfilePropType } from './userProfilePropType';
 import { uploadFile } from '../../services/firebase';
+import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
+
+import './StudentProfileEdit.css';
 
 export class StudentProfileEditComponent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      _id: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      batchId: '',
+      batchCity: '',
+      batchNumber: '',
+      profilePicUrl: '',
       ...props.userData,
+      changingProfilePic: false,
       loading: true,
     };
 
@@ -43,42 +58,69 @@ export class StudentProfileEditComponent extends React.Component {
   }
 
   handleBatchCityChange(e) {
-    this.setState({ batchCity: e.target.value, batchNumber: undefined });
+    this.setState({ batchCity: e.target.value, batchNumber: '' });
   }
 
   handleProfilePicUpload(e) {
     const userId = this.state._id;
     const newProfilePic = e.target.files[0];
+    this.setState({ changingProfilePic: true });
     uploadFile(newProfilePic, userId)
-      .then(url => this.setState({ profilePicUrl: url }))
+      .then(url => this.setState({ changingProfilePic: false, profilePicUrl: url }))
       .catch(console.error); // eslint-disable-line no-console
   }
 
-  handleSubmit() {
-    const userObj = { ...this.state };
+  handleSubmit(e) {
+    e.preventDefault();
+
+    // update batchId based on current batchCity and batchNumber selection
+    const [batchId] = this.cityWiseBatches[this.state.batchCity]
+      .filter(batch => batch.batchNumber === this.state.batchNumber)
+      .map(batch => batch._id);
+    const userObj = { ...this.state, batchId };
     delete userObj.loading;
+
     this.props.handleSaveBtnClick(userObj);
   }
 
   render() {
+    const isNewUser = !this.state._id;
+
+    const inputStyles = {
+      width: '100%',
+    };
+
     return (
       <Grid container justify="center">
         <Grid item xs={12} md={8}>
           <LoginHeader />
         </Grid>
 
-        <Grid item container xs={12} md={8}>
-          <form id="form-profile-edit" onSubmit={this.handleSubmit}>
-            <Grid item xs={6} md={4} style={{ height: '200px' }}>
+        <Grid container justify="center" item xs={12} md={8}>
+          <form
+            id="form-profile-edit"
+            onSubmit={this.handleSubmit}
+            style={{ display: 'flex', width: '100%' }}
+          >
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              item
+              xs={8}
+              md={6}
+            >
               <label
                 className="profile-pic"
                 htmlFor="profilePic"
                 style={{
-                  backgroundImage: `url(${this.state.profilePicUrl})`,
+                  backgroundImage: `url(${this.state.profilePicUrl || defaultProfilePicUrl})`,
                   backgroundSize: 'cover',
-                  display: 'block',
-                  height: '100%',
-                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  minHeight: '150px',
+                  minWidth: '150px',
                 }}
               >
                 <input
@@ -89,58 +131,109 @@ export class StudentProfileEditComponent extends React.Component {
                   onChange={this.handleProfilePicUpload}
                   style={{ display: 'none' }}
                 />
+                {this.state.changingProfilePic
+                  ? <LoadingIndicator additionalStyles={{ width: '50px', height: '50px' }} />
+                  : null}
               </label>
             </Grid>
 
-            <Grid item container xs={6}>
-              <Grid item xs={12}>
-                <label htmlFor="firstName">First name:
-                  <input type="text" id="firstName" name="firstName" required value={this.state.firstName} onChange={this.handleChange} />
-                </label>
+            <Grid container justify="center" item xs={8} md={6}>
+              <Grid item xs={8}>
+                <TextField
+                  label="First name"
+                  name="firstName"
+                  value={this.state.firstName}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  style={inputStyles}
+                  required
+                />
               </Grid>
 
-              <Grid item xs={12}>
-                <label htmlFor="lastName">Last name:
-                  <input type="text" id="lastName" name="lastName" required value={this.state.lastName} onChange={this.handleChange} />
-                </label>
+              <Grid item xs={8}>
+                <TextField
+                  label="Last name"
+                  name="lastName"
+                  value={this.state.lastName}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  style={inputStyles}
+                  required
+                />
               </Grid>
 
-              <Grid item xs={12}>
-                <label htmlFor="email">Email:
-                  <input type="email" id="email" name="email" required value={this.state.email} disabled />
-                </label>
+              <Grid item xs={8}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  value={this.state.email}
+                  margin="normal"
+                  style={inputStyles}
+                  required
+                  disabled
+                />
               </Grid>
 
-              <Grid item xs={12}>
-                <span>Batch City:</span>
-                <select id="batchCity" name="batchCity" required value={this.state.batchCity} onChange={this.handleBatchCityChange}>
+              <Grid item xs={8}>
+                <TextField
+                  select
+                  label="Batch City"
+                  name="batchCity"
+                  value={this.state.batchCity}
+                  onChange={this.handleBatchCityChange}
+                  margin="normal"
+                  InputLabelProps={{ shrink: true }}
+                  SelectProps={{ native: true }}
+                  style={inputStyles}
+                  required
+                >
                   <option value="">Select city --</option>
-                  {!this.state.loading
+                  {!this.loading
                     ? Reflect.ownKeys(this.cityWiseBatches)
                       .sort()
-                      .map(city => (
-                        <option key={city} value={city}>
-                          {city}
-                        </option>
-                      ))
+                      .map(city => <option key={city} value={city}>{city}</option>)
                     : null}
-                </select>
+                </TextField>
+              </Grid>
 
-                <span>#:</span>
-                <select id="batchNumber" name="batchNumber" required value={this.state.batchNumber} onChange={this.handleChange}>
+              <Grid item xs={8}>
+                <TextField
+                  select
+                  label="Batch #"
+                  name="batchNumber"
+                  value={this.state.batchNumber}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  InputLabelProps={{ shrink: true }}
+                  SelectProps={{ native: true }}
+                  style={inputStyles}
+                  required
+                >
                   <option value="">Select # --</option>
-                  {!this.state.loading && this.state.batchCity
+                  {!this.state.loading
+                    && this.state.batchCity
+                    && Reflect.ownKeys(this.cityWiseBatches, this.state.batchCity)
                     ? this.cityWiseBatches[this.state.batchCity]
                       .map(batch => batch.batchNumber)
                       .map(num => (
                         <option key={`${this.state.batchCity}|${num}`} value={num}>{num}</option>
                       ))
                     : null}
-                </select>
+                </TextField>
               </Grid>
 
-              <button type="submit" onClick={this.handleSubmit}>Save</button>
-              <button onClick={this.props.handleCancelBtnClick}>Cancel</button>
+              <Grid container justify="space-between" item xs={8} style={{ margin: '1em 0' }}>
+                <Button variant="contained" color="primary" type="submit">Save</Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  type="button"
+                  disabled={isNewUser}
+                  onClick={this.props.handleCancelBtnClick}
+                >
+                  Cancel
+                </Button>
+              </Grid>
             </Grid>
           </form>
         </Grid>
@@ -148,7 +241,7 @@ export class StudentProfileEditComponent extends React.Component {
         <Grid item xs={12} md={8}>
           <LoginFooter />
         </Grid>
-      </Grid >
+      </Grid>
     );
   }
 }
