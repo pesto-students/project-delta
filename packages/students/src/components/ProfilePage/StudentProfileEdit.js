@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 
 import { getActiveBatches } from '../../services/batch';
+import { DEFAULT_PROFILE_PIC_URL as defaultProfilePicUrl } from '../../config';
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { userProfilePropType } from './userProfilePropType';
 import { uploadFile } from '../../services/firebase';
@@ -74,7 +75,7 @@ export class StudentProfileEditComponent extends React.Component {
                 className="profile-pic"
                 htmlFor="profilePic"
                 style={{
-                  backgroundImage: `url(${this.state.profilePicUrl})`,
+                  backgroundImage: `url(${this.state.profilePicUrl || defaultProfilePicUrl})`,
                   backgroundSize: 'cover',
                   display: 'block',
                   height: '100%',
@@ -94,19 +95,22 @@ export class StudentProfileEditComponent extends React.Component {
 
             <Grid item container xs={6}>
               <Grid item xs={12}>
-                <label htmlFor="firstName">First name:
+                <label htmlFor="firstName">
+                  First name:
                   <input type="text" id="firstName" name="firstName" required value={this.state.firstName} onChange={this.handleChange} />
                 </label>
               </Grid>
 
               <Grid item xs={12}>
-                <label htmlFor="lastName">Last name:
+                <label htmlFor="lastName">
+                  Last name:
                   <input type="text" id="lastName" name="lastName" required value={this.state.lastName} onChange={this.handleChange} />
                 </label>
               </Grid>
 
               <Grid item xs={12}>
-                <label htmlFor="email">Email:
+                <label htmlFor="email">
+                  Email:
                   <input type="email" id="email" name="email" required value={this.state.email} disabled />
                 </label>
               </Grid>
@@ -140,7 +144,7 @@ export class StudentProfileEditComponent extends React.Component {
               </Grid>
 
               <button type="submit" onClick={this.handleSubmit}>Save</button>
-              <button onClick={this.props.handleCancelBtnClick}>Cancel</button>
+              <button type="button" onClick={this.props.handleCancelBtnClick}>Cancel</button>
             </Grid>
           </form>
         </Grid>
@@ -148,7 +152,7 @@ export class StudentProfileEditComponent extends React.Component {
         <Grid item xs={12} md={8}>
           <LoginFooter />
         </Grid>
-      </Grid >
+      </Grid>
     );
   }
 }
