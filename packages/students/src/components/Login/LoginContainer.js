@@ -1,9 +1,12 @@
 import Grid from '@material-ui/core/Grid';
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
+import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 import { HTTP } from '../../../../shared-utils/services/http';
+import { getCookie } from '../../../../shared-utils/services/cookie';
 import { LoginForm, LoginFooter, LoginHeader } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
 
@@ -14,6 +17,31 @@ class LoginContainer extends Component {
     isLoggingIn: false,
     loginStatus: '',
     message: '',
+
+    loading: getCookie('token') !== null,
+    existingTokenVerificationDetails: {
+      authSuccess: false,
+      isNewUser: null,
+      email: null,
+    },
+  }
+
+  componentDidMount() {
+    const { loading } = this.state;
+    if (loading) {
+      HTTP.POST('/verifyToken', undefined, undefined, true)
+        .then(res => this.setState({
+          loading: false,
+          existingTokenVerificationDetails: {
+            ...res,
+            authSuccess: !!res.authentication,
+          },
+        }))
+        .catch((e) => {
+          this.setState({ loading: false });
+          console.error(e); // eslint-disable-line no-console
+        });
+    }
   }
 
   updateState = (loginStatus, message) => {
@@ -57,7 +85,39 @@ class LoginContainer extends Component {
   }
 
   render() {
-    const { isLoggingIn, loginStatus, message } = this.state;
+    const {
+      loading,
+      existingTokenVerificationDetails: etvDetails,
+      isLoggingIn,
+      loginStatus,
+      message,
+    } = this.state;
+
+    if (loading) {
+      return (
+        <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}>
+          <LoadingIndicator />
+        </Grid>
+      );
+    }
+
+    // if user already has a token, redirect them to profile page or dashboard
+    //   depending on if they are a new user or not
+    if (etvDetails.authSuccess) {
+      if (etvDetails.isNewUser) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/profile',
+              state: { editing: true, loading: false, user: { email: etvDetails.email } },
+            }}
+          />
+        );
+      }
+
+      return <Redirect to="/dashboard" />;
+    }
+
     return (
       <div className="login-container">
         <Grid container justify="center" style={{ height: '100%' }}>
@@ -78,20 +138,21 @@ class LoginContainer extends Component {
             </Grid>
           </Grid>
 
-          {loginStatus === '' ?
-            null :
-            <Grid item xs={10} md={8} lg={7}>
-              <Grid container justify="center">
-                <Grid item xs={12} md={8} lg={6}>
-                  <NotificationBlock
-                    variant={loginStatus}
-                    message={message}
-                    onClose={this.removeNotification}
-                  />
+          {loginStatus === ''
+            ? null
+            : (
+              <Grid item xs={10} md={8} lg={7}>
+                <Grid container justify="center">
+                  <Grid item xs={12} md={8} lg={6}>
+                    <NotificationBlock
+                      variant={loginStatus}
+                      message={message}
+                      onClose={this.removeNotification}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          }
+            )}
 
           <Grid item xs={10} md={8} lg={7}>
             <Grid container justify="center">
