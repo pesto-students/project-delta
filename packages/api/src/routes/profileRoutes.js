@@ -1,8 +1,40 @@
 const profileRoutes = require('express').Router();
-const { User } = require('../db');
+const { User, Batch } = require('../db');
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 const profileValidation = require('../services/profileValidation');
 const { isAuthenticated } = require('../helper/auth/isAuthenticated');
+const { extractUser } = require('../helper/user');
+
+profileRoutes.get('/user/:id', isAuthenticated, extractUser, async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  if (user) {
+    const {
+      email, firstName, lastName, profilePicUrl, batchId, role,
+    } = user;
+    if (id.toLowerCase() === 'me') {
+      const projection = {
+        city: 1,
+        batchNumber: 1,
+      };
+      const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
+      const { city, batchNumber } = batchOfUser;
+      const finalUserDetails = {
+        email,
+        firstName,
+        lastName,
+        profilePicUrl,
+        batchId,
+        role,
+        city,
+        batchNumber,
+      };
+      res.json(finalUserDetails);
+    }
+    res.status(400);
+  }
+  res.status(400).json({ error: ERR_MSGS.profileNotExist });
+});
 
 profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
   if (!req.body) {
