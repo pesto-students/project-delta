@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { asyncHandler } from '../services/asyncHandler';
-import { getAllMasterTopics, insertMasterTopic, updateMasterTopic, deleteMasterTopic } from '../db/collections/topicsMaster';
+import {
+  getAllMasterTopics,
+  insertMasterTopic,
+  updateMasterTopic,
+  deleteMasterTopic,
+} from '../db/collections/topicsMaster';
 
 const topicMaster = Router();
 
