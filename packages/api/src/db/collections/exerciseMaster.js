@@ -15,9 +15,9 @@ const insertNewExercise = async (excersiseDetail) => {
   return result.id;
 };
 // update on exercise will only take new exercise name and exercise ID
-const updateExerciseMaster = async (exerciseId, exerciseName) => {
+const updateExerciseMaster = async (exerciseId, newData) => {
   const updatedInfo = {
-    name: exerciseName,
+    name: newData.name,
   };
   const query = {
     _id: exerciseId,
@@ -32,7 +32,7 @@ const deleteExerciseMaster = async (exerciseId) => {
     _id: exerciseId,
   };
   const result = await ExerciseMaster.deleteOne(query);
-  return result.id;
+  return result;
 };
 
 export {
