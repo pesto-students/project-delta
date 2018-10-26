@@ -7,7 +7,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchTopics, requestTopicEdit, deleteTopicFromList } from './action';
+import { AlertDialog } from '../../../../shared-components/AlertDialog';
+import { deleteTopicFromList, fetchTopics, requestTopicEdit } from './action';
+
 
 class TopicsListComponent extends React.Component {
   state = {
@@ -15,6 +17,7 @@ class TopicsListComponent extends React.Component {
       downloadOptions: { filename: 'topicsMaster.csv' },
       selectableRows: false,
     },
+    deleteTopicId: '',
   }
 
   componentDidMount() {
@@ -26,9 +29,9 @@ class TopicsListComponent extends React.Component {
     this.props.requestEdit(id);
   }
 
-  onDelete = (event) => {
-    const { id } = event.currentTarget.dataset;
-    this.props.requestDelete(id);
+  onDelete = () => {
+    const { deleteTopicId } = this.state;
+    this.props.requestDelete(deleteTopicId);
   }
 
   getColumns = () => {
@@ -58,6 +61,15 @@ class TopicsListComponent extends React.Component {
     return columns;
   }
 
+  closeDeleteModal = () => {
+    this.setState({ deleteTopicId: '' });
+  };
+
+  openDeleteModal = (event) => {
+    const { id } = event.currentTarget.dataset;
+    this.setState({ deleteTopicId: id });
+  };
+
   addOptions = (value, tableMeta) => {
     const topicId = tableMeta.rowData[0];
     return (
@@ -65,7 +77,7 @@ class TopicsListComponent extends React.Component {
         <IconButton className="primary-text" aria-label="Edit" onClick={this.onEdit} data-id={topicId}>
           <EditIcon />
         </IconButton>
-        <IconButton className="danger-text" aria-label="Delete" onClick={this.onDelete} data-id={topicId}>
+        <IconButton className="danger-text" aria-label="Delete" onClick={this.openDeleteModal} data-id={topicId}>
           <DeleteIcon />
         </IconButton>
       </React.Fragment>
@@ -81,18 +93,32 @@ class TopicsListComponent extends React.Component {
   ]);
 
   render() {
-    const { options } = this.state;
-    const { topicList } = this.props.topics;
+    const { options, deleteTopicId } = this.state;
+    const { topicList, isUpdating } = this.props.topics;
 
     const data = topicList.map(this.formatData);
     const columns = this.getColumns();
+
     return (
-      <MUIDataTable
-        title="Topic's Master"
-        options={options}
-        data={data}
-        columns={columns}
-      />
+      <React.Fragment>
+        <AlertDialog
+          open={deleteTopicId !== ''}
+          handleClose={this.closeDeleteModal}
+          handleSuccess={this.onDelete}
+          handleLoadingComplete={this.closeDeleteModal}
+          title="Are you sure you want to delete?"
+          content="Deleting topics will not be available to future batches.It won't remove from existing or previous batches."
+          successText="Delete"
+          disableBackdrop
+          isLoading={isUpdating}
+        />
+        <MUIDataTable
+          title="Topic's Master"
+          options={options}
+          data={data}
+          columns={columns}
+        />
+      </React.Fragment>
     );
   }
 }
