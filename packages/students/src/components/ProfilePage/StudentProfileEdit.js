@@ -56,8 +56,13 @@ export class StudentProfileEditComponent extends React.Component {
   }
 
   handleSubmit() {
-    const userObj = { ...this.state };
+    // update batchId based on current batchCity and batchNumber selection
+    const [batchId] = this.cityWiseBatches[this.state.batchCity]
+      .filter(batch => batch.batchNumber === this.state.batchNumber)
+      .map(batch => batch._id);
+    const userObj = { ...this.state, batchId };
     delete userObj.loading;
+
     this.props.handleSaveBtnClick(userObj);
   }
 
