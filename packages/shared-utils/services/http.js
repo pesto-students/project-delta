@@ -40,11 +40,46 @@ export const HTTP = {
       return response;
     });
   },
+
   POST: (urlPath, body, headers = {}, shouldExtractResponseBody = true) => {
     const finalHeaders = addDefaultReqHeaders(headers);
 
     return fetch(`${API_URL}${urlPath}`, {
       method: 'POST',
+      headers: finalHeaders,
+      body: processReqBody(body, finalHeaders),
+      credentials: 'include',
+    }).then((response) => {
+      if (shouldExtractResponseBody) {
+        return extractResponseBody(response);
+      }
+
+      return response;
+    });
+  },
+
+  PUT: (urlPath, body, headers = {}, shouldExtractResponseBody = true) => {
+    const finalHeaders = addDefaultReqHeaders(headers);
+
+    return fetch(`${API_URL}${urlPath}`, {
+      method: 'PUT',
+      headers: finalHeaders,
+      body: processReqBody(body, finalHeaders),
+      credentials: 'include',
+    }).then((response) => {
+      if (shouldExtractResponseBody) {
+        return extractResponseBody(response);
+      }
+
+      return response;
+    });
+  },
+
+  DELETE: (urlPath, body, headers = {}, shouldExtractResponseBody = true) => {
+    const finalHeaders = addDefaultReqHeaders(headers);
+
+    return fetch(`${API_URL}${urlPath}`, {
+      method: 'DELETE',
       headers: finalHeaders,
       body: processReqBody(body, finalHeaders),
       credentials: 'include',
