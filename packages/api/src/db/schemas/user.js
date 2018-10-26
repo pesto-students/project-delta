@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { isEmail } from 'validator';
+import { isPast, differenceInSeconds } from 'date-fns';
 
 const userSchema = new Schema({
   firstName: {
@@ -29,6 +30,20 @@ const userSchema = new Schema({
     },
   },
 
+  sex: {
+    type: String,
+    enum: ['m', 'f'],
+  },
+
+  dob: {
+    type: Date,
+    validate: {
+      isAsync: false,
+      validator: isPast,
+      message: 'DOB must be in the past',
+    },
+  },
+
   profilePicUrl: {
     type: String,
   },
@@ -46,6 +61,15 @@ const userSchema = new Schema({
       return this.role === 'student';
     },
   },
+});
+
+userSchema.virtual('age').get(function calculateAge() {
+  if (this.dob === undefined) {
+    return undefined;
+  }
+
+  const secondsInYear = 365 * 24 * 60 * 60;
+  return (differenceInSeconds(new Date(), this.dob) / secondsInYear);
 });
 
 module.exports = userSchema;
