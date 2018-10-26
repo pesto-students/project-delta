@@ -5,13 +5,14 @@ import { Route, Switch } from 'react-router-dom';
 import { LoginContainer } from './Login/LoginContainer';
 import { AuthWaitingComponent } from './AuthWaitingPage';
 import { AppLayout } from './Layout';
+import { PrivateRoute } from './PrivateRoute';
 
 function AppComponent() {
   return (
     <Switch>
       <Route path="/login" exact component={LoginContainer} />
       <Route path="/auth/:token" exact component={AuthWaitingComponent} />
-      <Route path="/" component={AppLayout} />
+      <PrivateRoute path="/" component={AppLayout} />
     </Switch>
   );
 }
