@@ -36,6 +36,7 @@ class TopicsListComponent extends React.Component {
       name: '_id',
       options: {
         display: 'excluded',
+        filter: false,
       },
     }, {
       name: 'Name',
@@ -49,6 +50,7 @@ class TopicsListComponent extends React.Component {
     }, {
       name: 'Options',
       options: {
+        filter: false,
         customBodyRender: this.addOptions,
       },
     }];
