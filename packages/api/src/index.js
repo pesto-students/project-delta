@@ -10,6 +10,7 @@ import routes from './routes';
 import profileRoutes from './routes/profileRoutes';
 import { batchRoutes } from './routes/batchRoutes';
 import { batchTopics } from './routes/batchTopics';
+import { topicMaster } from './routes/topicMaster';
 
 const { internalServerError, noPort, noDBUrl } = require('../constants/ERR_MSGS');
 
@@ -27,6 +28,7 @@ app.use('/', routes);
 app.use('/api/profile', profileRoutes);
 app.use('/instructor/batch', batchRoutes);
 app.use('/batchTopics', batchTopics);
+app.use('/instructor/topicMaster', topicMaster);
 // a generic database/server error handler
 // handler *must* have 4 args, so disabling the relevant eslint rule
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars

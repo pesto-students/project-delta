@@ -28,14 +28,14 @@ const insertMasterTopic = async (topicInfo) => {
   };
 };
 
-const updateMasterTopic = async (topicInfo) => {
+const updateMasterTopic = async (topicId, topicInfo) => {
   const updatedInfo = {
     name: topicInfo.name,
     category: topicInfo.category,
     day: topicInfo.day,
   };
   const query = {
-    _id: topicInfo._id,
+    _id: topicId,
   };
   const opts = { runValidators: true };
   const result = await TopicMaster.update(query, { $set: updatedInfo }, opts);
