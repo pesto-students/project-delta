@@ -96,11 +96,11 @@ describe('Mongo Queries: Topics Master', () => {
 
     it('should update document to new value', async () => {
       const updatedValue = {
-        ...newDocument,
+        name: 'Conflict_new',
         category: 'Git',
         day: 3,
       };
-      await updateMasterTopic(updatedValue);
+      await updateMasterTopic(newDocument._id, updatedValue);
 
       const topic = await TopicMaster.findOne(updatedValue);
       expect(topic).toBeDefined();
