@@ -9,6 +9,9 @@ import { DEFAULT_PROFILE_PIC_URL as defaultProfilePicUrl } from '../../config';
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { userProfilePropType } from './userProfilePropType';
 import { uploadFile } from '../../services/firebase';
+import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
+
+import './StudentProfileEdit.css';
 
 export class StudentProfileEditComponent extends React.Component {
   constructor(props) {
@@ -24,6 +27,7 @@ export class StudentProfileEditComponent extends React.Component {
       batchNumber: '',
       profilePicUrl: '',
       ...props.userData,
+      changingProfilePic: false,
       loading: true,
     };
 
@@ -60,8 +64,9 @@ export class StudentProfileEditComponent extends React.Component {
   handleProfilePicUpload(e) {
     const userId = this.state._id;
     const newProfilePic = e.target.files[0];
+    this.setState({ changingProfilePic: true });
     uploadFile(newProfilePic, userId)
-      .then(url => this.setState({ profilePicUrl: url }))
+      .then(url => this.setState({ changingProfilePic: false, profilePicUrl: url }))
       .catch(console.error); // eslint-disable-line no-console
   }
 
@@ -111,7 +116,9 @@ export class StudentProfileEditComponent extends React.Component {
                 style={{
                   backgroundImage: `url(${this.state.profilePicUrl || defaultProfilePicUrl})`,
                   backgroundSize: 'cover',
-                  display: 'block',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   minHeight: '150px',
                   minWidth: '150px',
                 }}
@@ -124,6 +131,9 @@ export class StudentProfileEditComponent extends React.Component {
                   onChange={this.handleProfilePicUpload}
                   style={{ display: 'none' }}
                 />
+                {this.state.changingProfilePic
+                  ? <LoadingIndicator additionalStyles={{ width: '50px', height: '50px' }} />
+                  : null}
               </label>
             </Grid>
 
