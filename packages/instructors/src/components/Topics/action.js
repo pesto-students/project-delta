@@ -29,14 +29,14 @@ const addTopic = newTopic => ({
 
 const fetchTopics = () => async (dispatch) => {
   dispatch(requestTopics());
-  const topicList = await getTopicList();
+  const { topicList } = await getTopicList();
   dispatch(receiveTopics(topicList));
 };
 
-const addNewTopic = newTopic => async (dispatch) => {
+const addNewTopic = topic => async (dispatch) => {
   dispatch(requestTopicsUpdate());
-  const topic = await createNewTopic(newTopic);
-  dispatch(addTopic(topic));
+  const { newTopic } = await createNewTopic(topic);
+  dispatch(addTopic(newTopic));
 };
 
 const requestTopicEdit = topicId => ({

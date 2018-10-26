@@ -1,48 +1,9 @@
-// Mocking functions
-// import { HTTP } from '../../../shared-utils/services/http';
+import { HTTP } from '../../../shared-utils/services/http';
 
-export const getTopicList = () => {
-  // return HTTP.GET('/instructor/batch/list');
-  const dummyTopics = [
-    {
-      _id: 'jdhfyurj1234jhjhj34',
-      name: 'Rebase',
-      category: 'git',
-      day: 1,
-    },
-    {
-      _id: 'jdhfyurj1234jhjhj35',
-      name: 'Merge',
-      category: 'css',
-      day: 2,
-    },
-    {
-      _id: 'jdhfyurj1234jhjhj36',
-      name: 'Conflict',
-      category: 'git',
-      day: 1,
-    },
-    {
-      _id: 'jdhfyurj1234jhjhj37',
-      name: 'ExtraTerrestrial',
-      category: 'javascript',
-      day: 4,
-    },
-  ];
+export const getTopicList = () => HTTP.GET('/instructor/topicMaster');
 
-  return dummyTopics;
-};
+export const createNewTopic = newTopic => HTTP.POST('/instructor/topicMaster/create', { data: newTopic });
 
-export const createNewTopic = (newTopic) => {
-  // return HTTP.GET('/instructor/batch/list');
-  const topic = {
-    _id: 'jdhfyurj1234jhjhj40',
-    ...newTopic,
-  };
+export const updateTopic = ({ _id, ...data }) => HTTP.PUT(`/instructor/topicMaster/${_id}`, { data });
 
-  return topic;
-};
-
-export const updateTopic = topic => topic;
-
-export const deleteTopic = topicId => topicId;
+export const deleteTopic = topicId => HTTP.DELETE(`/instructor/topicMaster/${topicId}`);
