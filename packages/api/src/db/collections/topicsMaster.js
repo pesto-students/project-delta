@@ -37,7 +37,8 @@ const updateMasterTopic = async (topicInfo) => {
   const query = {
     _id: topicInfo._id,
   };
-  const result = await TopicMaster.update(query, { $set: updatedInfo });
+  const opts = { runValidators: true };
+  const result = await TopicMaster.update(query, { $set: updatedInfo }, opts);
   return result;
 };
 
@@ -48,7 +49,8 @@ const deleteMasterTopic = async (topicId) => {
   const query = {
     _id: topicId,
   };
-  const result = await TopicMaster.update(query, { $set: updatedInfo });
+  const opts = { runValidators: true };
+  const result = await TopicMaster.update(query, { $set: updatedInfo }, opts);
   return result;
 };
 

@@ -66,7 +66,7 @@ describe('Mongo Queries: Topics Master', () => {
     it('should insert new document', async () => {
       await insertMasterTopic(newDocument);
 
-      const topic = await TopicMaster.findOne({ batchNumber: newDocument.batchNumber });
+      const topic = await TopicMaster.findOne(newDocument);
       expect(topic).toBeDefined();
     });
 
