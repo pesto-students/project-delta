@@ -4,9 +4,12 @@ import { Redirect, Route } from 'react-router-dom';
 
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator';
 
-class PrivateRouteComponent extends React.Component {
+class PublicRouteComponent extends React.Component {
   componentDidMount() {
-    this.props.validateLogin();
+    const { authUser, validateLogin } = this.props;
+    if (!authUser.isUserLogged) {
+      validateLogin();
+    }
   }
 
   render() {
@@ -23,11 +26,11 @@ class PrivateRouteComponent extends React.Component {
     }
 
     if (authUser.isUserLogged) {
-      return <Route {...rest} render={props => <Component {...props} />} />;
+      return <Redirect to="/topics" />;
     }
 
-    return <Redirect to="/login" />;
+    return <Route {...rest} render={props => <Component {...props} />} />;
   }
 }
 
-export { PrivateRouteComponent };
+export { PublicRouteComponent };
