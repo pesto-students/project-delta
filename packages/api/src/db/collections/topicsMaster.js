@@ -54,4 +54,9 @@ const deleteMasterTopic = async (topicId) => {
   return result;
 };
 
-export { getAllMasterTopics, insertMasterTopic, updateMasterTopic, deleteMasterTopic };
+export {
+  getAllMasterTopics,
+  insertMasterTopic,
+  updateMasterTopic,
+  deleteMasterTopic,
+};

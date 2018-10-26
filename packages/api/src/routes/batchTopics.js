@@ -11,7 +11,9 @@ batchTopics.get('/list', isAuthenticated, asyncHandler(async (req, res) => {
   const { batchId, day } = req.query;
   if (!batchId || !day) {
     return res.status(400).json({ error: missingInfo });
-  } else if (!Types.ObjectId.isValid(batchId)) {
+  }
+
+  if (!Types.ObjectId.isValid(batchId)) {
     return res.status(400).json({ error: noBatchId });
   }
 

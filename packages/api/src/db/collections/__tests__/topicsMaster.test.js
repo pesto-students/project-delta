@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 import { DB_URL } from '../../../../config';
 
-import { getAllMasterTopics, insertMasterTopic, updateMasterTopic, deleteMasterTopic } from '../topicsMaster';
+import {
+  getAllMasterTopics,
+  insertMasterTopic,
+  updateMasterTopic,
+  deleteMasterTopic,
+} from '../topicsMaster';
 import { TopicMaster } from '../../index';
 
 describe('Mongo Queries: Topics Master', () => {
