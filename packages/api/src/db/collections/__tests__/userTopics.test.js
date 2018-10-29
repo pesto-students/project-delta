@@ -22,20 +22,6 @@ describe('Mongo Queries: Topics Master', () => {
       batchTopicName: 'Git',
       rating: 10,
     },
-    {
-      userId: mongoose.Types.ObjectId('111111111111111111111123'),
-      userFirstName: 'Vipul',
-      batchTopicId: mongoose.Types.ObjectId('111111111111111111111156'),
-      batchTopicName: 'Git',
-      rating: 1,
-    },
-    {
-      userId: mongoose.Types.ObjectId('111111111111111111111321'),
-      userFirstName: 'Vipul',
-      batchTopicId: mongoose.Types.ObjectId('111111111111143111111112'),
-      batchTopicName: 'Git',
-      rating: 8,
-    },
   ];
 
   beforeAll(async () => {
@@ -55,23 +41,34 @@ describe('Mongo Queries: Topics Master', () => {
     });
   });
   describe('New user topic', () => {
-    const newUserTopic = {
+    const newUserTopic = [{
       userId: mongoose.Types.ObjectId('111111111111111111211321'),
       userFirstName: 'Alien',
       batchTopicId: mongoose.Types.ObjectId('111111141111143111111112'),
       batchTopicName: 'React',
       rating: 7,
-    };
+    },
+    {
+      userId: mongoose.Types.ObjectId('111111111111111111111123'),
+      userFirstName: 'Vipul',
+      batchTopicId: mongoose.Types.ObjectId('111111111111111111111156'),
+      batchTopicName: 'Git Rebase',
+      rating: 1,
+    },
+    {
+      userId: mongoose.Types.ObjectId('111111111111111111111321'),
+      userFirstName: 'Vipul',
+      batchTopicId: mongoose.Types.ObjectId('111111111111143111111112'),
+      batchTopicName: 'Git Merge',
+      rating: 8,
+    },
+    ];
 
-    afterEach(async () => {
-      await UserTopic.deleteOne(newUserTopic);
-    });
-
-    it('should insert new user topic', async () => {
-      await insertUserTopic(newUserTopic);
-
-      const topic = await UserTopic.findOne(newUserTopic);
+    it('should insert new user topics', async () => {
+      const addedExercises = await insertUserTopic(newUserTopic);
+      const topic = await UserTopic.findOne({ userId: '111111111111111111211321' });
       expect(topic).toBeDefined();
+      expect(addedExercises.length).toBe(3);
     });
 
     it('should return inserted document', async () => {
