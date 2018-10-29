@@ -7,7 +7,7 @@ import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator
 import { getUserProfile, updateUserProfile } from '../../services/user';
 import { StudentProfileViewComponent } from './StudentProfileView';
 import { StudentProfileEditComponent } from './StudentProfileEdit';
-import { userProfilePropType } from './userProfilePropType';
+import { userProfilePropType } from './shared';
 
 export class ProfilePageComponent extends React.Component {
   constructor(props) {

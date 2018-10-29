@@ -12,6 +12,8 @@ export function getUserProfile(id = 'me') { // eslint-disable-line no-unused-var
     batchId: '111111111111222222222222',
     batchCity: 'New Delhi',
     batchNumber: 2,
+    sex: 'm',
+    dob: '1991-05-02',
   });
 }
 
