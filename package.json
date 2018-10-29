@@ -5,6 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "start:dev": "mongod & wsrun start:dev",
     "test": "wsrun test"
   },
   "workspaces": [

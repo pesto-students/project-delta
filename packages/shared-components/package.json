@@ -4,6 +4,7 @@
   "description": "",
   "main": "BlockButton.js",
   "scripts": {
+    "start:dev": "echo shared-components: nothing to start",
     "test": "echo \"No test specified\"",
     "test:related": "echo \"No test specified\""
   },

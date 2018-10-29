@@ -4,6 +4,7 @@
   "description": "",
   "main": "config/index.js",
   "scripts": {
+    "start:dev": "echo shared-utils: nothing to start",
     "test": "echo \"No test specified\"",
     "test:related": "echo \"No test specified\""
   },
