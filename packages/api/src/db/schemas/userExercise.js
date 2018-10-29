@@ -6,7 +6,7 @@ const userExerciseSchema = new Schema({
     required: true,
   },
 
-  userName: {
+  userFirstName: {
     type: String,
     required: true,
     trim: true,
