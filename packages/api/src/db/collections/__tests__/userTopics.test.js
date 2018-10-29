@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { DB_URL } from '../../../../config';
 
 import {
-  insertUserTopic,
+  insertUserTopic, getUserTopics,
 } from '../userTopics';
 import { UserTopic } from '../../index';
 
@@ -16,7 +16,7 @@ describe('Mongo Queries: Topics Master', () => {
       rating: 1,
     },
     {
-      userId: mongoose.Types.ObjectId('111111111111111111111113'),
+      userId: mongoose.Types.ObjectId('111111111111111111111111'),
       userFirstName: 'Vipul',
       batchTopicId: mongoose.Types.ObjectId('111111111111111111111114'),
       batchTopicName: 'Git',
@@ -48,6 +48,12 @@ describe('Mongo Queries: Topics Master', () => {
     await mongoose.disconnect();
   });
 
+describe('get user topics', () => {
+  it('should return batch exercises with matching user id', async () => {
+    const userTopicsList = await getUserTopics('111111111111111111111111');
+    expect(userTopicsList.length).toBe(2);
+  });
+});
   describe('New user topic', () => {
     const newUserTopic = {
       userId: mongoose.Types.ObjectId('111111111111111111211321'),
