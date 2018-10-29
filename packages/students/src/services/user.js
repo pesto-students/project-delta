@@ -1,5 +1,12 @@
 // import { HTTP as httpService } from './http';
+// import { AuthError, UserNotFoundError } from '../constants/errors';
 
+// Returns a Promise that
+//   resolves to:
+//   - user data if valid token and user found in DB
+//   rejects with:
+//   - AuthError if invalid/expired token
+//   - UserNotFoundError if valid token, but user not in DB
 export function getUserProfile(id = 'me') { // eslint-disable-line no-unused-vars
   // return httpService.GET(`/users/${id}`);
   return Promise.resolve({
