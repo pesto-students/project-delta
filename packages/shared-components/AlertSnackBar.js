@@ -3,10 +3,11 @@ import React from 'react';
 
 import { NotificationBlock } from './NotificationBlock';
 
-const ErrorSnackBar = ({
+const AlertSnackBar = ({
   open,
   onClose,
   message,
+  type,
   ...props
 }) => (
   <Snackbar
@@ -21,10 +22,10 @@ const ErrorSnackBar = ({
   >
     <NotificationBlock
       onClose={onClose}
-      variant="error"
+      variant={type}
       message={message}
     />
   </Snackbar>
 );
 
-export { ErrorSnackBar };
+export { AlertSnackBar };
