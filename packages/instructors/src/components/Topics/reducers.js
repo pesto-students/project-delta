@@ -1,7 +1,7 @@
 import {
   REQUEST_TOPICS,
   RECEIVE_TOPICS,
-  RECEIVE_TOPICS_UPDATE,
+  RECEIVE_TOPICS_ERROR,
   REQUEST_TOPICS_UPDATE,
   ADD_TOPIC,
   REQUEST_TOPIC_EDIT,
@@ -38,11 +38,11 @@ export const topics = (state = initialState, action) => {
         isUpdating: true,
       };
 
-    case RECEIVE_TOPICS_UPDATE:
+    case RECEIVE_TOPICS_ERROR:
       return {
         ...state,
-        topicList: action.topicList,
         isUpdating: false,
+        isFetched: true,
       };
 
     case ADD_TOPIC:

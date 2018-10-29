@@ -15,3 +15,9 @@ export const BATCH_MSGS = {
   END_DATE_MISSING: 'End date is required.',
   END_DATE_INVALID: 'End Date is invalid. End date should be greater than start date.',
 };
+
+export const ERROR_TYPES = {
+  ERROR: 'error',
+  SUCCESS: 'success',
+  INFO: 'info',
+};
