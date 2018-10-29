@@ -44,6 +44,7 @@ routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
           // not adding a maxAge property to the cookie causes it to be
           //   deleted by the browser at the end of the session
           maxAge: config.LOGIN_COOKIE_EXPIRY,
+          domain: req.hostname,
         });
 
         res.json({
