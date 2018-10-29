@@ -5,18 +5,13 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
-import { DEFAULT_PROFILE_PIC_URLS as defaultProfilePicUrls } from '../../config';
-import { userProfilePropType } from './userProfilePropType';
+import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 
 import './StudentProfileView.css';
 
 export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
-  let defaultProfilePicUrl;
-  if (userData.sex === 'm') defaultProfilePicUrl = defaultProfilePicUrls.male;
-  else if (userData.sex === 'f') defaultProfilePicUrl = defaultProfilePicUrls.female;
-  else defaultProfilePicUrl = defaultProfilePicUrls.default;
-
-  const profilePicUrl = userData.profilePicUrl || defaultProfilePicUrl;
+  const profilePicUrl = userData.profilePicUrl
+    || getAppropriateDefaultProfilePic(userData.sex);
 
   let sex;
   if (userData.sex === 'm') sex = 'Male';

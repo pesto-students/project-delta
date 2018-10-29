@@ -13,7 +13,7 @@ export function getUserProfile(id = 'me') { // eslint-disable-line no-unused-var
     batchCity: 'New Delhi',
     batchNumber: 2,
     sex: 'm',
-    dob: '1991-5-2',
+    dob: '1991-05-02',
   });
 }
 

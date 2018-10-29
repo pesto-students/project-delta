@@ -6,9 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
 import { getActiveBatches } from '../../services/batch';
-import { DEFAULT_PROFILE_PIC_URLS as defaultProfilePicUrls } from '../../config';
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
-import { userProfilePropType } from './userProfilePropType';
+import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 import { uploadFile } from '../../services/firebase';
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 
@@ -86,13 +85,8 @@ export class StudentProfileEditComponent extends React.Component {
 
   render() {
     const isNewUser = !this.state._id;
-
-    let defaultProfilePicUrl;
-    if (this.state.sex === 'm') defaultProfilePicUrl = defaultProfilePicUrls.male;
-    else if (this.state.sex === 'f') defaultProfilePicUrl = defaultProfilePicUrls.female;
-    else defaultProfilePicUrl = defaultProfilePicUrls.default;
-
-    const profilePicUrl = this.state.profilePicUrl || defaultProfilePicUrl;
+    const profilePicUrl = this.state.profilePicUrl
+      || getAppropriateDefaultProfilePic(this.state.sex);
 
     const inputStyles = {
       width: '100%',
