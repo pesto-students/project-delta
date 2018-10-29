@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import { AuthWaitingComponent } from './AuthWaitingPage';
-import { AppLayout } from './Layout';
+import { AppLayoutContainer } from './Layout';
 import { LoginContainer } from './Login/LoginContainer';
 import { PrivateRoute, PublicRoute } from './Routes';
 
@@ -11,7 +11,7 @@ function AppComponent() {
     <Switch>
       <PublicRoute path="/login" exact component={LoginContainer} />
       <PublicRoute path="/auth/:token" exact component={AuthWaitingComponent} />
-      <PrivateRoute path="/" component={AppLayout} />
+      <PrivateRoute path="/" component={AppLayoutContainer} />
     </Switch>
   );
 }
