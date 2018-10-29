@@ -1,16 +1,22 @@
+import isEmpty from 'validator/lib/isEmpty';
+
+import { ERROR_TYPES, MSGS } from '../../constants/MSGS';
 import {
-  RECEIVE_TOPICS,
-  REQUEST_TOPICS,
   ADD_TOPIC,
-  REQUEST_TOPICS_UPDATE,
-  REQUEST_TOPIC_EDIT,
-  RECEIVE_TOPIC_EDIT,
+  DAY_INVALID,
   RECEIVE_TOPIC_DELETE,
+  RECEIVE_TOPIC_EDIT,
+  RECEIVE_TOPICS,
   RECEIVE_TOPICS_ERROR,
+  REQUEST_TOPIC_EDIT,
+  REQUEST_TOPICS,
+  REQUEST_TOPICS_UPDATE,
+  TOPIC_CATEGORY_MISSING,
+  TOPIC_NAME_MISSING,
 } from '../../constants/Topics';
-import { getTopicList, createNewTopic, updateTopic, deleteTopic } from '../../services/topics';
-import { MSGS, ERROR_TYPES } from '../../constants/MSGS';
+import { createNewTopic, deleteTopic, getTopicList, updateTopic } from '../../services/topics';
 import { showAlert } from '../Layout/action';
+
 
 const requestTopics = () => ({
   type: REQUEST_TOPICS,
@@ -34,28 +40,6 @@ const addTopic = newTopic => ({
   newTopic,
 });
 
-const fetchTopics = () => async (dispatch) => {
-  dispatch(requestTopics());
-  const { error, topicList } = await getTopicList();
-  if (error) {
-    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
-    dispatch(receiveTopicsError());
-    return;
-  }
-  dispatch(receiveTopics(topicList));
-};
-
-const addNewTopic = topic => async (dispatch) => {
-  dispatch(requestTopicsUpdate());
-  const { error, newTopic } = await createNewTopic(topic);
-  if (error) {
-    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
-    dispatch(receiveTopicsError());
-    return;
-  }
-  dispatch(addTopic(newTopic));
-};
-
 const requestTopicEdit = topicId => ({
   type: REQUEST_TOPIC_EDIT,
   topicId,
@@ -71,7 +55,61 @@ const receiveTopicDelete = topicId => ({
   topicId,
 });
 
+const validateTopic = (topicInfo) => {
+  let isInfoValid = true;
+  let message = '';
+
+  if (isEmpty(topicInfo.name)) {
+    isInfoValid = false;
+    message = TOPIC_NAME_MISSING;
+  } else if (isEmpty(topicInfo.category)) {
+    isInfoValid = false;
+    message = TOPIC_CATEGORY_MISSING;
+  } else if (topicInfo.day < 1) {
+    isInfoValid = false;
+    message = DAY_INVALID;
+  }
+
+  return { isInfoValid, message };
+};
+
+const fetchTopics = () => async (dispatch) => {
+  dispatch(requestTopics());
+  const { error, topicList } = await getTopicList();
+  if (error) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
+    dispatch(receiveTopicsError());
+    return;
+  }
+  dispatch(receiveTopics(topicList));
+};
+
+const addNewTopic = topic => async (dispatch) => {
+  const validateInfo = validateTopic(topic);
+  if (!validateInfo.isInfoValid) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, validateInfo.message));
+    dispatch(receiveTopicsError());
+    return;
+  }
+
+  dispatch(requestTopicsUpdate());
+  const { error, newTopic } = await createNewTopic(topic);
+  if (error) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
+    dispatch(receiveTopicsError());
+    return;
+  }
+  dispatch(addTopic(newTopic));
+};
+
 const updateTopicList = topicInfo => async (dispatch) => {
+  const validateInfo = validateTopic(topicInfo);
+  if (!validateInfo.isInfoValid) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, validateInfo.message));
+    dispatch(receiveTopicsError());
+    return;
+  }
+
   dispatch(requestTopicsUpdate());
   const { error } = await updateTopic(topicInfo);
   if (error) {
