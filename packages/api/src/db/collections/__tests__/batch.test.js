@@ -8,25 +8,22 @@ import { Batch } from '../../index';
 describe('Mongo Queries: Batch', () => {
   const dummyBatch = [
     {
-      batchId: 'Batch #3',
+      batchNumber: 'Batch #3',
       city: 'Chennai',
-      batchNumber: 3,
       numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     },
     {
-      batchId: 'Batch #1',
+      batchNumber: 'Batch #1',
       city: 'Delhi',
-      batchNumber: 1,
       numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     },
     {
-      batchId: 'Batch #2',
+      batchNumber: 'Batch #2',
       city: 'Mumbai',
-      batchNumber: 2,
       numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
@@ -49,9 +46,9 @@ describe('Mongo Queries: Batch', () => {
       expect(batchList.length).toBe(dummyBatch.length);
     });
 
-    it('should return documents in desc order of `batchNumber`', async () => {
+    it('should return documents in desc order of `startDate`', async () => {
       const batchList = await getAllBatches();
-      const sortedBatch = dummyBatch.sort((a, b) => b.batchNumber - a.batchNumber);
+      const sortedBatch = dummyBatch.sort((a, b) => b.startDate - a.startDate);
       const lastIndex = sortedBatch.length - 1;
 
       expect(batchList[0]).toEqual(expect.objectContaining(sortedBatch[0]));
@@ -62,9 +59,8 @@ describe('Mongo Queries: Batch', () => {
 
   describe('newBatch', () => {
     const newDocument = {
-      batchId: 'Batch #4',
+      batchNumber: 'Batch #4',
       city: 'Chennai',
-      batchNumber: 4,
       numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
