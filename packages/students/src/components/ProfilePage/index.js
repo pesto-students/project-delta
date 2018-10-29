@@ -30,10 +30,12 @@ export class ProfilePageComponent extends React.Component {
       // We got here from the dashboard, so the profile page should be pre-filled
       //   with the current user's data
       getUserProfile()
-        .then(userData => this.setState({ loading: false, user: userData }))
+        .then(data => this.setState({ loading: false, user: data }))
         .catch((e) => {
           if (e.name === 'AuthError') {
-            this.setState({ authFailure: true, loading: false });
+            this.setState({ loading: false, authFailure: true });
+          } else if (e.name === 'UserNotFoundError') {
+            this.setState({ loading: false, editing: true });
           } else {
             alert('There was an error retrieving your data from server!'); // eslint-disable-line no-alert
             console.error(e); // eslint-disable-line no-console
