@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { asyncHandler } from '../services/asyncHandler';
-import { getAllExerciseMaster, insertNewExercise, updateExerciseMaster, deleteExerciseMaster } from '../db/collections/exerciseMaster';
+import {
+  getAllExerciseMaster,
+  insertNewExercise,
+  updateExerciseMaster,
+  deleteExerciseMaster,
+} from '../db/collections/exerciseMaster';
 
 const exerciseMaster = Router();
 

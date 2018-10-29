@@ -1,6 +1,6 @@
 import { ExerciseMaster } from '../index';
 
-const getAllMasterExercises = async () => {
+const getAllExerciseMaster = async () => {
   const projection = {
     name: 1,
     topicId: 1,
@@ -36,7 +36,7 @@ const deleteExerciseMaster = async (exerciseId) => {
 };
 
 export {
-  getAllMasterExercises,
+  getAllExerciseMaster,
   insertNewExercise,
   updateExerciseMaster,
   deleteExerciseMaster,

@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 import { DB_URL } from '../../../../config';
-import { getAllMasterExercises, insertNewExercise, updateExerciseMaster, deleteExerciseMaster } from '../exerciseMaster';
+import {
+  getAllExerciseMaster,
+  insertNewExercise,
+  updateExerciseMaster,
+  deleteExerciseMaster,
+} from '../exerciseMaster';
 import { ExerciseMaster } from '../../index';
 
 describe('Mongo Queries: Exercise Master', () => {
@@ -35,7 +40,7 @@ describe('Mongo Queries: Exercise Master', () => {
 
   describe('Get Exercises master', () => {
     it('should return all exercises', async () => {
-      const exerciseList = await getAllMasterExercises();
+      const exerciseList = await getAllExerciseMaster();
       expect(exerciseList.length).toBe(4);
     });
   });
