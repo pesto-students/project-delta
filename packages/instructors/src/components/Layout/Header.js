@@ -41,7 +41,7 @@ const styles = theme => ({
 });
 
 export const AppHeaderComponent = ({
-  classes, className, isSideMenuOpen, toggleSideMenu, ...props
+  classes, className, isSideMenuOpen, toggleSideMenu, title, ...props
 }) => (
   <AppBar
     position="absolute"
@@ -58,7 +58,7 @@ export const AppHeaderComponent = ({
         <MenuIcon />
       </IconButton>
       <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-        Batch
+        {title}
       </Typography>
     </Toolbar>
   </AppBar>

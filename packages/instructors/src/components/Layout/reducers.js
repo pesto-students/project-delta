@@ -4,7 +4,7 @@ const initialState = {
   hasAlert: false,
   alertType: '',
   message: '',
-  title: '',
+  title: 'Delta',
 };
 
 
@@ -28,8 +28,6 @@ export const appLayout = (state = initialState, action) => {
       return {
         ...state,
         hasAlert: false,
-        alertType: '',
-        message: '',
       };
 
     default:
