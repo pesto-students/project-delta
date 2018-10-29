@@ -22,7 +22,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.error.dark,
   },
   info: {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: amber[700],
   },
   warning: {
     backgroundColor: amber[700],
@@ -55,11 +55,14 @@ const NotificationBlockComponent = ({
     info: InfoIcon,
   };
 
-  const Icon = variantIcon[variant];
+  const newVariant = (variant && variant !== '') ? variant : 'success';
+
+  const Icon = variantIcon[newVariant];
+  const variantClass = classes[newVariant];
 
   return (
     <SnackbarContent
-      className={classNames(classes[variant], classes.root, className)}
+      className={classNames(variantClass, classes.root, className)}
       aria-describedby="client-snackbar"
       message={(
         <div id="client-snackbar" className={classes.message}>
