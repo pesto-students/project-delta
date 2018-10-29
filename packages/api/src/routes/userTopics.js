@@ -1,3 +1,4 @@
+/*  eslint no-param-reassign: ["error", { "props": false }] */
 import { Router } from 'express';
 import { asyncHandler } from '../services/asyncHandler';
 import {
@@ -16,13 +17,20 @@ userTopic.get('/list', isAuthenticated, extractUser, asyncHandler(async (req, re
 }));
 
 userTopic.post('/create', isAuthenticated, extractUser, asyncHandler(async (req, res) => {
-  const data = {
-    userId: req.user._id,
-    userFirstName: req.user.firstName,
-    ...req.body,
-  };
-  const newTopic = await insertUserTopic(data);
-  return res.json({ newTopic });
+  /* req.body mock
+  * [ { batchTopicId, batchTopicName, rating},
+  *   { batchTopicId, batchTopicName, rating},
+  *   { batchTopicId, batchTopicName, rating},
+  * ]
+  */
+  const userSubmittedTopics = req.body;
+  userSubmittedTopics.forEach((topic) => {
+    topic.userId = req.user._id;
+    topic.userFirstName = req.user.firstName;
+  });
+
+  const newTopics = await insertUserTopic(userSubmittedTopics);
+  return res.json({ newTopics });
 }));
 
 export { userTopic };
