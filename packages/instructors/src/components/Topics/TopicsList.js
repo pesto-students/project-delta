@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 
 import { AlertDialog } from '../../../../shared-components/AlertDialog';
 import { deleteTopicFromList, fetchTopics, requestTopicEdit } from './action';
-
+import { updateTitle } from '../Layout/action';
 
 class TopicsListComponent extends React.Component {
   state = {
@@ -21,6 +21,7 @@ class TopicsListComponent extends React.Component {
   }
 
   componentDidMount() {
+    this.props.updateTitle('Topics Master');
     this.props.fetchTopics();
   }
 
@@ -113,7 +114,7 @@ class TopicsListComponent extends React.Component {
           isLoading={isUpdating}
         />
         <MUIDataTable
-          title="Topic's Master"
+          title="Topic List"
           options={options}
           data={data}
           columns={columns}
@@ -128,6 +129,7 @@ TopicsListComponent.propTypes = {
   fetchTopics: PropTypes.func.isRequired,
   requestEdit: PropTypes.func.isRequired,
   requestDelete: PropTypes.func.isRequired,
+  updateTitle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -138,6 +140,7 @@ const mapDispatchToProps = dispatch => ({
   fetchTopics: bindActionCreators(fetchTopics, dispatch),
   requestEdit: bindActionCreators(requestTopicEdit, dispatch),
   requestDelete: bindActionCreators(deleteTopicFromList, dispatch),
+  updateTitle: bindActionCreators(updateTitle, dispatch),
 });
 
 export const TopicsList = connect(mapStateToProps, mapDispatchToProps)(TopicsListComponent);
