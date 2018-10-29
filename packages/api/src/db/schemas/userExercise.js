@@ -16,6 +16,7 @@ const userExerciseSchema = new Schema({
   batchExerciseId: { // link to 'batch-exercises' collection
     type: Schema.Types.ObjectId,
     required: true,
+    unique: true,
   },
 
   batchExerciseName: {
