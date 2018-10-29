@@ -6,7 +6,7 @@ import { InputOutlined } from '../../../../shared-components/InputOutlined';
 
 class BatchForm extends Component {
   state = {
-    batchId: '',
+    batchNumber: '',
     city: '',
     numberOfDays: '',
     startDate: '',
@@ -35,11 +35,11 @@ class BatchForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <InputOutlined
-          name="batchId"
+          name="batchNumber"
           type="text"
-          label="Batch Id"
+          label="Batch Number"
           onChange={this.onInputChange}
-          value={this.state.batchId}
+          value={this.state.batchNumber}
         />
         <InputOutlined
           name="city"
