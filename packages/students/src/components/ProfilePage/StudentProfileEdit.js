@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +9,7 @@ import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginCom
 import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 import { uploadFile } from '../../services/firebase';
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
+import { NavigateToDashboardComponent } from './NavigateToDashboard';
 
 import './StudentProfileEdit.css';
 
@@ -99,40 +99,7 @@ export class StudentProfileEditComponent extends React.Component {
         </Grid>
 
         <Grid item xs={12} md={8} className="navigation">
-          {
-            isNewUser
-              ? (
-                <span
-                  className="disabled"
-                  to="/dashboard"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '20px 0',
-                    fontSize: '1.5em',
-                    color: 'black',
-                    textDecoration: 'none',
-                  }}
-                >
-                  &lt;- To dashboard
-                </span>
-              )
-              : (
-                <NavLink
-                  to="/dashboard"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '20px 0',
-                    fontSize: '1.5em',
-                    color: 'black',
-                    textDecoration: 'none',
-                  }}
-                >
-                  &lt;- To dashboard
-                </NavLink>
-              )
-          }
+          <NavigateToDashboardComponent disabled={isNewUser} />
         </Grid>
 
         <Grid container direction="column" alignItems="center" item xs={12} md={8}>
@@ -341,7 +308,7 @@ export class StudentProfileEditComponent extends React.Component {
         <Grid item xs={12} md={8}>
           <LoginFooter />
         </Grid>
-      </Grid >
+      </Grid>
     );
   }
 }
