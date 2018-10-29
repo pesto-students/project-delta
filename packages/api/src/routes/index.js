@@ -2,6 +2,7 @@ import isEmail from 'validator/lib/isEmail';
 
 const routes = require('express').Router();
 const winston = require('winston');
+const { URL } = require('url');
 
 const config = require('../../config');
 const tokenService = require('../services/token');
@@ -35,6 +36,7 @@ routes.post('/generateToken', (req, res) => {
 
 routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
   const { email, tokenType } = req.decoded;
+  const { host } = new URL(req.header('origin'));
 
   if (tokenType === TOKEN_TYPES.emailToken) {
     // give the user a longer-lived token that can be used for future auto-login
@@ -44,7 +46,7 @@ routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
           // not adding a maxAge property to the cookie causes it to be
           //   deleted by the browser at the end of the session
           maxAge: config.LOGIN_COOKIE_EXPIRY,
-          domain: req.hostname,
+          domain: host,
         });
 
         res.json({
