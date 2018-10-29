@@ -1,5 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
 import { BatchForm } from './BatchForm';
@@ -44,8 +45,7 @@ class NewBatchContainer extends Component {
   }
 
   handleSuccess = () => {
-    this.clearForm();
-    this.updateError('success', MSGS.MAIL_SUCCESS);
+    this.props.history.pop();
   }
 
   removeNotification = () => {
@@ -77,5 +77,9 @@ class NewBatchContainer extends Component {
     );
   }
 }
+
+NewBatchContainer.propTypes = {
+  history: PropTypes.shape().isRequired,
+};
 
 export { NewBatchContainer };

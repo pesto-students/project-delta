@@ -8,7 +8,7 @@ export const validateBatchInfo = (batchInfo) => {
   let isInfoValid = true;
   let message = '';
 
-  if (isEmpty(batchInfo.batchId)) {
+  if (isEmpty(batchInfo.batchNumber)) {
     isInfoValid = false;
     message = BATCH_MSGS.BATCH_ID_MISSING;
   } else if (isEmpty(batchInfo.city)) {
