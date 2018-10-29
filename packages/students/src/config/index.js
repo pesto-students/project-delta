@@ -11,12 +11,15 @@ const FIREBASE = {
   messagingSenderId: '43481274221',
 };
 
-
-const DEFAULT_PROFILE_PIC_URL = '/images/default-profile-pic.jpg';
+const DEFAULT_PROFILE_PIC_URLS = {
+  default: '/images/default-profile-pic.jpg',
+  male: '/images/default-profile-pic-male.jpg',
+  female: '/images/default-profile-pic-female.png',
+};
 
 export {
   API_URL,
   DATE_FORMAT,
-  DEFAULT_PROFILE_PIC_URL,
+  DEFAULT_PROFILE_PIC_URLS,
   FIREBASE,
 };

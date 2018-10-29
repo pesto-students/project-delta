@@ -1,11 +1,12 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
 import { getActiveBatches } from '../../services/batch';
-import { DEFAULT_PROFILE_PIC_URL as defaultProfilePicUrl } from '../../config';
+import { DEFAULT_PROFILE_PIC_URLS as defaultProfilePicUrls } from '../../config';
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { userProfilePropType } from './userProfilePropType';
 import { uploadFile } from '../../services/firebase';
@@ -86,6 +87,13 @@ export class StudentProfileEditComponent extends React.Component {
   render() {
     const isNewUser = !this.state._id;
 
+    let defaultProfilePicUrl;
+    if (this.state.sex === 'm') defaultProfilePicUrl = defaultProfilePicUrls.male;
+    else if (this.state.sex === 'f') defaultProfilePicUrl = defaultProfilePicUrls.female;
+    else defaultProfilePicUrl = defaultProfilePicUrls.default;
+
+    const profilePicUrl = this.state.profilePicUrl || defaultProfilePicUrl;
+
     const inputStyles = {
       width: '100%',
     };
@@ -94,6 +102,43 @@ export class StudentProfileEditComponent extends React.Component {
       <Grid container justify="center">
         <Grid item xs={12} md={8}>
           <LoginHeader />
+        </Grid>
+
+        <Grid item xs={12} md={8} className="navigation">
+          {
+            isNewUser
+              ? (
+                <span
+                  className="disabled"
+                  to="/dashboard"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '20px 0',
+                    fontSize: '1.5em',
+                    color: 'black',
+                    textDecoration: 'none',
+                  }}
+                >
+                  &lt;- To dashboard
+                </span>
+              )
+              : (
+                <NavLink
+                  to="/dashboard"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '20px 0',
+                    fontSize: '1.5em',
+                    color: 'black',
+                    textDecoration: 'none',
+                  }}
+                >
+                  &lt;- To dashboard
+                </NavLink>
+              )
+          }
         </Grid>
 
         <Grid container direction="column" alignItems="center" item xs={12} md={8}>
@@ -118,7 +163,7 @@ export class StudentProfileEditComponent extends React.Component {
                 className="profile-pic"
                 htmlFor="profilePic"
                 style={{
-                  backgroundImage: `url(${this.state.profilePicUrl || defaultProfilePicUrl})`,
+                  backgroundImage: `url(${profilePicUrl})`,
                   backgroundSize: 'cover',
                   display: 'flex',
                   justifyContent: 'center',
@@ -302,7 +347,7 @@ export class StudentProfileEditComponent extends React.Component {
         <Grid item xs={12} md={8}>
           <LoginFooter />
         </Grid>
-      </Grid>
+      </Grid >
     );
   }
 }
