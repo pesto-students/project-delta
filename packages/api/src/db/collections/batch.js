@@ -2,15 +2,14 @@ import { Batch } from '../index';
 
 const getAllBatches = async () => {
   const projection = {
-    batchId: 1,
     city: 1,
     batchNumber: 1,
     numberOfDays: 1,
     startDate: 1,
     endDate: 1,
   };
-  const batchNumberDesc = [{ batchNumber: -1 }];
-  const batchList = await Batch.find({}, projection, { sort: batchNumberDesc });
+  const startDateDesc = [{ startDate: -1 }];
+  const batchList = await Batch.find({}, projection, { sort: startDateDesc });
   return batchList;
 };
 
