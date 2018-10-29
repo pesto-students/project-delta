@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
@@ -28,13 +29,14 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '20px 0',
+            padding: '20px 10px',
             fontSize: '1.5em',
             color: 'black',
             textDecoration: 'none',
           }}
         >
-          &lt;- To dashboard
+          <ArrowBack />
+          To dashboard
         </NavLink>
       </Grid>
 
