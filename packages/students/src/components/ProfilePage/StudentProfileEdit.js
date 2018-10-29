@@ -96,11 +96,15 @@ export class StudentProfileEditComponent extends React.Component {
           <LoginHeader />
         </Grid>
 
-        <Grid container justify="center" item xs={12} md={8}>
+        <Grid container direction="column" alignItems="center" item xs={12} md={8}>
           <form
             id="form-profile-edit"
             onSubmit={this.handleSubmit}
-            style={{ display: 'flex', width: '100%' }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
           >
             <Grid
               container
@@ -108,7 +112,7 @@ export class StudentProfileEditComponent extends React.Component {
               alignItems="center"
               item
               xs={8}
-              md={6}
+              md={5}
             >
               <label
                 className="profile-pic"
@@ -119,8 +123,8 @@ export class StudentProfileEditComponent extends React.Component {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  minHeight: '150px',
-                  minWidth: '150px',
+                  minHeight: '250px',
+                  minWidth: '250px',
                 }}
               >
                 <input
@@ -137,32 +141,34 @@ export class StudentProfileEditComponent extends React.Component {
               </label>
             </Grid>
 
-            <Grid container justify="center" item xs={8} md={6}>
-              <Grid item xs={8}>
-                <TextField
-                  label="First name"
-                  name="firstName"
-                  value={this.state.firstName}
-                  onChange={this.handleChange}
-                  margin="normal"
-                  style={inputStyles}
-                  required
-                />
+            <Grid container justify="center" item xs={12} md={7}>
+              <Grid container direction="row" justify="space-between" item xs={10}>
+                <Grid item xs={12} md={5}>
+                  <TextField
+                    label="First name"
+                    name="firstName"
+                    value={this.state.firstName}
+                    onChange={this.handleChange}
+                    margin="normal"
+                    style={inputStyles}
+                    required
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={5}>
+                  <TextField
+                    label="Last name"
+                    name="lastName"
+                    value={this.state.lastName}
+                    onChange={this.handleChange}
+                    margin="normal"
+                    style={inputStyles}
+                    required
+                  />
+                </Grid>
               </Grid>
 
-              <Grid item xs={8}>
-                <TextField
-                  label="Last name"
-                  name="lastName"
-                  value={this.state.lastName}
-                  onChange={this.handleChange}
-                  margin="normal"
-                  style={inputStyles}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={8}>
+              <Grid item xs={10}>
                 <TextField
                   label="Email"
                   name="email"
@@ -174,65 +180,120 @@ export class StudentProfileEditComponent extends React.Component {
                 />
               </Grid>
 
-              <Grid item xs={8}>
-                <TextField
-                  select
-                  label="Batch City"
-                  name="batchCity"
-                  value={this.state.batchCity}
-                  onChange={this.handleBatchCityChange}
-                  margin="normal"
-                  InputLabelProps={{ shrink: true }}
-                  SelectProps={{ native: true }}
-                  style={inputStyles}
-                  required
-                >
-                  <option value="">Select city --</option>
-                  {!this.loading
-                    ? Reflect.ownKeys(this.cityWiseBatches)
-                      .sort()
-                      .map(city => <option key={city} value={city}>{city}</option>)
-                    : null}
-                </TextField>
+              <Grid item direction="row" xs={10} container justify="space-between">
+                <Grid item xs={12} md={5}>
+                  <TextField
+                    select
+                    label="Batch City"
+                    name="batchCity"
+                    value={this.state.batchCity}
+                    onChange={this.handleBatchCityChange}
+                    margin="normal"
+                    InputLabelProps={{ shrink: true }}
+                    SelectProps={{ native: true }}
+                    style={inputStyles}
+                    required
+                  >
+                    <option value="">Select city --</option>
+                    {!this.loading
+                      ? Reflect.ownKeys(this.cityWiseBatches)
+                        .sort()
+                        .map(city => <option key={city} value={city}>{city}</option>)
+                      : null}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={12} md={5}>
+                  <TextField
+                    select
+                    label="Batch #"
+                    name="batchNumber"
+                    value={this.state.batchNumber}
+                    onChange={this.handleChange}
+                    margin="normal"
+                    InputLabelProps={{ shrink: true }}
+                    SelectProps={{ native: true }}
+                    style={inputStyles}
+                    required
+                  >
+                    <option value="">Select # --</option>
+                    {!this.state.loading
+                      && this.state.batchCity
+                      && Reflect.ownKeys(this.cityWiseBatches, this.state.batchCity)
+                      ? this.cityWiseBatches[this.state.batchCity]
+                        .map(batch => batch.batchNumber)
+                        .map(num => (
+                          <option key={`${this.state.batchCity}|${num}`} value={num}>{num}</option>
+                        ))
+                      : null}
+                  </TextField>
+                </Grid>
               </Grid>
 
-              <Grid item xs={8}>
-                <TextField
-                  select
-                  label="Batch #"
-                  name="batchNumber"
-                  value={this.state.batchNumber}
-                  onChange={this.handleChange}
-                  margin="normal"
-                  InputLabelProps={{ shrink: true }}
-                  SelectProps={{ native: true }}
-                  style={inputStyles}
-                  required
-                >
-                  <option value="">Select # --</option>
-                  {!this.state.loading
-                    && this.state.batchCity
-                    && Reflect.ownKeys(this.cityWiseBatches, this.state.batchCity)
-                    ? this.cityWiseBatches[this.state.batchCity]
-                      .map(batch => batch.batchNumber)
-                      .map(num => (
-                        <option key={`${this.state.batchCity}|${num}`} value={num}>{num}</option>
-                      ))
-                    : null}
-                </TextField>
+              <Grid container direction="row" justify="space-between" item xs={10}>
+                <Grid item xs={12} md={5}>
+                  <TextField
+                    type="date"
+                    label="Date of Birth"
+                    name="dob"
+                    value={this.state.dob}
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    margin="normal"
+                    style={{ ...inputStyles }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={5}>
+                  <TextField
+                    select
+                    label="Sex"
+                    name="sex"
+                    value={this.state.sex}
+                    onChange={this.handleChange}
+                    margin="normal"
+                    InputLabelProps={{ shrink: true }}
+                    SelectProps={{ native: true }}
+                    style={inputStyles}
+                  >
+                    <option value="">Select sex --</option>
+                    <option value="m">Male</option>
+                    <option value="f">Female</option>
+                  </TextField>
+                </Grid>
               </Grid>
 
-              <Grid container justify="space-between" item xs={8} style={{ margin: '1em 0' }}>
-                <Button variant="contained" color="primary" type="submit">Save</Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  type="button"
-                  disabled={isNewUser}
-                  onClick={this.props.handleCancelBtnClick}
-                >
-                  Cancel
-                </Button>
+              <Grid
+                container
+                justify="space-between"
+                item
+                xs={10}
+                style={{ margin: '1em 0 2em 0' }}
+              >
+                <Grid item xs={5}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    style={{ width: '100%' }}
+                  >
+                    Save
+                  </Button>
+                </Grid>
+                <Grid item xs={5}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="button"
+                    disabled={isNewUser}
+                    style={{ width: '100%' }}
+                    onClick={this.props.handleCancelBtnClick}
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </form>
