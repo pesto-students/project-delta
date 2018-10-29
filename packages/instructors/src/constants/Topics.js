@@ -8,3 +8,7 @@ export const DELETE_TOPIC = 'DELETE_TOPIC';
 export const REQUEST_TOPIC_EDIT = 'REQUEST_TOPIC_EDIT';
 export const RECEIVE_TOPIC_EDIT = 'RECEIVE_TOPIC_EDIT';
 export const RECEIVE_TOPIC_DELETE = 'RECEIVE_TOPIC_DELETE';
+
+export const TOPIC_NAME_MISSING = 'Please enter topic name';
+export const TOPIC_CATEGORY_MISSING = 'Please enter topic category';
+export const DAY_INVALID = 'Day is invalid.';
