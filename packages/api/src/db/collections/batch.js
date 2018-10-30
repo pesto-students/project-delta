@@ -1,4 +1,27 @@
-import { Batch } from '../index';
+import { Batch, TopicMaster, BatchTopic } from '../index';
+
+const appendBatchId = (id, arrayOfObjs) => {
+  const newArrayOfObjs = arrayOfObjs.map((el) => {
+    const newEle = {
+      name: el.name,
+      category: el.category,
+      day: el.day,
+      batchId: id,
+    };
+    return newEle;
+  });
+  return newArrayOfObjs;
+};
+
+const getMasterTopics = async () => {
+  const projection = {
+    name: 1,
+    category: 1,
+    day: 1,
+  };
+  const masterTopics = await TopicMaster.find({}, projection);
+  return masterTopics;
+};
 
 const getAllBatches = async () => {
   const projection = {
@@ -15,8 +38,11 @@ const getAllBatches = async () => {
 
 const insertBatch = async (batchInfo) => {
   const newBatch = new Batch(batchInfo);
-  const result = await newBatch.save();
-  return result.id;
+  const batchCreated = await newBatch.save();
+  const masterTopics = await getMasterTopics();
+  const newBatchTopics = appendBatchId(batchCreated.id, masterTopics);
+  const result = await BatchTopic.insertMany(newBatchTopics);
+  return { batchId: batchCreated.id, batchTopicsLength: result.length };
 };
 
 export { getAllBatches, insertBatch };
