@@ -13,18 +13,30 @@ describe('Mongo Queries: Exercise Master', () => {
     {
       name: 'Exercise 1',
       topicId: mongoose.Types.ObjectId('121212121212121212121212'),
+      topicName: 'Git',
+      day: 4,
+      archive: false,
     },
     {
       name: 'Exercise 2',
-      topicId: mongoose.Types.ObjectId('121212121212121212121213'),
+      topicId: mongoose.Types.ObjectId('121212121212121212121215'),
+      topicName: 'Javascript',
+      day: 2,
+      archive: false,
     },
     {
       name: 'Exercise 3',
-      topicId: mongoose.Types.ObjectId('121212121212121212121214'),
+      topicId: mongoose.Types.ObjectId('121212121212121212121212'),
+      topicName: 'Git',
+      day: 4,
+      archive: false,
     },
     {
       name: 'Exercise 4',
       topicId: mongoose.Types.ObjectId('121212121212121212121215'),
+      topicName: 'Javascript',
+      day: 2,
+      archive: false,
     },
   ];
 
@@ -49,6 +61,9 @@ describe('Mongo Queries: Exercise Master', () => {
     const newExercise = {
       name: 'Newest Exercise 1',
       topicId: mongoose.Types.ObjectId('121212121212121212121215'),
+      topicName: 'Javascript',
+      day: 2,
+      archive: false,
     };
 
     afterEach(async () => {
@@ -64,16 +79,17 @@ describe('Mongo Queries: Exercise Master', () => {
 
     it('should return inserted document', async () => {
       const insertedDocument = await insertNewExercise(newExercise);
-
-      const exercise = await ExerciseMaster.findOne({ _id: insertedDocument._id });
-      expect(exercise).toBeDefined();
+      expect(insertedDocument).toBeDefined();
     });
   });
 
   describe('Update exercise master', () => {
     const newExercise = {
-      name: 'Update Exercise 1',
-      topicId: mongoose.Types.ObjectId('121212121212121212121218'),
+      name: 'Newest Exercise 1',
+      topicId: mongoose.Types.ObjectId('121212121212121212121215'),
+      topicName: 'Javascript',
+      day: 2,
+      archive: false,
     };
 
     beforeEach(async () => {
@@ -88,6 +104,9 @@ describe('Mongo Queries: Exercise Master', () => {
     it('should update document to new value', async () => {
       const newData = {
         name: 'Super updated Name',
+        topicId: mongoose.Types.ObjectId('121212121212121212121215'),
+        topicName: 'Javascript',
+        day: 2,
       };
       await updateExerciseMaster(newExercise._id, newData);
 
@@ -98,8 +117,11 @@ describe('Mongo Queries: Exercise Master', () => {
 
   describe('Delete Exercise Master', () => {
     const newExercise = {
-      name: 'Deletion Exercise 1',
+      name: 'Newest Exercise 1',
       topicId: mongoose.Types.ObjectId('121212121212121212121215'),
+      topicName: 'Javascript',
+      day: 2,
+      archive: false,
     };
 
     beforeEach(async () => {
@@ -111,10 +133,10 @@ describe('Mongo Queries: Exercise Master', () => {
       await ExerciseMaster.deleteOne(newExercise);
     });
 
-    it('should delete exercise', async () => {
+    it('should update document archive value', async () => {
       await deleteExerciseMaster(newExercise._id);
-      const exercise = await ExerciseMaster.findOne(newExercise);
-      expect(exercise).toBe(null);
+      const exercise = await ExerciseMaster.findOne(newExercise._id);
+      expect(exercise.archive).toBe(true);
     });
   });
 });
