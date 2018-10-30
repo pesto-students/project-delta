@@ -7,12 +7,14 @@ import {
   REQUEST_EXERCISE_EDIT,
   RECEIVE_EXERCISE_EDIT,
   RECEIVE_EXERCISE_DELETE,
+  RECEIVE_TOPICS,
 } from '../../constants/Exercises';
 
 const initialState = {
   isFetched: false,
   isUpdating: false,
   exerciseList: [],
+  topicMaster: [],
   isEditAvailable: false,
   editableExercise: {},
 };
@@ -30,6 +32,12 @@ export const exercises = (state = initialState, action) => {
         ...state,
         exerciseList: action.exerciseList,
         isFetched: true,
+      };
+
+    case RECEIVE_TOPICS:
+      return {
+        ...state,
+        topicMaster: action.topicList,
       };
 
     case REQUEST_EXERCISES_UPDATE:

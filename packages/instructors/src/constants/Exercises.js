@@ -8,6 +8,7 @@ export const DELETE_EXERCISE = 'DELETE_EXERCISE';
 export const REQUEST_EXERCISE_EDIT = 'REQUEST_EXERCISE_EDIT';
 export const RECEIVE_EXERCISE_EDIT = 'RECEIVE_EXERCISE_EDIT';
 export const RECEIVE_EXERCISE_DELETE = 'RECEIVE_EXERCISE_DELETE';
+export const RECEIVE_TOPICS = 'RECEIVE_TOPICS';
 
 export const EXERCISE_NAME_MISSING = 'Please enter exercise name';
 export const EXERCISE_TOPIC_MISSING = 'Please select topic';
