@@ -21,9 +21,9 @@ exerciseMaster.post('/create', asyncHandler(async (req, res) => {
 }));
 
 exerciseMaster.put('/:id', asyncHandler(async (req, res) => {
-  const exerciseName = req.body.name;
+  const { data } = req.body;
   const { id } = req.params;
-  await updateExerciseMaster(id, exerciseName);
+  await updateExerciseMaster(id, data);
   return res.json({ status: 'Success' });
 }));
 
