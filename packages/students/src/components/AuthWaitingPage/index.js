@@ -5,6 +5,8 @@ import { Redirect } from 'react-router-dom';
 import BoxComponent from '../../../../shared-components/BoxWithImgAndText';
 import { HTTP as httpService } from '../../../../shared-utils/services/http';
 
+import logoImg from '../../../images/logo.jpeg';
+
 import './blink.css';
 
 export class AuthWaitingComponent extends React.Component {
@@ -70,7 +72,7 @@ export class AuthWaitingComponent extends React.Component {
       return (
         <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}>
           <Grid item xs={12} md={8} lg={6}>
-            <BoxComponent bgUrl="/images/logo.jpeg" text="authenticating with server..." {...styles} />
+            <BoxComponent bgUrl={logoImg} text="authenticating with server..." {...styles} />
           </Grid>
         </Grid>
       );
