@@ -19,8 +19,8 @@ batchRoutes.get('/list', asyncHandler(async (req, res) => {
 
 batchRoutes.post('/create', asyncHandler(async (req, res, next) => {
   const { body } = req;
-  const id = await insertBatch(body);
-  res.json({ batch_created: 'Success', id });
+  const result = await insertBatch(body);
+  res.json({ batch_created: 'Success', batch_id: result.batchId, batchTopicsLength: result.batchTopicsLength });
   next();
 }));
 
