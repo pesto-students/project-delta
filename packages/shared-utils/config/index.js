@@ -1,15 +1,14 @@
 module.exports = {
   get API_URL() {
-    return (
-      // if we're running this app (students) locally,
-      //   we'll connect to the local api deployment
-      //   to avoid any possibility of messing with the prod DB
-      // else we're running this app in production on heroku,
-      //   so we'll connect to the production api deployment
-      /localhost/.test(window.location.hostname)
-        ? 'http://localhost:5000'
-        : 'https://deltapesto-api.herokuapp.com'
-    );
+    const { hostname } = window.location;
+
+    if (/herokuapp\.com$/.test(hostname)) {
+      return 'https://deltapesto-api.herokuapp.com';
+    }
+
+    // if we're not running this app on heroku, we'll assume it's non-prod
+    //   and that the api server is available on the same hostname at port 5000
+    return `http://${hostname}:5000`;
   },
   DATE_FORMAT: 'MMM D, YYYY',
 };

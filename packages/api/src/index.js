@@ -5,7 +5,12 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 
 // Custom imports
-import { PORT, DB_URL, ALLOWED_ORIGINS_FOR_CORS } from '../config';
+import {
+  ALLOWED_ORIGINS_FOR_CORS,
+  DB_URL,
+  MODE,
+  PORT,
+} from '../config';
 import routes from './routes';
 import profileRoutes from './routes/profileRoutes';
 import { batchRoutes } from './routes/batchRoutes';
@@ -23,10 +28,24 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({
-  origin: Object.values(ALLOWED_ORIGINS_FOR_CORS),
-  credentials: true,
-}));
+
+if (MODE === 'DEV') {
+  app.use((req, res, next) => {
+    res.setHeader('access-control-allow-origin', req.get('origin') || Object.values(ALLOWED_ORIGINS_FOR_CORS));
+    res.setHeader('access-control-allow-credentials', true);
+    next();
+  });
+  app.options('*', (req, res) => {
+    res.setHeader('access-control-allow-headers', 'content-type');
+    res.setHeader('access-control-allow-methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+    res.status(204).end();
+  });
+} else {
+  app.use(cors({
+    origin: Object.values(ALLOWED_ORIGINS_FOR_CORS),
+    credentials: true,
+  }));
+}
 
 app.use('/', routes);
 app.use('/api/profile', profileRoutes);
