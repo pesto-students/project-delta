@@ -9,12 +9,14 @@ import {
   RECEIVE_EXERCISE_EDIT,
   RECEIVE_EXERCISES,
   RECEIVE_EXERCISES_ERROR,
+  RECEIVE_TOPICS,
   REQUEST_EXERCISE_EDIT,
   REQUEST_EXERCISES,
   REQUEST_EXERCISES_UPDATE,
 } from '../../constants/Exercises';
 import { ERROR_TYPES, MSGS } from '../../constants/MSGS';
 import { createNewExercise, deleteExercise, getExerciseList, updateExercise } from '../../services/exercises';
+import { getTopicList } from '../../services/topics';
 import { showAlert } from '../Layout/action';
 
 const requestExercises = () => ({
@@ -24,6 +26,11 @@ const requestExercises = () => ({
 const receiveExercises = exerciseList => ({
   type: RECEIVE_EXERCISES,
   exerciseList,
+});
+
+const receiveTopics = topicList => ({
+  type: RECEIVE_TOPICS,
+  topicList,
 });
 
 const requestExercisesUpdate = () => ({
@@ -61,7 +68,7 @@ const validateExercise = (exerciseInfo) => {
   if (isEmpty(exerciseInfo.name)) {
     isInfoValid = false;
     message = EXERCISE_NAME_MISSING;
-  } else if (isEmpty(exerciseInfo.category)) {
+  } else if (isEmpty(exerciseInfo.topicId)) {
     isInfoValid = false;
     message = EXERCISE_TOPIC_MISSING;
   } else if (exerciseInfo.day < 1) {
@@ -81,6 +88,16 @@ const fetchExercises = () => async (dispatch) => {
     return;
   }
   dispatch(receiveExercises(exerciseList));
+};
+
+const fetchTopics = () => async (dispatch) => {
+  const { error, topicList } = await getTopicList();
+  if (error) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
+    dispatch(receiveExercisesError());
+    return;
+  }
+  dispatch(receiveTopics(topicList));
 };
 
 const addNewExercise = exercise => async (dispatch) => {
@@ -132,6 +149,7 @@ const deleteExerciseFromList = exerciseId => async (dispatch) => {
 
 export {
   fetchExercises,
+  fetchTopics,
   addNewExercise,
   requestExerciseEdit,
   updateExerciseList,
