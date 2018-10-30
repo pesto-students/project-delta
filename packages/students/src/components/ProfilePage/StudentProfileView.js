@@ -1,14 +1,13 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 
 import './StudentProfileView.css';
+import { NavigateToDashboardComponent } from './NavigateToDashboard';
 
 export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
   const profilePicUrl = userData.profilePicUrl
@@ -23,21 +22,8 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
     <Grid container justify="center">
       <Grid item xs={12} md={8} lg={7}><LoginHeader /></Grid>
 
-      <Grid item xs={12} md={8} lg={7} className="navigation">
-        <NavLink
-          to="/dashboard"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '20px 10px',
-            fontSize: '1.5em',
-            color: 'black',
-            textDecoration: 'none',
-          }}
-        >
-          <ArrowBack />
-          To dashboard
-        </NavLink>
+      <Grid item xs={12} md={8} className="navigation">
+        <NavigateToDashboardComponent />
       </Grid>
 
       <Grid item container className="profile" xs={12} md={8} lg={7} justify="center" spacing={40}>
