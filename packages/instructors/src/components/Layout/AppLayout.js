@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import { BatchViewContainer } from '../Batch/BatchViewContainer';
 import { NewBatchContainer } from '../Batch/NewBatchContainer';
 import { TopicsMasterContainer } from '../Topics';
+import { ExerciseMasterContainer } from '../Exercise';
 import { AppHeader } from './Header';
 import { AppSideMenu } from './SideMenu';
 import { AlertSnackBar } from '../../../../shared-components/AlertSnackBar';
@@ -62,6 +63,7 @@ class AppLayoutComponent extends React.Component {
             <Route path="/batch" exact component={BatchViewContainer} />
             <Route path="/batch/new" exact component={NewBatchContainer} />
             <Route path="/topics" exact component={TopicsMasterContainer} />
+            <Route path="/exercises" exact component={ExerciseMasterContainer} />
           </main>
         </div>
       </React.Fragment>
