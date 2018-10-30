@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import request from 'request-promise-native';
 import app from '../src';
-import { PORT, DB_URL } from '../config';
+import { DB_URL } from '../config';
 import { BatchTopic } from '../src/db';
 import tokenService from '../src/services/token';
 // import { Cookie } from 'request-cookies';
@@ -35,13 +35,14 @@ const dummyBatchTopics = [
 ];
 
 let server;
-const serverUrl = `http://localhost:${PORT}`;
+let serverUrl;
 let tempToken;
 
 beforeAll((done) => {
-  jest.setTimeout(10000);
   mongoose.connect(DB_URL, { useNewUrlParser: true }, () => {
-    server = app.listen(PORT, () => {
+    server = app.listen(() => {
+      serverUrl = `http://localhost:${server.address().port}`;
+
       BatchTopic.find({})
         .then((topic) => {
           savedBatchTopics = topic;
@@ -68,7 +69,11 @@ afterAll((done) => {
 });
 
 describe('GET: /batchTopics/list', () => {
-  const url = `${serverUrl}/batchTopics/list`;
+  let url;
+
+  beforeAll(() => {
+    url = `${serverUrl}/batchTopics/list`;
+  });
 
   it('should send batch topics as an array', async () => {
     const res = await request({
