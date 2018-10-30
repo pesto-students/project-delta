@@ -40,14 +40,8 @@ routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
     // give the user a longer-lived token that can be used for future auto-login
     tokenService.generate({ email, tokenType: TOKEN_TYPES.loginToken }, config.LOGIN_TOKEN_EXPIRY)
       .then((generatedToken) => {
-        res.cookie('token', generatedToken, {
-          // not adding a maxAge property to the cookie causes it to be
-          //   deleted by the browser at the end of the session
-          maxAge: config.LOGIN_COOKIE_EXPIRY,
-          domain: req.hostname,
-        });
-
         res.json({
+          token: generatedToken,
           authentication: 'success',
           isNewUser: req.user === null,
           email,

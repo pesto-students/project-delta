@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import request from 'request-promise-native';
-import { Cookie } from 'request-cookies';
 
 import app from '../src';
 import { DB_URL } from '../config';
@@ -165,7 +164,6 @@ describe('/verifyToken', () => {
           resolveWithFullResponse: true,
         }).then((res) => {
           expect(res.statusCode).toBe(200);
-          expect(/^token=/.test(res.headers['set-cookie'])).toBe(true);
           expect(res.body.isNewUser).toBe(false);
           done();
         });
@@ -186,7 +184,6 @@ describe('/verifyToken', () => {
           resolveWithFullResponse: true,
         }).then((res) => {
           expect(res.statusCode).toBe(200);
-          expect(/^token=/.test(res.headers['set-cookie'])).toBe(true);
           expect(res.body.isNewUser).toBe(true);
           done();
         });
@@ -307,14 +304,10 @@ describe('/api/profile/createUser', () => {
         json: true,
         resolveWithFullResponse: true,
       }).then((res) => {
-        const rawcookies = res.headers['set-cookie'];
-        const rawTokenCookie = rawcookies.find(cookie => cookie.startsWith('token'));
-        const cookieWithHeaders = new Cookie(rawTokenCookie);
-        const loginToken = cookieWithHeaders.value;
         request({
           url,
           method: 'POST',
-          body: { ...testUser, token: loginToken },
+          body: { ...testUser, token: res.body.token },
           json: true,
           resolveWithFullResponse: true,
         }).then((result) => {
@@ -336,14 +329,10 @@ describe('/api/profile/createUser', () => {
         json: true,
         resolveWithFullResponse: true,
       }).then((res) => {
-        const rawcookies = res.headers['set-cookie'];
-        const rawTokenCookie = rawcookies.find(cookie => cookie.startsWith('token'));
-        const cookieWithHeaders = new Cookie(rawTokenCookie);
-        const loginToken = cookieWithHeaders.value;
         request({
           url,
           method: 'POST',
-          body: { ...testUser, token: loginToken },
+          body: { ...testUser, token: res.body.token },
           json: true,
           resolveWithFullResponse: true,
         }).catch((e) => {
