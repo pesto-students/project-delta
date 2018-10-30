@@ -1,4 +1,7 @@
 import sharedConfig from '../../../shared-utils/config';
+import defaultProfilePic from '../../images/default-profile-pic.jpg';
+import defaultProfilePicM from '../../images/default-profile-pic-male.jpg';
+import defaultProfilePicF from '../../images/default-profile-pic-female.jpg';
 
 const { API_URL, DATE_FORMAT } = sharedConfig;
 
@@ -12,9 +15,9 @@ const FIREBASE = {
 };
 
 const DEFAULT_PROFILE_PIC_URLS = {
-  default: '/images/default-profile-pic.jpg',
-  male: '/images/default-profile-pic-male.jpg',
-  female: '/images/default-profile-pic-female.png',
+  default: defaultProfilePic,
+  male: defaultProfilePicM,
+  female: defaultProfilePicF,
 };
 
 export {
