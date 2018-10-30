@@ -29,9 +29,9 @@ const insertNewExercise = async (excersiseDetail) => {
   };
 };
 // update on exercise will only take new exercise name and exercise ID
-const updateExerciseMaster = async (exerciseId, newData) => {
+const updateExerciseMaster = async (exerciseId, exerciseInfo) => {
   const updatedInfo = {
-    name: newData.name,
+    name: exerciseInfo.name,
   };
   const query = {
     _id: exerciseId,
