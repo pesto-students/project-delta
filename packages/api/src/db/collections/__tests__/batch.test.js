@@ -80,7 +80,8 @@ describe('Mongo Queries: Batch', () => {
     it('should return new document id', async () => {
       const newId = await insertBatch(newDocument);
 
-      const batch = await Batch.findOne({ _id: newId });
+      const batch = await Batch.findOne({ _id: newId.batchId });
+      expect(newId.batchTopicsLength).toBeDefined();
       expect(batch).toBeDefined();
     });
   });
