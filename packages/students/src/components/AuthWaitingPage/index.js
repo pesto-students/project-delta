@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+import { saveToken } from '../../../../shared-utils/services/loginToken';
 import BoxComponent from '../../../../shared-components/BoxWithImgAndText';
 import { HTTP as httpService } from '../../../../shared-utils/services/http';
 
@@ -32,6 +33,10 @@ export class AuthWaitingComponent extends React.Component {
   }
 
   handleVerifyTokenResponse(res) {
+    const isAuthSuccess = res.authentication === 'success';
+    if (isAuthSuccess) {
+      saveToken(res.token);
+    }
     this.setState({
       waiting: false,
       authSuccess: res.authentication,

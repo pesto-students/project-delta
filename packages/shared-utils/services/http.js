@@ -1,4 +1,5 @@
 import { API_URL } from '../config';
+import { getToken, hasToken } from './loginToken';
 
 // adds json-content-type and origin headers if not present
 const addDefaultReqHeaders = (headers) => {
@@ -6,6 +7,10 @@ const addDefaultReqHeaders = (headers) => {
     'content-type': 'application/json; charset=utf-8',
     origin: window.origin,
   };
+
+  if (hasToken()) {
+    defaultHeaders.authorization = getToken();
+  }
 
   return { ...defaultHeaders, ...headers };
 };

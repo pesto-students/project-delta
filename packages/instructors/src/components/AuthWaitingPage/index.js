@@ -3,6 +3,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import BoxComponent from '../../../../shared-components/BoxWithImgAndText';
+import { saveToken } from '../../../../shared-utils/services/loginToken';
 import { verifyToken } from '../../services/authWaiting';
 
 import './blink.css';
@@ -23,6 +24,9 @@ class AuthWaitingComponent extends React.Component {
 
   handleVerifyTokenResponse = (res) => {
     const isAuthSuccess = res.authentication === 'success';
+    if (isAuthSuccess) {
+      saveToken(res.token);
+    }
     this.setState({ waiting: false, isAuthSuccess });
   }
 

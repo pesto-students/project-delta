@@ -1,4 +1,4 @@
-import { getCookie } from '../../../../shared-utils/services/cookie';
+import { hasToken } from '../../../../shared-utils/services/loginToken';
 import { RECEIVE_LOGIN_VERIFY, REQUEST_LOGIN_VERIFY } from '../../constants/PrivateRoute';
 import { verifyToken } from '../../services/authWaiting';
 
@@ -14,7 +14,7 @@ const receiveLoginVerify = isUserLogged => ({
 const validateLogin = () => async (dispatch) => {
   dispatch(requestLoginVerify());
 
-  if (getCookie('token') === null) {
+  if (!hasToken()) {
     dispatch(receiveLoginVerify(false));
     return;
   }
