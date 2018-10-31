@@ -4,7 +4,9 @@ import isEmail from 'validator/lib/isEmail';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
 import { generateToken } from '../../services/login';
-import { LoginForm, LoginFooter, LoginHeader } from '../../../../shared-components/LoginComponents';
+import { HeaderComponent } from '../../../../shared-components/Header';
+import { FooterComponent } from '../../../../shared-components/Footer';
+import { LoginForm } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
 
 import './style.css';
@@ -62,7 +64,7 @@ class LoginContainer extends Component {
       <div className="login-container">
         <Grid container justify="center" style={{ height: '100%' }}>
           <Grid item xs={10} md={8} lg={7}>
-            <LoginHeader />
+            <HeaderComponent />
           </Grid>
 
           <Grid item xs={12} md={8} lg={7}>
@@ -78,19 +80,21 @@ class LoginContainer extends Component {
             </Grid>
           </Grid>
 
-          {loginStatus === '' ?
-            null :
-            <Grid item xs={10} md={8} lg={7}>
-              <Grid container justify="center">
-                <Grid item xs={12} md={8} lg={6}>
-                  <NotificationBlock
-                    variant={loginStatus}
-                    message={message}
-                    onClose={this.removeNotification}
-                  />
+          {loginStatus === ''
+            ? null
+            : (
+              <Grid item xs={10} md={8} lg={7}>
+                <Grid container justify="center">
+                  <Grid item xs={12} md={8} lg={6}>
+                    <NotificationBlock
+                      variant={loginStatus}
+                      message={message}
+                      onClose={this.removeNotification}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            )
           }
 
           <Grid item xs={10} md={8} lg={7}>
@@ -105,7 +109,7 @@ class LoginContainer extends Component {
           </Grid>
 
           <Grid item xs={10} md={8} lg={7}>
-            <LoginFooter />
+            <FooterComponent />
           </Grid>
         </Grid>
       </div>

@@ -7,10 +7,12 @@ import { NotificationBlock } from '../../../../shared-components/NotificationBlo
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 import { HTTP } from '../../../../shared-utils/services/http';
 import { getCookie } from '../../../../shared-utils/services/cookie';
-import { LoginForm, LoginFooter, LoginHeader } from '../../../../shared-components/LoginComponents';
+import { LoginForm } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
 
 import './style.css';
+import { HeaderComponent } from '../../../../shared-components/Header';
+import { FooterComponent } from '../../../../shared-components/Footer';
 
 class LoginContainer extends Component {
   state = {
@@ -122,7 +124,7 @@ class LoginContainer extends Component {
       <div className="login-container">
         <Grid container justify="center" style={{ height: '100%' }}>
           <Grid item xs={10} md={8} lg={7}>
-            <LoginHeader />
+            <HeaderComponent />
           </Grid>
 
           <Grid item xs={12} md={8} lg={7}>
@@ -166,7 +168,7 @@ class LoginContainer extends Component {
           </Grid>
 
           <Grid item xs={10} md={8} lg={7}>
-            <LoginFooter />
+            <FooterComponent />
           </Grid>
         </Grid>
       </div>
