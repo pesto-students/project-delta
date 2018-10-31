@@ -5,7 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import { getActiveBatches } from '../../services/batch';
-import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
+import { HeaderComponent } from '../../../../shared-components/Header';
+import { FooterComponent } from '../../../../shared-components/Footer';
 import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 import { uploadFile } from '../../services/firebase';
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
@@ -95,7 +96,7 @@ export class StudentProfileEditComponent extends React.Component {
     return (
       <Grid container justify="center">
         <Grid item xs={12} md={8}>
-          <LoginHeader />
+          <HeaderComponent />
         </Grid>
 
         <Grid item xs={12} md={8} className="navigation">
@@ -310,7 +311,7 @@ export class StudentProfileEditComponent extends React.Component {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <LoginFooter />
+          <FooterComponent />
         </Grid>
       </Grid>
     );

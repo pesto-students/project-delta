@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Divider from '@material-ui/core/Divider';
 
 import { BlockButton } from './BlockButton';
 import { InputOutlined } from './InputOutlined';
@@ -18,7 +17,9 @@ class LoginForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.handleLogin(this.state.email, this.clearEmail);
+    const { handleLogin } = this.props;
+    const { email } = this.state;
+    handleLogin(email, this.clearEmail);
   };
 
   clearEmail = () => {
@@ -28,6 +29,8 @@ class LoginForm extends Component {
   };
 
   render() {
+    const { isLoggingIn } = this.props;
+    const { email } = this.state;
     return (
       <form onSubmit={this.handleSubmit} data-testid="loginForm">
         <InputOutlined
@@ -36,9 +39,9 @@ class LoginForm extends Component {
           type="email"
           label="Email"
           onChange={this.onEmailChange}
-          value={this.state.email}
+          value={email}
         />
-        <BlockButton className="login-button" type="submit" data-testid="signin" isLoading={this.props.isLoggingIn}>
+        <BlockButton className="login-button" type="submit" data-testid="signin" isLoading={isLoggingIn}>
           Signin
         </BlockButton>
       </form>
@@ -51,18 +54,4 @@ LoginForm.propTypes = {
   isLoggingIn: PropTypes.bool.isRequired,
 };
 
-const LoginHeader = () => (
-  <header>
-    <h1>Project Delta</h1>
-    <Divider />
-  </header>
-);
-
-const LoginFooter = () => (
-  <header>
-    <Divider />
-    <h1 className="text-center">Project Delta</h1>
-  </header>
-);
-
-export { LoginForm, LoginHeader, LoginFooter };
+export { LoginForm };

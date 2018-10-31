@@ -1,7 +1,8 @@
 import Grid from '@material-ui/core/Grid';
 import React, { Component } from 'react';
 
-import { LoginFooter, LoginHeader } from '../../../../shared-components/LoginComponents';
+import { HeaderComponent } from '../../../../shared-components/Header';
+import { FooterComponent } from '../../../../shared-components/Footer';
 
 export class DashboardContainer extends Component {
   render() {
@@ -9,7 +10,7 @@ export class DashboardContainer extends Component {
       <div className="login-container">
         <Grid container justify="center" style={{ height: '100%' }}>
           <Grid item xs={10} md={8} lg={7}>
-            <LoginHeader />
+            <HeaderComponent />
           </Grid>
 
           <Grid item xs={12} md={8} lg={7}>
@@ -23,7 +24,7 @@ export class DashboardContainer extends Component {
           </Grid>
 
           <Grid item xs={10} md={8} lg={7}>
-            <LoginFooter />
+            <FooterComponent />
           </Grid>
         </Grid>
       </div>

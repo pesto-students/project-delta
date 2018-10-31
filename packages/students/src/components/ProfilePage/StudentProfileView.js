@@ -4,7 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import { BlockButton } from '../../../../shared-components/BlockButton';
-import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
+import { HeaderComponent } from '../../../../shared-components/Header';
+import { FooterComponent } from '../../../../shared-components/Footer';
 import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 import { NavigateToDashboardComponent } from './NavigateToDashboard';
 
@@ -19,7 +20,7 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
 
   return (
     <Grid container justify="center">
-      <Grid item xs={12} md={8}><LoginHeader /></Grid>
+      <Grid item xs={12} md={8}><HeaderComponent /></Grid>
 
       <Grid item xs={12} md={8} className="navigation">
         <NavigateToDashboardComponent />
@@ -63,7 +64,7 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} md={8} style={{ paddingTop: '30px' }}><LoginFooter /></Grid>
+      <Grid item xs={12} md={8} style={{ paddingTop: '30px' }}><FooterComponent /></Grid>
     </Grid>
   );
 }
