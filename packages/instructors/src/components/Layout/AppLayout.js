@@ -2,10 +2,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { BatchViewContainer } from '../Batch/BatchViewContainer';
 import { NewBatchContainer } from '../Batch/NewBatchContainer';
+import { BatchEditContainer } from '../Batch/BatchEditContainer';
 import { TopicsMasterContainer } from '../Topics';
 import { ExerciseMasterContainer } from '../Exercise';
 import { AppHeader } from './Header';
@@ -60,8 +61,11 @@ class AppLayoutComponent extends React.Component {
           <AppSideMenu isSideMenuOpen={isSideMenuOpen} toggleSideMenu={this.toggleSideMenu} />
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Route path="/batch" exact component={BatchViewContainer} />
-            <Route path="/batch/new" exact component={NewBatchContainer} />
+            <Switch>
+              <Route path="/batch" exact component={BatchViewContainer} />
+              <Route path="/batch/new" component={NewBatchContainer} />
+              <Route path="/batch/:batchId" component={BatchEditContainer} />
+            </Switch>
             <Route path="/topics" exact component={TopicsMasterContainer} />
             <Route path="/exercises" exact component={ExerciseMasterContainer} />
           </main>
