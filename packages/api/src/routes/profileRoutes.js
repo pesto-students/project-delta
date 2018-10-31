@@ -5,7 +5,7 @@ const profileValidation = require('../services/profileValidation');
 const { isAuthenticated } = require('../helper/auth/isAuthenticated');
 const { extractUser } = require('../helper/user');
 
-profileRoutes.get('/user/:id', isAuthenticated, extractUser, async (req, res) => {
+profileRoutes.get('/:id', isAuthenticated, extractUser, async (req, res) => {
   const { id } = req.params;
   const { user } = req;
   if (!user) {
@@ -14,29 +14,37 @@ profileRoutes.get('/user/:id', isAuthenticated, extractUser, async (req, res) =>
   const {
     email, firstName, lastName, profilePicUrl, batchId, role,
   } = user;
-  if (id.toLowerCase() === 'me') {
-    const projection = {
-      city: 1,
-      batchNumber: 1,
-    };
-    const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
-    const { city, batchNumber } = batchOfUser;
-    const finalUserDetails = {
-      email,
-      firstName,
-      lastName,
-      profilePicUrl,
-      batchId,
-      role,
-      city,
-      batchNumber,
-    };
-    res.json(finalUserDetails);
+  if (id.toLowerCase() !== 'me') {
+    return res.status(400).end();
   }
-  res.status(400).end();
+  if (role === 'instructor') {
+    return res.json(user);
+  }
+  // id = me and role = student
+  const projection = {
+    city: 1,
+    batchNumber: 1,
+  };
+  const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
+  const { city, batchNumber } = batchOfUser;
+  const finalUserDetails = {
+    email,
+    firstName,
+    lastName,
+    profilePicUrl,
+    batchId,
+    role,
+    city,
+    batchNumber,
+  };
+  return res.json(finalUserDetails);
 });
 
-profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
+profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
+  const { id } = req.params;
+  if (id && id.toLowerCase() !== 'me') {
+    return res.send(400).end();
+  }
   if (!req.body) {
     return res.status(400).json({ error: ERR_MSGS.noProfileData });
   }
@@ -47,41 +55,13 @@ profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
   if (body.role === 'student') {
     body.batchId = body.batchId.toString();
   }
-  const user = new User(body);
-  return user.save()
-    .then((doc) => {
-      if (!doc || doc.length === 0) {
-        return res.status(500).json({ error: ERR_MSGS.internalServerError });
-      }
-      return res.status(201).json({ user_created: 'Success', user_email: doc.email });
-    })
-    .catch(() => {
-      res.status(500).json({ error: ERR_MSGS.internalServerError });
-    });
-});
-/* Update request accepts whole body but should contain only the fields in User schema
-* The input fields are meant to be disabled on front end such as city, batchNumber, email
-*/
-profileRoutes.put('/user/:id', isAuthenticated, extractUser, async (req, res) => {
-  const { id } = req.params;
-  const { user } = req;
-  if (!user) {
-    res.status(400).json({ error: ERR_MSGS.profileNotExist });
+  if (!req.user) {
+    const user = new User(body);
+    const result = await user.save();
+    return res.send(result);
   }
-  if (id.toLowerCase() === 'me') {
-    await User.findOneAndUpdate(
-      { email: user.email },
-      req.body,
-      { new: true, runValidators: true },
-      (err, newUserDetails) => {
-        if (err) {
-          res.status(500).json({ error: ERR_MSGS.internalServerError });
-        }
-        return res.json(newUserDetails);
-      },
-    );
-  }
-  res.status(400).end();
+  const result = await User.updateOne({ email: req.user.email }, body, { upsert: true });
+  return res.send(result);
 });
 
 module.exports = profileRoutes;

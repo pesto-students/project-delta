@@ -48,7 +48,7 @@ if (MODE === 'DEV') {
 }
 
 app.use('/', routes);
-app.use('/api/profile', profileRoutes);
+app.use('/user', profileRoutes);
 
 app.use('/batchExercise', batchExercise);
 app.use('/batchTopics', batchTopics);
