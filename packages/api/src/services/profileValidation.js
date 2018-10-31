@@ -1,4 +1,5 @@
 import isEmail from 'validator/lib/isEmail';
+import Batch from '../db';
 
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 
@@ -20,7 +21,10 @@ function profileValidation(user) {
   }
   if (user.role.toLowerCase() === 'student') {
     if (!Reflect.has(user, 'batchId') || user.batchId.length < 24) {
-      return { passed: false, msg: ERR_MSGS.noBatchId };
+      const batchIdInDB = Batch.findOne({ _id: user.batchId });
+      if (!batchIdInDB) {
+        return { passed: false, msg: ERR_MSGS.noBatchId };
+      }
     }
   }
   return { passed: true, msg: 'passed' };
