@@ -5,9 +5,12 @@ const profileValidation = require('../services/profileValidation');
 const { isAuthenticated } = require('../helper/auth/isAuthenticated');
 const { extractUser } = require('../helper/user');
 
-profileRoutes.get('/:id', isAuthenticated, extractUser, async (req, res) => {
+profileRoutes.get('/:id?', isAuthenticated, extractUser, async (req, res) => {
   const { id } = req.params;
   const { user } = req;
+  if (!id || id.toLowerCase() !== 'me') {
+    return res.status(400).end();
+  }
   if (!user) {
     res.status(400).json({ error: ERR_MSGS.profileNotExist });
   }
