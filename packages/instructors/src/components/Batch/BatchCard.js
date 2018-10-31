@@ -3,17 +3,18 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import green from '@material-ui/core/colors/green';
-import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
+import red from '@material-ui/core/colors/red';
 import List from '@material-ui/core/List';
 import { withStyles } from '@material-ui/core/styles';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import DateRange from '@material-ui/icons/DateRange';
 import DateRangeOutlined from '@material-ui/icons/DateRangeOutlined';
-import React from 'react';
 import format from 'date-fns/format';
 import isFuture from 'date-fns/is_future';
 import isPast from 'date-fns/is_past';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { IconListItem } from '../../../../shared-components/IconListItem';
 import { OutlineButton } from '../../../../shared-components/OutlineButton';
@@ -41,7 +42,7 @@ const styles = () => ({
 });
 
 const BatchCardComponent = ({
-  classes, batchInfo, index, batchCount, onEdit, ...props
+  classes, batchInfo, index, batchCount, ...props
 }) => {
   let activeClass = classes.active;
   if (isPast(batchInfo.endDate)) {
@@ -57,7 +58,7 @@ const BatchCardComponent = ({
         className={classes.noPaddingBottom}
         avatar={<Avatar className={activeClass}>{count}</Avatar>}
         action={
-          <OutlineButton size="small" onClick={onEdit} data-id={batchInfo._id}>
+          <OutlineButton size="small" component={Link} to={`/batch/${batchInfo._id}`}>
             Edit
           </OutlineButton>
         }
