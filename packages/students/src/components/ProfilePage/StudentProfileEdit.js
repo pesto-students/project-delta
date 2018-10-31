@@ -1,15 +1,15 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 import { getActiveBatches } from '../../services/batch';
 import { LoginHeader, LoginFooter } from '../../../../shared-components/LoginComponents';
 import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 import { uploadFile } from '../../services/firebase';
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
+import { NavigateToDashboardComponent } from './NavigateToDashboard';
 
 import './StudentProfileEdit.css';
 
@@ -99,239 +99,210 @@ export class StudentProfileEditComponent extends React.Component {
         </Grid>
 
         <Grid item xs={12} md={8} className="navigation">
-          {
-            isNewUser
-              ? (
-                <span
-                  className="disabled"
-                  to="/dashboard"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '20px 0',
-                    fontSize: '1.5em',
-                    color: 'black',
-                    textDecoration: 'none',
-                  }}
-                >
-                  &lt;- To dashboard
-                </span>
-              )
-              : (
-                <NavLink
-                  to="/dashboard"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '20px 0',
-                    fontSize: '1.5em',
-                    color: 'black',
-                    textDecoration: 'none',
-                  }}
-                >
-                  &lt;- To dashboard
-                </NavLink>
-              )
-          }
+          <NavigateToDashboardComponent disabled={isNewUser} />
         </Grid>
 
-        <Grid container direction="column" alignItems="center" item xs={12} md={8}>
-          <form
-            id="form-profile-edit"
-            onSubmit={this.handleSubmit}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              width: '100%',
-            }}
-          >
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              item
-              xs={8}
-              md={5}
-            >
-              <label
-                className="profile-pic"
-                htmlFor="profilePic"
-                style={{
-                  backgroundImage: `url(${profilePicUrl})`,
-                  backgroundSize: 'cover',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  minHeight: '250px',
-                  minWidth: '250px',
-                }}
+        <Grid item xs={12} md={8}>
+          <form id="form-profile-edit" onSubmit={this.handleSubmit}>
+            <Grid container className="form-profile-edit-container-inner">
+              <Grid
+                className="profile-edit-pic"
+                container
+                justify="center"
+                alignItems="center"
+                item
+                xs={12}
+                md={5}
               >
-                <input
-                  type="file"
-                  id="profilePic"
-                  name="profilePic"
-                  accept="image/png, image/jpeg"
-                  onChange={this.handleProfilePicUpload}
-                  style={{ display: 'none' }}
-                />
-                {this.state.changingProfilePic
-                  ? <LoadingIndicator additionalStyles={{ width: '50px', height: '50px' }} />
-                  : null}
-              </label>
-            </Grid>
-
-            <Grid container justify="center" item xs={12} md={7}>
-              <Grid container direction="row" justify="space-between" item xs={10}>
-                <Grid item xs={12} md={5}>
-                  <TextField
-                    label="First name"
-                    name="firstName"
-                    value={this.state.firstName}
-                    onChange={this.handleChange}
-                    margin="normal"
-                    style={inputStyles}
-                    required
+                <label
+                  className="profile-pic"
+                  htmlFor="profilePic"
+                  style={{
+                    backgroundImage: `url(${profilePicUrl})`,
+                    backgroundSize: 'cover',
+                    display: 'inline-block',
+                    height: '250px',
+                    width: '250px',
+                  }}
+                >
+                  <input
+                    type="file"
+                    id="profilePic"
+                    name="profilePic"
+                    accept="image/png, image/jpeg"
+                    onChange={this.handleProfilePicUpload}
+                    style={{ display: 'none' }}
                   />
-                </Grid>
-
-                <Grid item xs={12} md={5}>
-                  <TextField
-                    label="Last name"
-                    name="lastName"
-                    value={this.state.lastName}
-                    onChange={this.handleChange}
-                    margin="normal"
-                    style={inputStyles}
-                    required
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid item xs={10}>
-                <TextField
-                  label="Email"
-                  name="email"
-                  value={this.state.email}
-                  margin="normal"
-                  style={inputStyles}
-                  required
-                  disabled
-                />
-              </Grid>
-
-              <Grid item direction="row" xs={10} container justify="space-between">
-                <Grid item xs={12} md={5}>
-                  <TextField
-                    select
-                    label="Batch City"
-                    name="batchCity"
-                    value={this.state.batchCity}
-                    onChange={this.handleBatchCityChange}
-                    margin="normal"
-                    InputLabelProps={{ shrink: true }}
-                    SelectProps={{ native: true }}
-                    style={inputStyles}
-                    required
-                  >
-                    <option value="">Select city --</option>
-                    {!this.loading
-                      ? Reflect.ownKeys(this.cityWiseBatches)
-                        .sort()
-                        .map(city => <option key={city} value={city}>{city}</option>)
-                      : null}
-                  </TextField>
-                </Grid>
-
-                <Grid item xs={12} md={5}>
-                  <TextField
-                    select
-                    label="Batch #"
-                    name="batchNumber"
-                    value={this.state.batchNumber}
-                    onChange={this.handleChange}
-                    margin="normal"
-                    InputLabelProps={{ shrink: true }}
-                    SelectProps={{ native: true }}
-                    style={inputStyles}
-                    required
-                  >
-                    <option value="">Select # --</option>
-                    {!this.state.loading
-                      && this.state.batchCity
-                      && Reflect.ownKeys(this.cityWiseBatches, this.state.batchCity)
-                      ? this.cityWiseBatches[this.state.batchCity]
-                        .map(batch => batch.batchNumber)
-                        .map(num => (
-                          <option key={`${this.state.batchCity}|${num}`} value={num}>{num}</option>
-                        ))
-                      : null}
-                  </TextField>
-                </Grid>
-              </Grid>
-
-              <Grid container direction="row" justify="space-between" item xs={10}>
-                <Grid item xs={12} md={5}>
-                  <TextField
-                    type="date"
-                    label="Date of Birth"
-                    name="dob"
-                    value={this.state.dob}
-                    onChange={this.handleChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    margin="normal"
-                    style={{ ...inputStyles }}
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={5}>
-                  <TextField
-                    select
-                    label="Sex"
-                    name="sex"
-                    value={this.state.sex}
-                    onChange={this.handleChange}
-                    margin="normal"
-                    InputLabelProps={{ shrink: true }}
-                    SelectProps={{ native: true }}
-                    style={inputStyles}
-                  >
-                    <option value="">Select sex --</option>
-                    <option value="m">Male</option>
-                    <option value="f">Female</option>
-                  </TextField>
-                </Grid>
+                  {this.state.changingProfilePic
+                    ? <LoadingIndicator additionalStyles={{ width: '50px', height: '50px' }} />
+                    : null}
+                </label>
               </Grid>
 
               <Grid
+                className="profile-edit-details"
                 container
-                justify="space-between"
+                direction="column"
+                alignItems="center"
                 item
-                xs={10}
-                style={{ margin: '1em 0 2em 0' }}
+                xs={12}
+                md={7}
               >
-                <Grid item xs={5}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    style={{ width: '100%' }}
-                  >
-                    Save
-                  </Button>
+                <Grid container justify="space-between" item xs={8} sm={5} md={10}>
+                  <Grid item xs={12} md={5}>
+                    <TextField
+                      label="First name"
+                      name="firstName"
+                      value={this.state.firstName}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      style={inputStyles}
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} md={5}>
+                    <TextField
+                      label="Last name"
+                      name="lastName"
+                      value={this.state.lastName}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      style={inputStyles}
+                      required
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={5}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    type="button"
-                    disabled={isNewUser}
-                    style={{ width: '100%' }}
-                    onClick={this.props.handleCancelBtnClick}
+
+                <Grid container justify="space-between" item xs={8} sm={5} md={10}>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Email"
+                      name="email"
+                      value={this.state.email}
+                      margin="normal"
+                      style={inputStyles}
+                      required
+                      disabled
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid container justify="space-between" item xs={8} sm={5} md={10}>
+                  <Grid item xs={12} md={5}>
+                    <TextField
+                      select
+                      label="Batch City"
+                      name="batchCity"
+                      value={this.state.batchCity}
+                      onChange={this.handleBatchCityChange}
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      SelectProps={{ native: true }}
+                      style={inputStyles}
+                      required
+                    >
+                      <option value="">Select city --</option>
+                      {!this.loading
+                        ? Reflect.ownKeys(this.cityWiseBatches)
+                          .sort()
+                          .map(city => <option key={city} value={city}>{city}</option>)
+                        : null}
+                    </TextField>
+                  </Grid>
+
+                  <Grid item xs={12} md={5}>
+                    <TextField
+                      select
+                      label="Batch #"
+                      name="batchNumber"
+                      value={this.state.batchNumber}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      SelectProps={{ native: true }}
+                      style={inputStyles}
+                      required
+                    >
+                      <option value="">Select # --</option>
+                      {!this.state.loading
+                        && this.state.batchCity
+                        && Reflect.ownKeys(this.cityWiseBatches, this.state.batchCity)
+                        ? this.cityWiseBatches[this.state.batchCity]
+                          .map(batch => batch.batchNumber)
+                          .map(num => (
+                            <option key={`${this.state.batchCity}|${num}`} value={num}>{num}</option>
+                          ))
+                        : null}
+                    </TextField>
+                  </Grid>
+                </Grid>
+
+                <Grid container justify="space-between" item xs={8} sm={5} md={10}>
+                  <Grid item xs={12} md={5}>
+                    <TextField
+                      type="date"
+                      label="Date of Birth"
+                      name="dob"
+                      value={this.state.dob}
+                      onChange={this.handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      margin="normal"
+                      style={{ ...inputStyles }}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} md={5}>
+                    <TextField
+                      select
+                      label="Sex"
+                      name="sex"
+                      value={this.state.sex}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      SelectProps={{ native: true }}
+                      style={inputStyles}
+                    >
+                      <option value="">Select sex --</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
+                    </TextField>
+                  </Grid>
+                </Grid>
+
+                <Grid className="profile-edit-btns" container justify="space-between" item xs={8} sm={5} md={10}>
+                  <Grid item xs={12} sm={5}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      style={{ margin: '20px 0', minHeight: '50px' }}
+                    >
+                      SAVE
+                    </Button>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={12}
+                    sm={5}
+                    style={isNewUser ? { cursor: 'not-allowed' } : {}}
                   >
-                    Cancel
-                  </Button>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="secondary"
+                      disabled={isNewUser}
+                      onClick={this.props.handleCancelBtnClick}
+                      style={{ margin: '20px 0', minHeight: '50px' }}
+                    >
+                      CANCEL
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -341,7 +312,7 @@ export class StudentProfileEditComponent extends React.Component {
         <Grid item xs={12} md={8}>
           <LoginFooter />
         </Grid>
-      </Grid >
+      </Grid>
     );
   }
 }
