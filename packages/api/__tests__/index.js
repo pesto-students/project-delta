@@ -209,7 +209,7 @@ describe('/verifyToken', () => {
   });
 });
 
-describe('/api/profile/createUser', () => {
+describe('/user', () => {
   let url;
   let verifyTokenUrl;
   const testUser = {
@@ -220,7 +220,7 @@ describe('/api/profile/createUser', () => {
   };
 
   beforeAll(() => {
-    url = `${serverUrl}/api/profile/createUser`;
+    url = `${serverUrl}/user`;
     verifyTokenUrl = `${serverUrl}/verifyToken`;
   });
 
@@ -292,9 +292,9 @@ describe('/api/profile/createUser', () => {
     });
   });
 
-  it('should return 201 on creation of new user', (done) => {
+  it('should return 200 on creation of new user', (done) => {
     tokenService.generate({
-      email: 'vipulrawat007@gmail.com',
+      email: 'vipultests@gmail.com',
       tokenType: 'EMAIL_VERIFICATION',
     }).then((token) => {
       request({
@@ -311,32 +311,7 @@ describe('/api/profile/createUser', () => {
           json: true,
           resolveWithFullResponse: true,
         }).then((result) => {
-          expect(result.statusCode).toBe(201);
-          done();
-        });
-      });
-    });
-  });
-  it('should send a 500 response when a duplicate copy is present', (done) => {
-    tokenService.generate({
-      email: 'vipulrawat007@gmail.com',
-      tokenType: 'EMAIL_VERIFICATION',
-    }).then((token) => {
-      request({
-        url: verifyTokenUrl,
-        method: 'POST',
-        body: { token },
-        json: true,
-        resolveWithFullResponse: true,
-      }).then((res) => {
-        request({
-          url,
-          method: 'POST',
-          body: { ...testUser, token: res.body.token },
-          json: true,
-          resolveWithFullResponse: true,
-        }).catch((e) => {
-          expect(e.statusCode).toBe(500);
+          expect(result.statusCode).toBe(200);
           done();
         });
       });
