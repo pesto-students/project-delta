@@ -1,17 +1,33 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import format from 'date-fns/format';
 
 import { BlockButton } from '../../../../shared-components/BlockButton';
 import { InputOutlined } from '../../../../shared-components/InputOutlined';
 
 class BatchForm extends Component {
-  state = {
-    batchNumber: '',
-    city: '',
-    numberOfDays: '',
-    startDate: '',
-    endDate: '',
-  };
+  constructor(props) {
+    super(props);
+
+    const defaultState = {
+      batchNumber: '',
+      city: '',
+      numberOfDays: '',
+      startDate: '',
+      endDate: '',
+    };
+
+    const { isEditAvailable, editableBatch } = this.props;
+    if (isEditAvailable) {
+      this.state = {
+        ...editableBatch,
+        startDate: format(editableBatch.startDate, 'YYYY-MM-DD'),
+        endDate: format(editableBatch.endDate, 'YYYY-MM-DD'),
+      };
+    } else {
+      this.state = { ...defaultState };
+    }
+  }
 
   onInputChange = (event) => {
     this.setState({
@@ -21,17 +37,22 @@ class BatchForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    const { state } = this;
     const updatedState = {
-      ...this.state,
-      numberOfDays: Number(this.state.numberOfDays),
-      startDate: new Date(this.state.startDate),
-      endDate: new Date(this.state.endDate),
+      ...state,
+      numberOfDays: Number(state.numberOfDays),
+      startDate: new Date(state.startDate),
+      endDate: new Date(state.endDate),
     };
-    this.props.handleSubmit(updatedState);
+    const { handleSubmit } = this.props;
+    handleSubmit(updatedState);
   };
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, isDisabled } = this.props;
+    const {
+      batchNumber, city, numberOfDays, startDate, endDate,
+    } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
         <InputOutlined
@@ -39,21 +60,24 @@ class BatchForm extends Component {
           type="text"
           label="Batch Number"
           onChange={this.onInputChange}
-          value={this.state.batchNumber}
+          value={batchNumber}
+          disabled={isDisabled}
         />
         <InputOutlined
           name="city"
           type="text"
           label="City"
           onChange={this.onInputChange}
-          value={this.state.city}
+          value={city}
+          disabled={isDisabled}
         />
         <InputOutlined
           name="numberOfDays"
           type="number"
           label="Number Of Days"
           onChange={this.onInputChange}
-          value={this.state.numberOfDays}
+          value={numberOfDays}
+          disabled={isDisabled}
         />
         <InputOutlined
           name="startDate"
@@ -63,7 +87,8 @@ class BatchForm extends Component {
             shrink: true,
           }}
           onChange={this.onInputChange}
-          value={this.state.startDate}
+          value={startDate}
+          disabled={isDisabled}
         />
         <InputOutlined
           name="endDate"
@@ -73,9 +98,15 @@ class BatchForm extends Component {
             shrink: true,
           }}
           onChange={this.onInputChange}
-          value={this.state.endDate}
+          value={endDate}
+          disabled={isDisabled}
         />
-        <BlockButton type="submit" className="submit-button" isLoading={isLoading}>
+        <BlockButton
+          type="submit"
+          className="submit-button"
+          isLoading={isLoading}
+          disabled={isDisabled}
+        >
           Save
         </BlockButton>
       </form>
@@ -86,6 +117,15 @@ class BatchForm extends Component {
 BatchForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isEditAvailable: PropTypes.bool,
+  editableBatch: PropTypes.shape(),
+  isDisabled: PropTypes.bool,
+};
+
+BatchForm.defaultProps = {
+  isDisabled: false,
+  isEditAvailable: false,
+  editableBatch: {},
 };
 
 export { BatchForm };
