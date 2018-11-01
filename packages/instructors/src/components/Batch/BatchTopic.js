@@ -18,13 +18,10 @@ class BatchTopicComponent extends React.Component {
     deleteTopicId: '',
   }
 
-  componentDidMount() {
-    this.props.updateTitle('Topics Master');
-  }
-
   onDelete = () => {
     const { deleteTopicId } = this.state;
-    this.props.requestDelete(deleteTopicId);
+    const { requestDelete } = this.props;
+    requestDelete(deleteTopicId);
   }
 
   getColumns = () => {
@@ -84,9 +81,9 @@ class BatchTopicComponent extends React.Component {
 
   render() {
     const { options, deleteTopicId } = this.state;
-    const { topicList, isUpdating } = this.props.topics;
+    const { topics } = this.props;
 
-    const data = topicList.map(this.formatData);
+    const data = topics.topicList.map(this.formatData);
     const columns = this.getColumns();
 
     return (
@@ -100,7 +97,7 @@ class BatchTopicComponent extends React.Component {
           content="Deleting topics will not be available to future batches.It won't remove from existing or previous batches."
           successText="Delete"
           disableBackdrop
-          isLoading={isUpdating}
+          isLoading={topics.isUpdating}
         />
         <MUIDataTable
           title="Topic List"
@@ -116,7 +113,6 @@ class BatchTopicComponent extends React.Component {
 BatchTopicComponent.propTypes = {
   topics: PropTypes.shape().isRequired,
   requestDelete: PropTypes.func.isRequired,
-  updateTitle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

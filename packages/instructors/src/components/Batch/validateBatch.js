@@ -2,7 +2,7 @@ import isValid from 'date-fns/is_valid';
 import isBefore from 'date-fns/is_before';
 import isEmpty from 'validator/lib/isEmpty';
 
-import { BATCH_MSGS } from '../../constants/MSGS';
+import { BATCH_MSGS } from '../../constants/Batch';
 
 export const validateBatchInfo = (batchInfo) => {
   let isInfoValid = true;
