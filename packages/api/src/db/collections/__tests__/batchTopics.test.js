@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { DB_URL } from '../../../../config';
 
-import { getBatchTopics } from '../batchTopics';
+import { getBatchTopics, deleteBatchTopic } from '../batchTopics';
 import { BatchTopic } from '../../index';
 
 describe('Mongo Queries: Batch Topics', () => {
@@ -64,6 +64,34 @@ describe('Mongo Queries: Batch Topics', () => {
       const batchTopicsList = await getBatchTopics(topicId, day);
 
       expect(batchTopicsList.length).toBe(2);
+    });
+  });
+
+  describe('Delete batch topic', () => {
+    const newDocument = {
+      batchId: mongoose.Types.ObjectId('111111111111111111111112'),
+      name: 'New Topic',
+      category: 'unreal',
+      day: 1,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_05'),
+    };
+
+    beforeEach(async () => {
+      const topicModel = new BatchTopic(newDocument);
+      const insertedDocument = await topicModel.save();
+      newDocument._id = insertedDocument._id;
+    });
+
+    afterEach(async () => {
+      await BatchTopic.deleteOne(newDocument);
+    });
+
+    it('should update document archive value', async () => {
+      await deleteBatchTopic(newDocument._id);
+
+      const topic = await BatchTopic.findOne(newDocument._id);
+      expect(topic.archive).toBe(true);
     });
   });
 });

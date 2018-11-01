@@ -18,4 +18,16 @@ const getBatchTopics = async (batchId, day) => {
   return batchTopicsList;
 };
 
-export { getBatchTopics };
+const deleteBatchTopic = async (topicId) => {
+  const updatedInfo = {
+    archive: true,
+  };
+  const query = {
+    _id: topicId,
+  };
+  const opts = { runValidators: true };
+  const result = await BatchTopic.update(query, { $set: updatedInfo }, opts);
+  return result;
+};
+
+export { getBatchTopics, deleteBatchTopic };
