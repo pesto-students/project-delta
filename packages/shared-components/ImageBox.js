@@ -19,7 +19,7 @@ export function ImageBoxComponent({ bgUrl, style, ...restProps }) {
 
 ImageBoxComponent.propTypes = {
   bgUrl: PropTypes.string.isRequired,
-  style: PropTypes.shape,
+  style: PropTypes.shape({}),
 };
 
 ImageBoxComponent.defaultProps = {
