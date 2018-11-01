@@ -8,23 +8,39 @@ describe('Mongo Queries: Batch Exercises', () => {
   const dummyBatchExercise = [
     {
       batchId: mongoose.Types.ObjectId('111111111111111111111111'),
-      name: 'Rebase',
-      batchTopicId: mongoose.Types.ObjectId('111111111111111111111111'),
+      name: 'Exercise 1',
+      batchTopicId: mongoose.Types.ObjectId('121212121212121212121212'),
+      batchTopicName: 'Git',
+      day: 4,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_01'),
+    },
+    {
+      batchId: mongoose.Types.ObjectId('111111111111111111111111'),
+      name: 'Exercise 2',
+      batchTopicId: mongoose.Types.ObjectId('121212121212121212121215'),
+      batchTopicName: 'Javascript',
+      day: 2,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_02'),
+    },
+    {
+      batchId: mongoose.Types.ObjectId('111111111111111111111111'),
+      name: 'Exercise 3',
+      batchTopicId: mongoose.Types.ObjectId('121212121212121212121212'),
+      batchTopicName: 'Git',
+      day: 4,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_03'),
     },
     {
       batchId: mongoose.Types.ObjectId('111111111111111111111112'),
-      name: 'Merge',
-      batchTopicId: mongoose.Types.ObjectId('111111111111111111111112'),
-    },
-    {
-      batchId: mongoose.Types.ObjectId('111111111111111111111111'),
-      name: 'Conflict',
-      batchTopicId: mongoose.Types.ObjectId('111111111111111111111113'),
-    },
-    {
-      batchId: mongoose.Types.ObjectId('111111111111111111111111'),
-      name: 'extra',
-      batchTopicId: mongoose.Types.ObjectId('111111111111111111111114'),
+      name: 'Exercise 4',
+      batchTopicId: mongoose.Types.ObjectId('121212121212121212121215'),
+      batchTopicName: 'Javascript',
+      day: 2,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_04'),
     },
   ];
 
@@ -38,10 +54,20 @@ describe('Mongo Queries: Batch Exercises', () => {
     await mongoose.disconnect();
   });
 
-  describe('get batches', () => {
-    it('should return batch exercises with matching batch id', async () => {
-      const batchTopicsList = await getAllExercise('111111111111111111111111');
+  describe('get batch exercises', () => {
+    it('should return all documents with matching `batch id`', async () => {
+      const topicId = '111111111111111111111111';
+      const batchTopicsList = await getAllExercise(topicId);
+
       expect(batchTopicsList.length).toBe(3);
+    });
+
+    it('should return all documents with matching `batch id` and `day`', async () => {
+      const topicId = '111111111111111111111111';
+      const day = 2;
+      const batchTopicsList = await getAllExercise(topicId, day);
+
+      expect(batchTopicsList.length).toBe(1);
     });
   });
 });
