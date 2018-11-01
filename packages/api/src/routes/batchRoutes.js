@@ -1,7 +1,7 @@
 import isAfter from 'date-fns/is_after';
 import { Router } from 'express';
 import { asyncHandler } from '../services/asyncHandler';
-import { getAllBatches, insertBatch } from '../db/collections/batch';
+import { getAllBatches, insertBatch, updateBatchMaster } from '../db/collections/batch';
 
 const batchRoutes = Router();
 
@@ -22,6 +22,13 @@ batchRoutes.post('/create', asyncHandler(async (req, res, next) => {
   const result = await insertBatch(body);
   res.json({ batch_created: 'Success', batch_id: result.batchId, batchTopicsLength: result.batchTopicsLength });
   next();
+}));
+
+batchRoutes.put('/:id', asyncHandler(async (req, res) => {
+  const { data } = req.body;
+  const { id } = req.params;
+  await updateBatchMaster(id, data);
+  return res.json({ status: 'Success' });
 }));
 
 export { batchRoutes };

@@ -45,4 +45,20 @@ const insertBatch = async (batchInfo) => {
   return { batchId: batchCreated.id, batchTopicsLength: result.length };
 };
 
-export { getAllBatches, insertBatch };
+const updateBatchMaster = async (batchId, batchInfo) => {
+  const updatedInfo = {
+    city: batchInfo.city,
+    batchNumber: batchInfo.batchNumber,
+    numberOfDays: batchInfo.numberOfDays,
+    startDate: batchInfo.startDate,
+    endDate: batchInfo.endDate,
+  };
+  const query = {
+    _id: batchId,
+  };
+  const opts = { runValidators: true };
+  const result = await Batch.update(query, { $set: updatedInfo }, opts);
+  return result;
+};
+
+export { getAllBatches, insertBatch, updateBatchMaster };
