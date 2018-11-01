@@ -9,7 +9,7 @@ const batchTopics = Router();
 
 batchTopics.get('/list', isAuthenticated, asyncHandler(async (req, res) => {
   const { batchId, day } = req.query;
-  if (!batchId || !day) {
+  if (!batchId) {
     return res.status(400).json({ error: missingInfo });
   }
 
