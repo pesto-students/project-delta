@@ -19,4 +19,16 @@ const getAllExercise = async (batchId, day) => {
   return exerciseList;
 };
 
-export { getAllExercise };
+const deleteBatchExercise = async (exerciseId) => {
+  const updatedInfo = {
+    archive: true,
+  };
+  const query = {
+    _id: exerciseId,
+  };
+  const opts = { runValidators: true };
+  const result = await BatchExercise.update(query, { $set: updatedInfo }, opts);
+  return result;
+};
+
+export { getAllExercise, deleteBatchExercise };
