@@ -9,3 +9,7 @@ export const updateBatch = ({ _id, ...data }) => HTTP.PUT(`/instructor/batch/${_
 export const getBatchTopicList = batchId => HTTP.GET('/batchTopics/list', { batchId });
 
 export const getBatchExerciseList = batchId => HTTP.GET('/batchExercise/list', { batchId });
+
+export const deleteBatchTopic = topicId => HTTP.DELETE(`/batchTopics/${topicId}`);
+
+export const deleteBatchExercise = exerciseId => HTTP.DELETE(`/batchTopics/${exerciseId}`);

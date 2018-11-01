@@ -8,6 +8,8 @@ import {
   REQUEST_BATCH_EDIT,
   REQUEST_BATCH_UPDATE,
   REQUEST_BATCHES,
+  RECEIVE_BATCH_TOPICS_DELETE,
+  RECEIVE_BATCH_EXERCISES_DELETE,
 } from '../../constants/Batch';
 
 const initialState = {
@@ -90,6 +92,20 @@ export const batches = (state = initialState, action) => {
         batchList: updatedList,
       };
     }
+
+    case RECEIVE_BATCH_TOPICS_DELETE:
+      return {
+        ...state,
+        isUpdating: false,
+        topicList: state.topicList.filter(topic => topic._id !== action.topicId),
+      };
+
+    case RECEIVE_BATCH_EXERCISES_DELETE:
+      return {
+        ...state,
+        isUpdating: false,
+        exerciseList: state.exerciseList.filter(exercise => exercise._id !== action.exerciseId),
+      };
 
     default:
       return state;

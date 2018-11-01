@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { AlertDialog } from '../../../../shared-components/AlertDialog';
-import { deleteTopicFromList, fetchTopics } from '../Topics/action';
+import { deleteBatchTopicFromList } from './action';
 
 class BatchTopicComponent extends React.Component {
   state = {
@@ -119,8 +119,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchTopics: bindActionCreators(fetchTopics, dispatch),
-  requestDelete: bindActionCreators(deleteTopicFromList, dispatch),
+  requestDelete: bindActionCreators(deleteBatchTopicFromList, dispatch),
 });
 
 export const BatchTopic = connect(mapStateToProps, mapDispatchToProps)(BatchTopicComponent);
