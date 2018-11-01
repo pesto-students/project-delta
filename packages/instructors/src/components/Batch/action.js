@@ -7,6 +7,8 @@ import {
   REQUEST_BATCHES,
   RECEIVE_BATCH_TOPICS,
   RECEIVE_BATCH_EXERCISES,
+  RECEIVE_BATCH_EXERCISES_DELETE,
+  RECEIVE_BATCH_TOPICS_DELETE,
 } from '../../constants/Batch';
 import { ERROR_TYPES, MSGS } from '../../constants/MSGS';
 import {
@@ -14,6 +16,8 @@ import {
   updateBatch,
   getBatchTopicList,
   getBatchExerciseList,
+  deleteBatchTopic,
+  deleteBatchExercise,
 } from '../../services/batch';
 import { showAlert } from '../Layout/action';
 import { validateBatchInfo } from './validateBatch';
@@ -53,6 +57,16 @@ const receiveBatchTopics = topicList => ({
 const receiveBatchExercises = exerciseList => ({
   type: RECEIVE_BATCH_EXERCISES,
   exerciseList,
+});
+
+const receiveBatchTopicDelete = topicId => ({
+  type: RECEIVE_BATCH_TOPICS_DELETE,
+  topicId,
+});
+
+const receiveBatchExerciseDelete = exerciseId => ({
+  type: RECEIVE_BATCH_EXERCISES_DELETE,
+  exerciseId,
 });
 
 const fetchBatches = () => async (dispatch) => {
@@ -116,4 +130,33 @@ const updateBatchList = batchInfo => async (dispatch) => {
   dispatch(receiveBatchEdit(batchInfo));
 };
 
-export { fetchBatches, editBatch, updateBatchList };
+const deleteBatchExerciseFromList = exerciseId => async (dispatch) => {
+  dispatch(requestBatchUpdate());
+  const { error } = await deleteBatchExercise(exerciseId);
+  if (error) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
+    dispatch(receiveBatchesError());
+    return;
+  }
+  dispatch(receiveBatchExerciseDelete(exerciseId));
+};
+
+const deleteBatchTopicFromList = topicId => async (dispatch) => {
+  dispatch(requestBatchUpdate());
+  const { error } = await deleteBatchTopic(topicId);
+  if (error) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
+    dispatch(receiveBatchesError());
+    return;
+  }
+  dispatch(receiveBatchTopicDelete(topicId));
+};
+
+export {
+  fetchBatches,
+  editBatch,
+  updateBatchList,
+  deleteBatchExerciseFromList,
+  deleteBatchTopic,
+  deleteBatchTopicFromList,
+};

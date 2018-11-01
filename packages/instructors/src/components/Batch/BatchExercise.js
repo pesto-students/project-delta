@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { AlertDialog } from '../../../../shared-components/AlertDialog';
-import { deleteExerciseFromList, fetchExercises } from '../Exercise/action';
+import { deleteBatchExerciseFromList } from './action';
 
 class BatchExerciseComponent extends React.Component {
   state = {
@@ -17,11 +17,6 @@ class BatchExerciseComponent extends React.Component {
     },
     deleteExerciseId: '',
   };
-
-  componentDidMount() {
-    const { fetchExerciseList } = this.props;
-    fetchExerciseList();
-  }
 
   onDelete = () => {
     const { deleteExerciseId } = this.state;
@@ -122,7 +117,6 @@ class BatchExerciseComponent extends React.Component {
 
 BatchExerciseComponent.propTypes = {
   exerciseList: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  fetchExerciseList: PropTypes.func.isRequired,
   requestDelete: PropTypes.func.isRequired,
 };
 
@@ -131,8 +125,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchExerciseList: bindActionCreators(fetchExercises, dispatch),
-  requestDelete: bindActionCreators(deleteExerciseFromList, dispatch),
+  requestDelete: bindActionCreators(deleteBatchExerciseFromList, dispatch),
 });
 
 export const BatchExerciseList = connect(
