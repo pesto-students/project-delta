@@ -1,3 +1,5 @@
+import { URL, URLSearchParams } from 'whatwg-url'; // node-inbuilt-library
+
 import { API_URL } from '../config';
 import { getToken, hasToken } from './loginToken';
 
@@ -30,11 +32,18 @@ const extractResponseBody = (res) => {
   return res.text();
 };
 
-export const HTTP = {
-  GET: (urlPath, headers = {}, shouldExtractResponseBody = true) => {
-    const finalHeaders = addDefaultReqHeaders(headers);
+const urlWithQuery = (apiUrl, query) => {
+  const urlObj = new URL(apiUrl);
+  urlObj.search = new URLSearchParams(query);
+  return urlObj;
+};
 
-    return fetch(`${API_URL}${urlPath}`, {
+export const HTTP = {
+  GET: (urlPath, query, headers = {}, shouldExtractResponseBody = true) => {
+    const finalHeaders = addDefaultReqHeaders(headers);
+    const finalUrl = urlWithQuery(`${API_URL}${urlPath}`, query);
+
+    return fetch(finalUrl, {
       headers: finalHeaders,
       credentials: 'include',
     }).then((response) => {
