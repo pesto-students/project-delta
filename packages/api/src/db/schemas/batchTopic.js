@@ -26,6 +26,16 @@ const batchTopicSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
+
+  masterId: { // link to 'master topic' collection
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+
+  archive: { // Represent deleted documents
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = batchTopicSchema;
