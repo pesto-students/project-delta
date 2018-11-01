@@ -5,9 +5,16 @@ import {
   REQUEST_BATCH_EDIT,
   REQUEST_BATCH_UPDATE,
   REQUEST_BATCHES,
+  RECEIVE_BATCH_TOPICS,
+  RECEIVE_BATCH_EXERCISES,
 } from '../../constants/Batch';
 import { ERROR_TYPES, MSGS } from '../../constants/MSGS';
-import { getBatchList, updateBatch } from '../../services/batch';
+import {
+  getBatchList,
+  updateBatch,
+  getBatchTopicList,
+  getBatchExerciseList,
+} from '../../services/batch';
 import { showAlert } from '../Layout/action';
 import { validateBatchInfo } from './validateBatch';
 
@@ -38,6 +45,16 @@ const receiveBatchEdit = batchInfo => ({
   batchInfo,
 });
 
+const receiveBatchTopics = topicList => ({
+  type: RECEIVE_BATCH_TOPICS,
+  topicList,
+});
+
+const receiveBatchExercises = exerciseList => ({
+  type: RECEIVE_BATCH_EXERCISES,
+  exerciseList,
+});
+
 const fetchBatches = () => async (dispatch) => {
   dispatch(requestBatches());
   const { error, batchList } = await getBatchList();
@@ -49,11 +66,34 @@ const fetchBatches = () => async (dispatch) => {
   dispatch(receiveBatches(batchList));
 };
 
+const fetchBatchTopics = batchId => async (dispatch) => {
+  const { error, batchTopicsList } = await getBatchTopicList(batchId);
+  if (error) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
+    dispatch(receiveBatchesError());
+    return;
+  }
+  dispatch(receiveBatchTopics(batchTopicsList));
+};
+
+const fetchBatchExercises = batchId => async (dispatch) => {
+  const { error, exerciseList } = await getBatchExerciseList(batchId);
+  if (error) {
+    dispatch(showAlert(ERROR_TYPES.ERROR, MSGS.UNKNOWN_ERROR));
+    dispatch(receiveBatchesError());
+    return;
+  }
+  dispatch(receiveBatchExercises(exerciseList));
+};
+
 const editBatch = batchId => async (dispatch, getState) => {
   const { batches } = getState();
   if (batches.batchList.length === 0) {
     await dispatch(fetchBatches());
   }
+
+  await dispatch(fetchBatchTopics(batchId));
+  await dispatch(fetchBatchExercises(batchId));
 
   dispatch(requestBatchEdit(batchId));
 };
