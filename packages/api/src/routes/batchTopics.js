@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { Types } from 'mongoose';
 import { asyncHandler } from '../services/asyncHandler';
-import { getBatchTopics } from '../db/collections/batchTopics';
+import { getBatchTopics, deleteBatchTopic } from '../db/collections/batchTopics';
 import { isAuthenticated } from '../helper/auth/isAuthenticated';
 import { missingInfo, noBatchId } from '../../constants/ERR_MSGS';
 
@@ -19,6 +19,12 @@ batchTopics.get('/list', isAuthenticated, asyncHandler(async (req, res) => {
 
   const batchTopicsList = await getBatchTopics(batchId, day);
   return res.json({ batchTopicsList });
+}));
+
+batchTopics.delete('/:id', isAuthenticated, asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  await deleteBatchTopic(id);
+  return res.json({ status: 'success' });
 }));
 
 export { batchTopics };
