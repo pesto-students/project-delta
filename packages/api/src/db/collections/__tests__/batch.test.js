@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import addDays from 'date-fns/add_days';
 import { DB_URL } from '../../../../config';
 
-import { getAllBatches, insertBatch } from '../batch';
+import { getAllBatches, insertBatch, updateBatchMaster } from '../batch';
 import { Batch } from '../../index';
 
 describe('Mongo Queries: Batch', () => {
@@ -82,6 +82,39 @@ describe('Mongo Queries: Batch', () => {
 
       const batch = await Batch.findOne({ _id: newId.batchId });
       expect(newId.batchTopicsLength).toBeDefined();
+      expect(batch).toBeDefined();
+    });
+  });
+
+  describe('Update batch master', () => {
+    const newDocument = {
+      batchNumber: 'Batch #4',
+      city: 'Chennai',
+      numberOfDays: 20,
+      startDate: new Date(),
+      endDate: addDays(new Date(), 20),
+    };
+
+    beforeEach(async () => {
+      const insertedDocument = await insertBatch(newDocument);
+      newDocument._id = insertedDocument._id;
+    });
+
+    afterEach(async () => {
+      await Batch.deleteOne(newDocument);
+    });
+
+    it('should update document to new value', async () => {
+      const updatedValue = {
+        batchNumber: 'Batch #4',
+        city: 'Delhi',
+        numberOfDays: 30,
+        startDate: new Date(),
+        endDate: addDays(new Date(), 30),
+      };
+      await updateBatchMaster(newDocument._id, updatedValue);
+
+      const batch = await Batch.findOne(updatedValue);
       expect(batch).toBeDefined();
     });
   });
