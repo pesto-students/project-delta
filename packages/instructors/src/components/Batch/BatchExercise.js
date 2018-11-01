@@ -19,12 +19,14 @@ class BatchExerciseComponent extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchExercises();
+    const { fetchExerciseList } = this.props;
+    fetchExerciseList();
   }
 
   onDelete = () => {
     const { deleteExerciseId } = this.state;
-    this.props.requestDelete(deleteExerciseId);
+    const { requestDelete } = this.props;
+    requestDelete(deleteExerciseId);
   };
 
   getColumns = () => {
@@ -85,11 +87,17 @@ class BatchExerciseComponent extends React.Component {
     );
   };
 
-  formatData = exercise => [exercise._id, exercise.name, exercise.topicName, exercise.day, true];
+  formatData = exercise => [
+    exercise._id,
+    exercise.name,
+    exercise.batchTopicName,
+    exercise.day,
+    true,
+  ];
 
   render() {
     const { options, deleteExerciseId } = this.state;
-    const { exerciseList, isUpdating } = this.props.exercises;
+    const { exerciseList } = this.props;
 
     const data = exerciseList.map(this.formatData);
     const columns = this.getColumns();
@@ -105,7 +113,6 @@ class BatchExerciseComponent extends React.Component {
           content="Deleting exercises will remove from current batch. It won't remove from master exercises."
           successText="Delete"
           disableBackdrop
-          isLoading={isUpdating}
         />
         <MUIDataTable title="Exercise List" options={options} data={data} columns={columns} />
       </React.Fragment>
@@ -114,17 +121,17 @@ class BatchExerciseComponent extends React.Component {
 }
 
 BatchExerciseComponent.propTypes = {
-  exercises: PropTypes.shape().isRequired,
-  fetchExercises: PropTypes.func.isRequired,
+  exerciseList: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  fetchExerciseList: PropTypes.func.isRequired,
   requestDelete: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  exercises: state.exercises,
+  exerciseList: state.batches.exerciseList,
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchExercises: bindActionCreators(fetchExercises, dispatch),
+  fetchExerciseList: bindActionCreators(fetchExercises, dispatch),
   requestDelete: bindActionCreators(deleteExerciseFromList, dispatch),
 });
 
