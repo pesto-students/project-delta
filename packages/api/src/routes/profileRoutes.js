@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const profileRoutes = require('express').Router();
 const { User, Batch } = require('../db');
 const ERR_MSGS = require('../../constants/ERR_MSGS');
@@ -5,83 +6,69 @@ const profileValidation = require('../services/profileValidation');
 const { isAuthenticated } = require('../helper/auth/isAuthenticated');
 const { extractUser } = require('../helper/user');
 
-profileRoutes.get('/user/:id', isAuthenticated, extractUser, async (req, res) => {
+profileRoutes.get('/:id?', isAuthenticated, extractUser, async (req, res) => {
   const { id } = req.params;
   const { user } = req;
+  if (!id || id.toLowerCase() !== 'me') {
+    return res.status(400).end();
+  }
   if (!user) {
     res.status(400).json({ error: ERR_MSGS.profileNotExist });
   }
-  const {
-    email, firstName, lastName, profilePicUrl, batchId, role,
-  } = user;
-  if (id.toLowerCase() === 'me') {
-    const projection = {
-      city: 1,
-      batchNumber: 1,
-    };
-    const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
-    const { city, batchNumber } = batchOfUser;
-    const finalUserDetails = {
-      email,
-      firstName,
-      lastName,
-      profilePicUrl,
-      batchId,
-      role,
-      city,
-      batchNumber,
-    };
-    res.json(finalUserDetails);
+  if (id.toLowerCase() !== 'me') {
+    return res.status(400).end();
   }
-  res.status(400).end();
+  if (user.role === 'instructor') {
+    return res.json(user);
+  }
+  // id = me and role = student
+  const projection = {
+    city: 1,
+    batchNumber: 1,
+  };
+  const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
+  const finalUserDetails = {
+    ...user.toObject(),
+    ...batchOfUser.toObject(),
+  };
+  return res.json(finalUserDetails);
 });
 
-profileRoutes.post('/createUser', isAuthenticated, (req, res) => {
+profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
+  const { user } = req;
+  const { email } = req.decoded;
+  const { id } = req.params;
+
+  if (id && id.toLowerCase() !== 'me') {
+    return res.send(400).end();
+  }
   if (!req.body) {
     return res.status(400).json({ error: ERR_MSGS.noProfileData });
   }
   const { body } = req;
-  if (!profileValidation(body).passed) {
-    return res.status(400).json({ error: profileValidation(body).msg });
-  }
-  if (body.role === 'student') {
-    body.batchId = body.batchId.toString();
-  }
-  const user = new User(body);
-  return user.save()
-    .then((doc) => {
-      if (!doc || doc.length === 0) {
-        return res.status(500).json({ error: ERR_MSGS.internalServerError });
-      }
-      return res.status(201).json({ user_created: 'Success', user_email: doc.email });
-    })
-    .catch(() => {
-      res.status(500).json({ error: ERR_MSGS.internalServerError });
-    });
-});
-/* Update request accepts whole body but should contain only the fields in User schema
-* The input fields are meant to be disabled on front end such as city, batchNumber, email
-*/
-profileRoutes.put('/user/:id', isAuthenticated, extractUser, async (req, res) => {
-  const { id } = req.params;
-  const { user } = req;
-  if (!user) {
-    res.status(400).json({ error: ERR_MSGS.profileNotExist });
-  }
-  if (id.toLowerCase() === 'me') {
-    await User.findOneAndUpdate(
-      { email: user.email },
-      req.body,
-      { new: true, runValidators: true },
-      (err, newUserDetails) => {
-        if (err) {
-          res.status(500).json({ error: ERR_MSGS.internalServerError });
-        }
-        return res.json(newUserDetails);
-      },
-    );
-  }
-  res.status(400).end();
+  // ANI
+  body.batchId = mongoose.Types.ObjectId(body.batchId);
+  console.log(user);
+  console.log('------------------');
+  user._doc = { ...user._doc, ...body };
+  console.log(user);
+  console.log('------------------');
+  user.save((err, doc) => {
+    if (err) console.log(err);
+    console.log(doc);
+    console.log('------------------');
+  });
+
+  // ANI
+  // const validationResult = await profileValidation(body);
+  // if (!validationResult.passed) {
+  //   return res.status(400).json({ error: validationResult.msg });
+  // }
+
+  // const opts = { runValidators: true };
+  // const result = await User.updateOne({ email }, body, opts);
+  // console.log(result);
+  // return res.send({ success: true });
 });
 
 module.exports = profileRoutes;
