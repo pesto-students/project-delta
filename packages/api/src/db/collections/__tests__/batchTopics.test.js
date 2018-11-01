@@ -11,29 +11,37 @@ describe('Mongo Queries: Batch Topics', () => {
       name: 'Rebase',
       category: 'git',
       day: 1,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_01'),
     },
     {
       batchId: mongoose.Types.ObjectId('111111111111111111111111'),
       name: 'Merge',
       category: 'git',
-      day: 1,
+      day: 2,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_02'),
     },
     {
       batchId: mongoose.Types.ObjectId('111111111111111111111111'),
       name: 'Conflict',
       category: 'git',
       day: 1,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_03'),
     },
     {
       batchId: mongoose.Types.ObjectId('111111111111111111111112'),
       name: 'ExtraTerrestrial',
       category: 'unreal',
       day: 1,
+      archive: false,
+      masterId: mongoose.Types.ObjectId('master_id_04'),
     },
   ];
 
   beforeAll(async () => {
-    mongoose.connect(DB_URL, { useNewUrlParser: true, connectTimeoutMS: 10000 });
+    await mongoose.connect(DB_URL, { useNewUrlParser: true, connectTimeoutMS: 10000 });
     await BatchTopic.insertMany(dummyBatchTopics);
   });
 
@@ -42,10 +50,20 @@ describe('Mongo Queries: Batch Topics', () => {
     await mongoose.disconnect();
   });
 
-  describe('get batches', () => {
-    it('should return all batch documents with matching batch id', async () => {
-      const batchTopicsList = await getBatchTopics('111111111111111111111111', 1);
+  describe('get batch Topics', () => {
+    it('should return all documents with matching `batch id`', async () => {
+      const topicId = '111111111111111111111111';
+      const batchTopicsList = await getBatchTopics(topicId);
+
       expect(batchTopicsList.length).toBe(3);
+    });
+
+    it('should return all documents with matching `batch id` and `day`', async () => {
+      const topicId = '111111111111111111111111';
+      const day = 1;
+      const batchTopicsList = await getBatchTopics(topicId, day);
+
+      expect(batchTopicsList.length).toBe(2);
     });
   });
 });
