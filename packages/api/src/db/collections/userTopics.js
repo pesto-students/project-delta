@@ -17,4 +17,20 @@ const getUserTopics = async (userId) => {
   return userTopicList;
 };
 
-export { insertUserTopic, getUserTopics };
+const getTopicRatingReport = async (batchId, day) => {
+  const report = await UserTopic.aggregate([
+    { $match: { batchId, batchTopicDay: day } },
+    {
+      $group: {
+        _id: { topicId: '$batchTopicId', topicName: '$batchTopicName' },
+        users: { $push: { _id: '$userId', name: '$userFirstName', rating: '$rating' } },
+        averageRating: {
+          $avg: '$rating',
+        },
+      },
+    },
+  ]);
+  return report;
+};
+
+export { insertUserTopic, getUserTopics, getTopicRatingReport };
