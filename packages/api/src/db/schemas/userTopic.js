@@ -14,6 +14,11 @@ const userTopicSchema = new Schema({
     minlength: 1,
   },
 
+  batchId: { // link to 'batches' collection
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+
   batchTopicId: { // link to 'batch-topics' collection
     type: Schema.Types.ObjectId,
     required: true,
@@ -24,6 +29,13 @@ const userTopicSchema = new Schema({
     required: true,
     trim: true,
     minlength: 1,
+  },
+
+  batchTopicDay: {
+    type: Number,
+    required: true,
+    min: 1,
+    validator: Number.isInteger,
   },
 
   rating: {

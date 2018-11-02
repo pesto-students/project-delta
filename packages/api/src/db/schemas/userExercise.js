@@ -26,6 +26,30 @@ const userExerciseSchema = new Schema({
     minlength: 1,
   },
 
+  batchExerciseDay: {
+    type: Number,
+    required: true,
+    min: 1,
+    validator: Number.isInteger,
+  },
+
+  batchId: { // link to 'batches' collection
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+
+  batchTopicId: { // link to 'batch-topics' collection
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+
+  batchTopicName: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 1,
+  },
+
   isCompleted: {
     type: Boolean,
     required: true,
