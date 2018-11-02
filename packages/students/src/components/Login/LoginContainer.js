@@ -9,8 +9,6 @@ import { HTTP } from '../../../../shared-utils/services/http';
 import { getToken } from '../../../../shared-utils/services/loginToken';
 import { LoginForm } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
-
-import './style.css';
 import { HeaderComponent } from '../../../../shared-components/Header';
 import { FooterComponent } from '../../../../shared-components/Footer';
 
@@ -121,57 +119,39 @@ class LoginContainer extends Component {
     }
 
     return (
-      <div className="login-container">
-        <Grid container justify="center" style={{ height: '100%' }}>
-          <Grid item xs={10} md={8} lg={7}>
-            <HeaderComponent />
-          </Grid>
-
-          <Grid item xs={12} md={8} lg={7}>
-            <Grid container justify="center">
-              <Grid item xs={12} md={8} lg={6}>
-                <p className="text-center">
-                  Welcome to Project Delta!
-                </p>
-                <p className="text-center">
-                  Enter your email below to get started.
-                </p>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          {loginStatus === ''
-            ? null
-            : (
-              <Grid item xs={10} md={8} lg={7}>
-                <Grid container justify="center">
-                  <Grid item xs={12} md={8} lg={6}>
-                    <NotificationBlock
-                      variant={loginStatus}
-                      message={message}
-                      onClose={this.removeNotification}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            )}
-
-          <Grid item xs={10} md={8} lg={7}>
-            <Grid container justify="center">
-              <Grid item xs={12} md={8} lg={6}>
-                <LoginForm
-                  isLoggingIn={isLoggingIn}
-                  handleLogin={this.handleLogin}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={10} md={8} lg={7}>
-            <FooterComponent />
-          </Grid>
+      <Grid container justify="center" style={{ minHeight: '100vh' }}>
+        <Grid item xs={10} md={8}>
+          <HeaderComponent />
         </Grid>
-      </div>
+
+        <Grid item xs={10} md={8}>
+          <p className="text-center">Welcome to Project Delta!</p>
+          <p className="text-center">Enter your email below to get started.</p>
+        </Grid>
+
+        {loginStatus === ''
+          ? null
+          : (
+            <Grid container justify="center" alignItems="center">
+              <NotificationBlock
+                variant={loginStatus}
+                message={message}
+                onClose={this.removeNotification}
+              />
+            </Grid>
+          )}
+
+        <Grid item xs={10} sm={6}>
+          <LoginForm
+            isLoggingIn={isLoggingIn}
+            handleLogin={this.handleLogin}
+          />
+        </Grid>
+
+        <Grid item xs={10} md={8}>
+          <FooterComponent />
+        </Grid>
+      </Grid>
     );
   }
 }
