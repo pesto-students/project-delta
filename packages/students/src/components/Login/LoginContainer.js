@@ -6,7 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 import { HTTP } from '../../../../shared-utils/services/http';
-import { getCookie } from '../../../../shared-utils/services/cookie';
+import { getToken } from '../../../../shared-utils/services/loginToken';
 import { LoginForm } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
 
@@ -20,7 +20,7 @@ class LoginContainer extends Component {
     loginStatus: '',
     message: '',
 
-    loading: getCookie('token') !== null,
+    loading: getToken('token') !== null,
     existingTokenVerificationDetails: {
       authSuccess: false,
       isNewUser: null,

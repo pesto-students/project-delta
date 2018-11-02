@@ -36,7 +36,7 @@ if (MODE === 'DEV') {
     next();
   });
   app.options('*', (req, res) => {
-    res.setHeader('access-control-allow-headers', 'content-type');
+    res.setHeader('access-control-allow-headers', 'content-type, authorization');
     res.setHeader('access-control-allow-methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
     res.status(204).end();
   });
