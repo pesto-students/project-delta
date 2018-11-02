@@ -209,7 +209,7 @@ describe('/verifyToken', () => {
   });
 });
 
-describe('/user', () => {
+describe('POST: /user - update users details if not creates new user', () => {
   let url;
   let verifyTokenUrl;
   const testUser = {
@@ -312,6 +312,63 @@ describe('/user', () => {
           resolveWithFullResponse: true,
         }).then((result) => {
           expect(result.statusCode).toBe(200);
+          done();
+        });
+      });
+    });
+  });
+  it('should return 200 on updation of an existing user', (done) => {
+    const updatedValues = {
+      firstName: 'NEWNAME',
+    };
+    tokenService.generate({
+      email: 'vipultests@gmail.com',
+      tokenType: 'EMAIL_VERIFICATION',
+    }).then((token) => {
+      request({
+        url: verifyTokenUrl,
+        method: 'POST',
+        body: { token },
+        json: true,
+        resolveWithFullResponse: true,
+      }).then((res) => {
+        request({
+          url,
+          method: 'POST',
+          body: { ...updatedValues, token: res.body.token },
+          json: true,
+          resolveWithFullResponse: true,
+        }).then((result) => {
+          expect(result.statusCode).toBe(200);
+          done();
+        });
+      });
+    });
+  });
+
+  it('should not update any invalidated value of an existing user like invalid email', (done) => {
+    const updatedValues = {
+      email: '123',
+    };
+    tokenService.generate({
+      email: 'vipultests@gmail.com',
+      tokenType: 'EMAIL_VERIFICATION',
+    }).then((token) => {
+      request({
+        url: verifyTokenUrl,
+        method: 'POST',
+        body: { token },
+        json: true,
+        resolveWithFullResponse: true,
+      }).then((res) => {
+        request({
+          url,
+          method: 'POST',
+          body: { ...updatedValues, token: res.body.token },
+          json: true,
+          resolveWithFullResponse: true,
+        }).catch((e) => {
+          expect(e.statusCode).toBe(400);
           done();
         });
       });
