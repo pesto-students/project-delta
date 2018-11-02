@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { LoginContainer } from './Login/LoginContainer';
@@ -11,10 +11,12 @@ function AppComponent() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Route path="/" exact component={LoginContainer} />
-      <Route path="/auth/:token" exact component={AuthWaitingComponent} />
-      <Route path="/dashboard" exact component={DashboardContainer} />
-      <Route path="/profile" exact component={ProfilePageComponent} />
+      <Switch>
+        <Route path="/auth/:token" component={AuthWaitingComponent} />
+        <Route path="/dashboard" component={DashboardContainer} />
+        <Route path="/profile" component={ProfilePageComponent} />
+        <Route component={LoginContainer} />
+      </Switch>
     </React.Fragment>
   );
 }
