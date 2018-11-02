@@ -6,7 +6,7 @@ import { saveToken } from '../../../../shared-utils/services/loginToken';
 import BoxComponent from '../../../../shared-components/BoxWithImgAndText';
 import { HTTP as httpService } from '../../../../shared-utils/services/http';
 
-import logoImg from '../../../images/logo.jpeg';
+import logoImg from '../../../../shared-components/assets/logo.png';
 
 import './blink.css';
 
