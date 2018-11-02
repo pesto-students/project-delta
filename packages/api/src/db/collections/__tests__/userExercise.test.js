@@ -3,6 +3,7 @@ import { DB_URL } from '../../../../config';
 
 import {
   insertUserExercises,
+  getExerciseRatingReport,
 } from '../userExercise';
 import { UserExercise } from '../../index';
 
@@ -90,6 +91,22 @@ describe('Mongo Queries: Topics Master', () => {
       } catch (e) {
         expect(e.code).toBe(11000); // 11000 is a dup key error from db Frontend will receive 500
       }
+    });
+  });
+
+  describe('User Exercise Report', () => {
+    it('should return documents with `completedCount`, `users`', async () => {
+      const batchId = mongoose.Types.ObjectId('111111111111111111111119');
+      const day = 2;
+      const report = await getExerciseRatingReport(batchId, day);
+      expect(report[0].users).toBeDefined();
+      expect(report[0].completedCount).toBeDefined();
+    });
+
+    it('should return empty array when day is not specified', async () => {
+      const batchId = mongoose.Types.ObjectId('111111111111111111111119');
+      const report = await getExerciseRatingReport(batchId);
+      expect(report.length).toBe(0);
     });
   });
 });

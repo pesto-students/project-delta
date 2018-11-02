@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { DB_URL } from '../../../../config';
 
 import {
-  insertUserTopic, getUserTopics,
+  insertUserTopic, getUserTopics, getTopicRatingReport,
 } from '../userTopics';
 import { UserTopic } from '../../index';
 
@@ -87,6 +87,22 @@ describe('Mongo Queries: Topics Master', () => {
 
       const topic = await UserTopic.findOne({ _id: insertedDocument._id });
       expect(topic).toBeDefined();
+    });
+  });
+
+  describe('User Topic Report', () => {
+    it('should return documents with `averageRating`, `users`', async () => {
+      const batchId = mongoose.Types.ObjectId('111111111111111111111119');
+      const day = 2;
+      const report = await getTopicRatingReport(batchId, day);
+      expect(report[0].users).toBeDefined();
+      expect(report[0].averageRating).toBeDefined();
+    });
+
+    it('should return empty array when day is not specified', async () => {
+      const batchId = mongoose.Types.ObjectId('111111111111111111111119');
+      const report = await getTopicRatingReport(batchId);
+      expect(report.length).toBe(0);
     });
   });
 });
