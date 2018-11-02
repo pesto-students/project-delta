@@ -13,6 +13,10 @@ describe('Mongo Queries: Topics Master', () => {
       userFirstName: 'Vipul',
       batchExerciseId: mongoose.Types.ObjectId('111111111111111111111112'),
       batchExerciseName: 'Git',
+      batchExerciseDay: 2,
+      batchTopicId: mongoose.Types.ObjectId('111111111111111111111112'),
+      batchTopicName: 'Git',
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
       isCompleted: false,
     },
     {
@@ -20,7 +24,11 @@ describe('Mongo Queries: Topics Master', () => {
       userFirstName: 'Vipul',
       batchExerciseId: mongoose.Types.ObjectId('111111111111111111111114'),
       batchExerciseName: 'Todo',
+      batchTopicId: mongoose.Types.ObjectId('111111111111111111111114'),
+      batchTopicName: 'Javascript',
+      batchExerciseDay: 3,
       isCompleted: false,
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
     },
   ];
 
@@ -40,6 +48,10 @@ describe('Mongo Queries: Topics Master', () => {
       userFirstName: 'Alien',
       batchExerciseId: mongoose.Types.ObjectId('111111141111143111111112'),
       batchExerciseName: 'Machine Code',
+      batchExerciseDay: 2,
+      batchTopicId: mongoose.Types.ObjectId('111111111111111111111114'),
+      batchTopicName: 'Javascript',
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
       isCompleted: true,
     },
     {
@@ -47,10 +59,14 @@ describe('Mongo Queries: Topics Master', () => {
       userFirstName: 'Human',
       batchExerciseId: mongoose.Types.ObjectId('211111141111143111111112'),
       batchExerciseName: 'English',
+      batchTopicId: mongoose.Types.ObjectId('111111111111111111111112'),
+      batchTopicName: 'Generic',
+      batchExerciseDay: 3,
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
       isCompleted: false,
     },
     ];
-    it('should insert new user exerises', async () => {
+    it('should insert new user exercises', async () => {
       const addedExercises = await insertUserExercises(newUserExercises);
       const exercise = await UserExercise.findOne({ userId: '111111111111111111211321' });
       expect(exercise).toBeDefined();
@@ -63,12 +79,16 @@ describe('Mongo Queries: Topics Master', () => {
         userFirstName: 'Alien',
         batchExerciseId: mongoose.Types.ObjectId('111111141111143111111112'),
         batchExerciseName: 'Machine Code',
+        batchExerciseDay: 2,
+        batchTopicId: mongoose.Types.ObjectId('111111111111111111111114'),
+        batchTopicName: 'Javascript',
+        batchId: mongoose.Types.ObjectId('111111111111111111111119'),
         isCompleted: false, // user should not be able to uncheck any checked exercise
       };
       try {
         await insertUserExercises([duplicateEntry]);
       } catch (e) {
-        expect(e.code).toBe(11000); // 11000 is a dup key error from db Frontend will recieve 500
+        expect(e.code).toBe(11000); // 11000 is a dup key error from db Frontend will receive 500
       }
     });
   });

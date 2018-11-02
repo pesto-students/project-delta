@@ -11,15 +11,19 @@ describe('Mongo Queries: Topics Master', () => {
     {
       userId: mongoose.Types.ObjectId('111111111111111111111111'),
       userFirstName: 'Vipul',
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
       batchTopicId: mongoose.Types.ObjectId('111111111111111111111112'),
       batchTopicName: 'Git',
+      batchTopicDay: 1,
       rating: 1,
     },
     {
       userId: mongoose.Types.ObjectId('111111111111111111111111'),
       userFirstName: 'Vipul',
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
       batchTopicId: mongoose.Types.ObjectId('111111111111111111111114'),
-      batchTopicName: 'Git',
+      batchTopicName: 'Javascript',
+      batchTopicDay: 2,
       rating: 10,
     },
   ];
@@ -40,27 +44,34 @@ describe('Mongo Queries: Topics Master', () => {
       expect(userTopicsList.length).toBe(2);
     });
   });
+
   describe('New user topic', () => {
     const newUserTopic = [{
       userId: mongoose.Types.ObjectId('111111111111111111211321'),
       userFirstName: 'Alien',
       batchTopicId: mongoose.Types.ObjectId('111111141111143111111112'),
       batchTopicName: 'React',
+      batchTopicDay: 2,
       rating: 7,
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
     },
     {
       userId: mongoose.Types.ObjectId('111111111111111111111123'),
       userFirstName: 'Vipul',
       batchTopicId: mongoose.Types.ObjectId('111111111111111111111156'),
       batchTopicName: 'Git Rebase',
+      batchTopicDay: 2,
       rating: 1,
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
     },
     {
       userId: mongoose.Types.ObjectId('111111111111111111111321'),
       userFirstName: 'Vipul',
       batchTopicId: mongoose.Types.ObjectId('111111111111143111111112'),
       batchTopicName: 'Git Merge',
+      batchTopicDay: 2,
       rating: 8,
+      batchId: mongoose.Types.ObjectId('111111111111111111111119'),
     },
     ];
 
