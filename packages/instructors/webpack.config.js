@@ -37,6 +37,17 @@ const config = {
         loader: 'css-loader',
       },
       ],
+    }, {
+      test: /\.(jpg|jpeg|png|gif)$/i,
+      use: [
+        {
+          loader: 'url-loader',
+          options: {
+            limit: 10240, // images larger than 10kB will not be bundled
+            name: 'images/[name]-[hash].[ext]',
+          },
+        },
+      ],
     },
     ],
   },
