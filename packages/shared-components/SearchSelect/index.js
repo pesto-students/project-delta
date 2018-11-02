@@ -56,7 +56,7 @@ const optionsType = PropTypes.shape({
 IntegrationReactSelect.propTypes = {
   classes: PropTypes.shape().isRequired,
   theme: PropTypes.shape().isRequired,
-  value: PropTypes.oneOfType(PropTypes.shape(), PropTypes.string).isRequired,
+  value: PropTypes.oneOfType([PropTypes.shape(), PropTypes.string]).isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(optionsType).isRequired,
   placeholder: PropTypes.string,
