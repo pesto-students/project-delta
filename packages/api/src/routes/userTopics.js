@@ -4,6 +4,7 @@ import { asyncHandler } from '../services/asyncHandler';
 import {
   insertUserTopic,
   getUserTopics,
+  getTopicRatingReport,
 } from '../db/collections/userTopics';
 import { isAuthenticated } from '../helper/auth/isAuthenticated';
 import { extractUser } from '../helper/user';
@@ -31,6 +32,12 @@ userTopic.post('/create', isAuthenticated, extractUser, asyncHandler(async (req,
 
   const newTopics = await insertUserTopic(userSubmittedTopics);
   return res.json({ newTopics });
+}));
+
+userTopic.get('/report', isAuthenticated, extractUser, asyncHandler(async (req, res) => {
+  const { batchId, day } = req;
+  const report = await getTopicRatingReport(batchId, day);
+  return res.json({ report });
 }));
 
 export { userTopic };
