@@ -14,13 +14,10 @@ profileRoutes.get('/:id?', isAuthenticated, extractUser, async (req, res) => {
   if (!user) {
     res.status(400).json({ error: ERR_MSGS.profileNotExist });
   }
-  const {
-    email, firstName, lastName, profilePicUrl, batchId, role,
-  } = user;
   if (id.toLowerCase() !== 'me') {
     return res.status(400).end();
   }
-  if (role === 'instructor') {
+  if (user.role === 'instructor') {
     return res.json(user);
   }
   // id = me and role = student
@@ -29,42 +26,43 @@ profileRoutes.get('/:id?', isAuthenticated, extractUser, async (req, res) => {
     batchNumber: 1,
   };
   const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
-  const { city, batchNumber } = batchOfUser;
   const finalUserDetails = {
-    email,
-    firstName,
-    lastName,
-    profilePicUrl,
-    batchId,
-    role,
-    city,
-    batchNumber,
+    ...user.toObject(),
+    ...batchOfUser.toObject(),
   };
   return res.json(finalUserDetails);
 });
 
 profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
+  let { user } = req;
   const { id } = req.params;
+
   if (id && id.toLowerCase() !== 'me') {
     return res.send(400).end();
   }
+
   if (!req.body) {
     return res.status(400).json({ error: ERR_MSGS.noProfileData });
   }
   const { body } = req;
-  if (!profileValidation(body).passed) {
-    return res.status(400).json({ error: profileValidation(body).msg });
+  if (!user) {
+    user = new User(body);
+  } else {
+    Reflect.ownKeys(body).forEach((key) => {
+      user[key] = body[key];
+    });
   }
-  if (body.role === 'student') {
-    body.batchId = body.batchId.toString();
+  const validationResult = await profileValidation(body);
+  if (!validationResult.passed) {
+    return res.status(400).json({ error: validationResult.msg });
   }
-  if (!req.user) {
-    const user = new User(body);
-    const result = await user.save();
-    return res.send(result);
+
+  try {
+    await user.save();
+  } catch (e) {
+    return res.json({ success: false });
   }
-  const result = await User.updateOne({ email: req.user.email }, body, { upsert: true });
-  return res.send(result);
+  return res.json({ success: true });
 });
 
 module.exports = profileRoutes;
