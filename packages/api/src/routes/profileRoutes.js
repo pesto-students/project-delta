@@ -52,7 +52,7 @@ profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
       user[key] = body[key];
     });
   }
-  const validationResult = await profileValidation(body);
+  const validationResult = await profileValidation(user);
   if (!validationResult.passed) {
     return res.status(400).json({ error: validationResult.msg });
   }
