@@ -57,7 +57,7 @@ export class ProfilePageComponent extends React.Component {
   render() {
     if (this.state.loading) {
       return (
-        <Grid container justify="center" style={{ height: '100%' }}>
+        <Grid container justify="center" alignItems="center" style={{ height: '100%' }}>
           <LoadingIndicator />
         </Grid>
       );

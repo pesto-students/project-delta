@@ -9,8 +9,6 @@ import { HTTP } from '../../../../shared-utils/services/http';
 import { getToken } from '../../../../shared-utils/services/loginToken';
 import { LoginForm } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
-import { HeaderComponent } from '../../../../shared-components/Header';
-import { FooterComponent } from '../../../../shared-components/Footer';
 
 class LoginContainer extends Component {
   state = {
@@ -119,12 +117,8 @@ class LoginContainer extends Component {
     }
 
     return (
-      <Grid container justify="center" style={{ minHeight: '100vh' }}>
-        <Grid item xs={10} md={8}>
-          <HeaderComponent />
-        </Grid>
-
-        <Grid item xs={10} md={8}>
+      <Grid container direction="column" justify="space-evenly" alignItems="center" style={{ height: '100%' }}>
+        <Grid item>
           <p className="text-center">Welcome to Project Delta!</p>
           <p className="text-center">Enter your email below to get started.</p>
         </Grid>
@@ -132,24 +126,24 @@ class LoginContainer extends Component {
         {loginStatus === ''
           ? null
           : (
-            <Grid container justify="center" alignItems="center">
-              <NotificationBlock
-                variant={loginStatus}
-                message={message}
-                onClose={this.removeNotification}
-              />
+            <Grid container direction="row" justify="center">
+              <Grid item xs={10} sm={8} md={6}>
+                <NotificationBlock
+                  variant={loginStatus}
+                  message={message}
+                  onClose={this.removeNotification}
+                />
+              </Grid>
             </Grid>
           )}
 
-        <Grid item xs={10} sm={6}>
-          <LoginForm
-            isLoggingIn={isLoggingIn}
-            handleLogin={this.handleLogin}
-          />
-        </Grid>
-
-        <Grid item xs={10} md={8}>
-          <FooterComponent />
+        <Grid container direction="row" justify="center">
+          <Grid item xs={10} sm={8} md={6}>
+            <LoginForm
+              isLoggingIn={isLoggingIn}
+              handleLogin={this.handleLogin}
+            />
+          </Grid>
         </Grid>
       </Grid>
     );

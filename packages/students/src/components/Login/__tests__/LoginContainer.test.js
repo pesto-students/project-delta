@@ -7,22 +7,6 @@ import { HTTP } from '../../../../../shared-utils/services/http';
 import { MSGS } from '../../../constants/MSGS';
 
 describe('<LoginContainer />', () => {
-  it('should render <HeaderComponent />', () => {
-    const wrapper = shallow(<LoginContainer />);
-
-    const component = wrapper.find('HeaderComponent');
-
-    expect(component.exists()).toBe(true);
-  });
-
-  it('should render <FooterComponent />', () => {
-    const wrapper = shallow(<LoginContainer />);
-
-    const component = wrapper.find('FooterComponent');
-
-    expect(component.exists()).toBe(true);
-  });
-
   it('should render <LoginForm />', () => {
     const wrapper = shallow(<LoginContainer />);
 

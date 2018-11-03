@@ -52,12 +52,8 @@ export class AuthWaitingComponent extends React.Component {
         borderRadius: '10px',
       },
       additionalBoxImgStyles: {
-        border: '10px solid white',
-        borderRadius: '50%',
         height: '100px',
         width: '100px',
-
-        margin: '20px 0',
       },
       additionalBoxTextStyles: {
         animationDuration: '1.5s',
@@ -75,8 +71,8 @@ export class AuthWaitingComponent extends React.Component {
 
     if (waiting) {
       return (
-        <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}>
-          <Grid item xs={12} md={8} lg={6}>
+        <Grid container justify="center" alignItems="center" style={{ height: '100%' }}>
+          <Grid item xs={11} md={8} lg={6}>
             <BoxComponent bgUrl={logoImg} text="authenticating with server..." {...styles} />
           </Grid>
         </Grid>
