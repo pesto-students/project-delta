@@ -128,24 +128,24 @@ describe('/verifyToken', () => {
     url = `${serverUrl}/verifyToken`;
   });
 
-  it('should send a 400 response when request contains no token', (done) => {
+  it('should send a 401 response when request contains no token', (done) => {
     request({
       url,
       method: 'POST',
     }).catch((e) => {
-      expect(e.statusCode).toBe(400);
+      expect(e.statusCode).toBe(401);
       done();
     });
   });
 
-  it('should send a 400 response when request contains invalid token', (done) => {
+  it('should send a 401 response when request contains invalid token', (done) => {
     request({
       url,
       method: 'POST',
       body: { token: 'abc' },
       json: true,
     }).catch((e) => {
-      expect(e.statusCode).toBe(400);
+      expect(e.statusCode).toBe(401);
       done();
     });
   });
@@ -211,7 +211,8 @@ describe('/verifyToken', () => {
 
 describe('POST: /user - update users details if not creates new user', () => {
   let url;
-  let verifyTokenUrl;
+  let token;
+
   const testUser = {
     firstName: 'Vipul',
     lastName: 'Rawat',
@@ -219,30 +220,22 @@ describe('POST: /user - update users details if not creates new user', () => {
     role: 'instructor',
   };
 
-  beforeAll(() => {
+  beforeAll((done) => {
     url = `${serverUrl}/user`;
-    verifyTokenUrl = `${serverUrl}/verifyToken`;
+    tokenService.generate({
+      email: 'vipultests@gmail.com',
+      tokenType: 'LOGIN',
+    }).then((generatedToken) => {
+      token = generatedToken;
+      done();
+    });
   });
 
   it('should send a 400 response when request contains no body', (done) => {
     request({
       url,
       method: 'POST',
-      body: {},
-      json: true,
-    }).catch((e) => {
-      expect(e.statusCode).toBe(400);
-      done();
-    });
-  });
-
-  it('should send a 400 response when request contains invalid email', (done) => {
-    const mockTestUser = Object.assign({}, testUser);
-    mockTestUser.email = 'abc';
-    request({
-      url,
-      method: 'POST',
-      body: mockTestUser,
+      body: { token },
       json: true,
     }).catch((e) => {
       expect(e.statusCode).toBe(400);
@@ -251,7 +244,7 @@ describe('POST: /user - update users details if not creates new user', () => {
   });
 
   it('should send a 400 response when first name is missing', (done) => {
-    const mockTestUser = Object.assign({}, testUser);
+    const mockTestUser = Object.assign({ token }, testUser);
     delete mockTestUser.firstName;
     request({
       url,
@@ -265,7 +258,7 @@ describe('POST: /user - update users details if not creates new user', () => {
   });
 
   it('should send a 400 response when last name is missing', (done) => {
-    const mockTestUser = Object.assign({}, testUser);
+    const mockTestUser = Object.assign({ token }, testUser);
     delete mockTestUser.lastName;
     request({
       url,
@@ -278,100 +271,50 @@ describe('POST: /user - update users details if not creates new user', () => {
     });
   });
 
-  it('should send a 400 response when email is missing', (done) => {
-    const mockTestUser = Object.assign({}, testUser);
-    delete mockTestUser.email;
+  it('should return 200 on creation of new user', (done) => {
     request({
       url,
       method: 'POST',
-      body: mockTestUser,
+      body: { ...testUser, token },
       json: true,
-    }).catch((e) => {
-      expect(e.statusCode).toBe(400);
+      resolveWithFullResponse: true,
+    }).then((result) => {
+      expect(result.statusCode).toBe(200);
       done();
     });
   });
 
-  it('should return 200 on creation of new user', (done) => {
-    tokenService.generate({
-      email: 'vipultests@gmail.com',
-      tokenType: 'EMAIL_VERIFICATION',
-    }).then((token) => {
-      request({
-        url: verifyTokenUrl,
-        method: 'POST',
-        body: { token },
-        json: true,
-        resolveWithFullResponse: true,
-      }).then((res) => {
-        request({
-          url,
-          method: 'POST',
-          body: { ...testUser, token: res.body.token },
-          json: true,
-          resolveWithFullResponse: true,
-        }).then((result) => {
-          expect(result.statusCode).toBe(200);
-          done();
-        });
-      });
-    });
-  });
   it('should return 200 on updation of an existing user', (done) => {
     const updatedValues = {
       firstName: 'NEWNAME',
     };
-    tokenService.generate({
-      email: 'vipultests@gmail.com',
-      tokenType: 'EMAIL_VERIFICATION',
-    }).then((token) => {
-      request({
-        url: verifyTokenUrl,
-        method: 'POST',
-        body: { token },
-        json: true,
-        resolveWithFullResponse: true,
-      }).then((res) => {
-        request({
-          url,
-          method: 'POST',
-          body: { ...updatedValues, token: res.body.token },
-          json: true,
-          resolveWithFullResponse: true,
-        }).then((result) => {
-          expect(result.statusCode).toBe(200);
-          done();
-        });
-      });
+
+    request({
+      url,
+      method: 'POST',
+      body: { ...updatedValues, token },
+      json: true,
+      resolveWithFullResponse: true,
+    }).then((result) => {
+      expect(result.statusCode).toBe(200);
+      done();
     });
   });
 
-  it('should not update any invalidated value of an existing user like invalid email', (done) => {
+  it('should not update any invalidated value of an existing user like role not in student/instructor', (done) => {
     const updatedValues = {
-      email: '123',
+      role: 'GOD!',
     };
-    tokenService.generate({
-      email: 'vipultests@gmail.com',
-      tokenType: 'EMAIL_VERIFICATION',
-    }).then((token) => {
-      request({
-        url: verifyTokenUrl,
-        method: 'POST',
-        body: { token },
-        json: true,
-        resolveWithFullResponse: true,
-      }).then((res) => {
-        request({
-          url,
-          method: 'POST',
-          body: { ...updatedValues, token: res.body.token },
-          json: true,
-          resolveWithFullResponse: true,
-        }).catch((e) => {
-          expect(e.statusCode).toBe(400);
-          done();
-        });
-      });
+
+    request({
+      url,
+      method: 'POST',
+      body: { ...updatedValues, token },
+      json: true,
+      resolveWithFullResponse: true,
+    }).catch((e) => {
+      expect(e.statusCode).toBe(400);
+      done();
     });
   });
 });

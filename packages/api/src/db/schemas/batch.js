@@ -9,8 +9,7 @@ const batchSchema = new Schema({
   },
 
   batchNumber: {
-    type: String,
-    unique: true,
+    type: Number,
     required: true,
     trim: true,
     minlength: 1,

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import format from 'date-fns/format';
 
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 import { getUserProfile, updateUserProfile } from '../../services/user';
@@ -30,7 +31,13 @@ export class ProfilePageComponent extends React.Component {
       // We got here from the dashboard, so the profile page should be pre-filled
       //   with the current user's data
       getUserProfile()
-        .then(data => this.setState({ loading: false, user: data }))
+        .then(data => this.setState({
+          loading: false,
+          user: {
+            ...data,
+            dob: format(data.dob, 'YYYY-MM-DD'),
+          },
+        }))
         .catch((e) => {
           if (e.name === 'AuthError') {
             this.setState({ loading: false, authFailure: true });
@@ -50,7 +57,10 @@ export class ProfilePageComponent extends React.Component {
 
   updateProfile(newData) {
     updateUserProfile(newData)
-      .then(userData => this.setState({ editing: false, user: userData }))
+      .then(userData => this.setState({
+        editing: false,
+        user: { ...newData, ...userData, dob: format(userData.dob, 'YYYY-MM-DD') },
+      }))
       .catch(console.error); // eslint-disable-line no-console
   }
 

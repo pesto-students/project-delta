@@ -11,3 +11,10 @@ export class UserNotFoundError extends Error {
     this.name = 'AuthError';
   }
 }
+
+export class ServerError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = 'ServerError';
+  }
+}

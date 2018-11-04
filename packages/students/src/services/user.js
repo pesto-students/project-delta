@@ -1,5 +1,5 @@
-// import { HTTP as httpService } from './http';
-// import { AuthError, UserNotFoundError } from '../constants/errors';
+import { HTTP as httpService } from '../../../shared-utils/services/http';
+import { AuthError, ServerError, UserNotFoundError } from '../constants/errors';
 
 // Returns a Promise that
 //   resolves to:
@@ -8,23 +8,24 @@
 //   - AuthError if invalid/expired token
 //   - UserNotFoundError if valid token, but user not in DB
 export function getUserProfile(id = 'me') { // eslint-disable-line no-unused-vars
-  // return httpService.GET(`/users/${id}`);
-  return Promise.resolve({
-    _id: '111122223333111122223333',
-    email: 'anirudh.nimmagadda@gmail.com',
-    firstName: 'Anirudh',
-    lastName: 'Nimmagadda',
-    role: 'student',
-    profilePicUrl: 'https://lh3.googleusercontent.com/-b2fwL216_m0/AAAAAAAAAAI/AAAAAAAAAAA/ZJocaz5rHUk/photo.jpg',
-    batchId: '111111111111222222222222',
-    batchCity: 'New Delhi',
-    batchNumber: 2,
-    sex: 'm',
-    dob: '1991-05-02',
-  });
+  return httpService.GET(`/user/${id}`, undefined, undefined, false)
+    .then((res) => {
+      if (res.status === 500) {
+        throw new ServerError();
+      }
+
+      if (res.status === 404) {
+        throw new UserNotFoundError();
+      }
+
+      if (res.status === 401) {
+        throw new AuthError();
+      }
+
+      return res.json();
+    });
 }
 
 export function updateUserProfile(newData, id = 'me') { // eslint-disable-line no-unused-vars
-  // return httpService.POST(`/users/${id}`, newData);
-  return Promise.resolve({ ...newData, _id: '111122223333111122223333' });
+  return httpService.POST(`/user/${id}`, newData);
 }

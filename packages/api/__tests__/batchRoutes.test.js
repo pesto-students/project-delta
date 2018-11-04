@@ -9,7 +9,6 @@ let savedBatches;
 const dummyBatches = [
   {
     city: 'Delhi',
-    batchId: 'DL02',
     batchNumber: 20001,
     numberOfDays: 20,
     startDate: new Date(),
@@ -17,7 +16,6 @@ const dummyBatches = [
   },
   {
     city: 'Delhi',
-    batchId: 'DL03',
     batchNumber: 20002,
     numberOfDays: 20,
     startDate: new Date(),
@@ -25,7 +23,6 @@ const dummyBatches = [
   },
   {
     city: 'InactiveCity',
-    batchId: 'IC012',
     batchNumber: 201,
     numberOfDays: 20,
     startDate: new Date(2011, 0, 12), // 12-Jan-2011
@@ -74,9 +71,7 @@ describe('GET: /instructor/batch/list', () => {
       json: true,
     });
 
-    const expected = { batchList: expect.any(Array) };
-
-    expect(res).toEqual(expect.objectContaining(expected));
+    expect(res).toEqual(expect.any(Array));
   });
 
   it('should filter the list of active batches only', async () => {
@@ -87,7 +82,7 @@ describe('GET: /instructor/batch/list', () => {
       headers: { origin: 'http://localhost' },
       json: true,
     });
-    expect(res.activeBatches.length).toBe(2);
+    expect(res.length).toBe(2);
   });
 });
 
