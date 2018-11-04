@@ -8,7 +8,7 @@ async function profileValidation(user) {
   if (!Reflect.has(user, 'email')) {
     return { passed: false, msg: ERR_MSGS.noEmail };
   }
-  if (!isEmail(user.email)) {
+  if (!isEmail(user.email || '')) {
     return { passed: false, msg: ERR_MSGS.invalidEmail };
   }
   if (!Reflect.has(user, 'firstName') || user.firstName.length === 0) {
