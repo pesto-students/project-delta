@@ -12,7 +12,7 @@ profileRoutes.get('/:id?', isAuthenticated, extractUser, async (req, res) => {
     return res.status(400).end();
   }
   if (!user) {
-    res.status(400).json({ error: ERR_MSGS.profileNotExist });
+    res.status(404).json({ error: ERR_MSGS.profileNotExist });
   }
   if (id.toLowerCase() !== 'me') {
     return res.status(400).end();
