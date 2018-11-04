@@ -1,3 +1,15 @@
 import React from 'react';
 
-export const DashboardContainer = () => <h1>Dashboard</h1>;
+import { ExerciseReportContainer } from './ExerciseReport';
+import { DashboardHeaderContainer } from './HeaderContainer';
+import { TopicReportContainer } from './TopicReport';
+
+const SimpleBarChart = () => (
+  <React.Fragment>
+    <DashboardHeaderContainer />
+    <TopicReportContainer />
+    <ExerciseReportContainer />
+  </React.Fragment>
+);
+
+export const DashboardContainer = () => <SimpleBarChart />;

@@ -5,6 +5,7 @@ import { authUser } from '../components/Routes/reducers';
 import { appLayout } from '../components/Layout/reducers';
 import { exercises } from '../components/Exercise/reducers';
 import { batches } from '../components/Batch/reducers';
+import { dashboard } from '../components/Dashboard/reducers';
 
 export const appReducers = combineReducers({
   topics,
@@ -12,4 +13,5 @@ export const appReducers = combineReducers({
   appLayout,
   exercises,
   batches,
+  dashboard,
 });
