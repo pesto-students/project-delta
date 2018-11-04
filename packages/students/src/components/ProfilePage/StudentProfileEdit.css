@@ -7,6 +7,6 @@ label.profile-pic:hover {
   opacity: 0.3;
 }
 
-.navigation .disabled:hover {
+.disabled:hover {
   cursor: not-allowed;
 }

@@ -1,7 +1,7 @@
 import sharedConfig from '../../../shared-utils/config';
-import defaultProfilePic from '../../images/default-profile-pic.jpg';
-import defaultProfilePicM from '../../images/default-profile-pic-male.jpg';
-import defaultProfilePicF from '../../images/default-profile-pic-female.jpg';
+import defaultProfilePic from '../../../shared-components/assets/default-profile-pic.jpg';
+import defaultProfilePicM from '../../../shared-components/assets/default-profile-pic-male.jpg';
+import defaultProfilePicF from '../../../shared-components/assets/default-profile-pic-female.jpg';
 
 const { API_URL, DATE_FORMAT } = sharedConfig;
 

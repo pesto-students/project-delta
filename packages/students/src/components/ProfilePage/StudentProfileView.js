@@ -4,8 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import { BlockButton } from '../../../../shared-components/BlockButton';
-import { HeaderComponent } from '../../../../shared-components/Header';
-import { FooterComponent } from '../../../../shared-components/Footer';
+import { ImageBoxComponent } from '../../../../shared-components/ImageBox';
 import { getAppropriateDefaultProfilePic, userProfilePropType } from './shared';
 import { NavigateToDashboardComponent } from './NavigateToDashboard';
 
@@ -19,27 +18,21 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
   else sex = 'A real mystery';
 
   return (
-    <Grid container justify="center">
-      <Grid item xs={12} md={8}><HeaderComponent /></Grid>
+    <Grid container direction="column" style={{ height: '100%' }}>
+      <NavigateToDashboardComponent />
 
-      <Grid item xs={12} md={8} className="navigation">
-        <NavigateToDashboardComponent />
-      </Grid>
-
-      <Grid className="profile" container justify="center" item xs={12} md={8} spacing={40}>
+      <Grid className="profile" container direction="row" justify="center" spacing={40}>
         <Grid
           container
           justify="center"
           item
           xs={12}
-          sm={5}
+          md={5}
           className="profile-pic"
         >
-          <div
-            className="profile-pic-holder"
+          <ImageBoxComponent
+            bgUrl={profilePicUrl}
             style={{
-              backgroundImage: `url('${profilePicUrl}')`,
-              backgroundSize: 'cover',
               height: '250px',
               width: '250px',
             }}
@@ -51,7 +44,8 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
           alignItems="center"
           item
           xs={12}
-          sm={7}
+          sm={11}
+          md={7}
           className="profile-details"
         >
           <ProfileDetailComponent name="Name" value={`${userData.firstName} ${userData.lastName}`} />
@@ -60,11 +54,9 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
           <ProfileDetailComponent name="DOB" value={userData.dob || 'Unknown (very old)'} />
           <ProfileDetailComponent name="Sex" value={sex} />
 
-          <BlockButton onClick={handleEditBtnClick}>EDIT</BlockButton>
+          <BlockButton onClick={handleEditBtnClick} style={{ marginBottom: '20px' }}>EDIT</BlockButton>
         </Grid>
       </Grid>
-
-      <Grid item xs={12} md={8} style={{ paddingTop: '30px' }}><FooterComponent /></Grid>
     </Grid>
   );
 }
