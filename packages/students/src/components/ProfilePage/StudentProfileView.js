@@ -50,7 +50,7 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
         >
           <ProfileDetailComponent name="Name" value={`${userData.firstName} ${userData.lastName}`} />
           <ProfileDetailComponent name="Email" value={userData.email} />
-          <ProfileDetailComponent name="Batch" value={`${userData.batchCity} #${userData.batchNumber}`} />
+          <ProfileDetailComponent name="Batch" value={`${userData.city} #${userData.batchNumber}`} />
           <ProfileDetailComponent name="DOB" value={userData.dob || 'Unknown (very old)'} />
           <ProfileDetailComponent name="Sex" value={sex} />
 

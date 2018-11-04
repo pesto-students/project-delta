@@ -22,7 +22,7 @@ export class StudentProfileEditComponent extends React.Component {
       lastName: '',
       email: '',
       batchId: '',
-      batchCity: '',
+      city: '',
       batchNumber: '',
       profilePicUrl: '',
       ...props.userData,
@@ -42,8 +42,8 @@ export class StudentProfileEditComponent extends React.Component {
     getActiveBatches()
       .then((batches) => {
         this.cityWiseBatches = batches.reduce((acc, batch) => {
-          if (!Reflect.has(acc, batch.batchCity)) acc[batch.batchCity] = [];
-          acc[batch.batchCity].push(batch);
+          if (!Reflect.has(acc, batch.city)) acc[batch.city] = [];
+          acc[batch.city].push(batch);
           return acc;
         }, {});
         this.setState({ loading: false });
@@ -57,7 +57,7 @@ export class StudentProfileEditComponent extends React.Component {
   }
 
   handleBatchCityChange(e) {
-    this.setState({ batchCity: e.target.value, batchNumber: '' });
+    this.setState({ city: e.target.value, batchNumber: '' });
   }
 
   handleProfilePicUpload(e) {
@@ -73,7 +73,7 @@ export class StudentProfileEditComponent extends React.Component {
     e.preventDefault();
 
     // update batchId based on current batchCity and batchNumber selection
-    const [batchId] = this.cityWiseBatches[this.state.batchCity]
+    const [batchId] = this.cityWiseBatches[this.state.city]
       .filter(batch => batch.batchNumber === this.state.batchNumber)
       .map(batch => batch._id);
     const userObj = { ...this.state, batchId };
@@ -188,7 +188,7 @@ export class StudentProfileEditComponent extends React.Component {
                     select
                     label="Batch City"
                     name="batchCity"
-                    value={this.state.batchCity}
+                    value={this.state.city}
                     onChange={this.handleBatchCityChange}
                     margin="normal"
                     InputLabelProps={{ shrink: true }}
@@ -220,12 +220,12 @@ export class StudentProfileEditComponent extends React.Component {
                   >
                     <option value="">Select # --</option>
                     {!this.state.loading
-                      && this.state.batchCity
-                      && Reflect.ownKeys(this.cityWiseBatches, this.state.batchCity)
-                      ? this.cityWiseBatches[this.state.batchCity]
+                      && this.state.city
+                      && Reflect.has(this.cityWiseBatches, this.state.city)
+                      ? this.cityWiseBatches[this.state.city]
                         .map(batch => batch.batchNumber)
                         .map(num => (
-                          <option key={`${this.state.batchCity}|${num}`} value={num}>{num}</option>
+                          <option key={`${this.state.city}|${num}`} value={num}>{num}</option>
                         ))
                       : null}
                   </TextField>
