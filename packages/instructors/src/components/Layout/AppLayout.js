@@ -2,7 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import { BatchViewContainer } from '../Batch/BatchViewContainer';
 import { NewBatchContainer } from '../Batch/NewBatchContainer';
@@ -12,6 +12,7 @@ import { ExerciseMasterContainer } from '../Exercise';
 import { AppHeader } from './Header';
 import { AppSideMenu } from './SideMenu';
 import { AlertSnackBar } from '../../../../shared-components/AlertSnackBar';
+import { DashboardContainer } from '../Dashboard';
 
 const styles = theme => ({
   root: {
@@ -65,9 +66,11 @@ class AppLayoutComponent extends React.Component {
               <Route path="/batch" exact component={BatchViewContainer} />
               <Route path="/batch/new" component={NewBatchContainer} />
               <Route path="/batch/:batchId" component={BatchEditContainer} />
+              <Route path="/topics" exact component={TopicsMasterContainer} />
+              <Route path="/exercises" exact component={ExerciseMasterContainer} />
+              <Route path="/dashboard" exact component={DashboardContainer} />
+              <Redirect to="/dashboard" />
             </Switch>
-            <Route path="/topics" exact component={TopicsMasterContainer} />
-            <Route path="/exercises" exact component={ExerciseMasterContainer} />
           </main>
         </div>
       </React.Fragment>

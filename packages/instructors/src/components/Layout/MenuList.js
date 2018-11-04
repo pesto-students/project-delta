@@ -4,6 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LayersIcon from '@material-ui/icons/Layers';
 import ClassIcon from '@material-ui/icons/Class';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -25,6 +26,12 @@ const style = {
 
 const MenuListComponent = ({ classes }) => (
   <React.Fragment>
+    <ListItem button component={NavLink} to="/dashboard" activeClassName={`${classes.active} white-text`}>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItem>
     <ListItem button component={NavLink} to="/batch" activeClassName={`${classes.active} white-text`}>
       <ListItemIcon>
         <LayersIcon />
