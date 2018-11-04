@@ -40,8 +40,8 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
         </Grid>
 
         <Grid
+          container
           direction="column"
-          alignItems="center"
           item
           xs={12}
           sm={11}
