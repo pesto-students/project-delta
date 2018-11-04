@@ -1,4 +1,5 @@
 const profileRoutes = require('express').Router();
+const { ObjectId } = require('mongoose').Types;
 const { User, Batch } = require('../db');
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 const profileValidation = require('../services/profileValidation');
@@ -49,7 +50,11 @@ profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
     user = new User(body);
   } else {
     Reflect.ownKeys(body).forEach((key) => {
-      user[key] = body[key];
+      if (key === 'batchId') {
+        user[key] = ObjectId(body[key]);
+      } else {
+        user[key] = body[key];
+      }
     });
   }
   const validationResult = await profileValidation(user);
