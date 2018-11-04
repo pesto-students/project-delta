@@ -59,7 +59,7 @@ export class ProfilePageComponent extends React.Component {
     updateUserProfile(newData)
       .then(userData => this.setState({
         editing: false,
-        user: { ...userData, dob: format(userData.dob, 'YYYY-MM-DD') },
+        user: { ...newData, ...userData, dob: format(userData.dob, 'YYYY-MM-DD') },
       }))
       .catch(console.error); // eslint-disable-line no-console
   }
