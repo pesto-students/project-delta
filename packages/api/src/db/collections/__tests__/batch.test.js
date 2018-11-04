@@ -6,6 +6,7 @@ import { getAllBatches, insertBatch, updateBatchMaster } from '../batch';
 import { Batch } from '../../index';
 
 describe('Mongo Queries: Batch', () => {
+  let savedBatches;
   const dummyBatch = [
     {
       batchNumber: 3,
@@ -32,11 +33,14 @@ describe('Mongo Queries: Batch', () => {
 
   beforeAll(async () => {
     mongoose.connect(DB_URL, { useNewUrlParser: true, connectTimeoutMS: 10000 });
+    savedBatches = await Batch.find();
+    await Batch.deleteMany();
     await Batch.insertMany(dummyBatch);
   });
 
   afterAll(async () => {
     await Batch.deleteMany({});
+    await Batch.insertMany(savedBatches);
     await mongoose.disconnect();
   });
 
