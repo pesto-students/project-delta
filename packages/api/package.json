@@ -12,7 +12,8 @@
     "posttest": "yarn lint",
     "test:related": "jest --bail --findRelatedTests",
     "lint": "eslint ./",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "seed:batches": "babel-node ./scripts/seed_batches.js"
   },
   "dependencies": {
     "@ack_inc/util": "^1.0.0",
