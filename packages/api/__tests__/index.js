@@ -231,7 +231,7 @@ describe('POST: /user - update users details if not creates new user', () => {
     });
   });
 
-  it.only('should send a 400 response when request contains no body', (done) => {
+  it('should send a 400 response when request contains no body', (done) => {
     request({
       url,
       method: 'POST',
