@@ -11,9 +11,9 @@ batchRoutes.get('/list', asyncHandler(async (req, res) => {
   if (filter === 'active') {
     const currentDate = new Date();
     const activeBatches = batchList.filter(batch => isAfter(batch.endDate, currentDate));
-    res.json({ activeBatches });
+    res.json(activeBatches);
   } else {
-    res.json({ batchList });
+    res.json(batchList);
   }
 }));
 

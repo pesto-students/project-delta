@@ -8,21 +8,21 @@ import { Batch } from '../../index';
 describe('Mongo Queries: Batch', () => {
   const dummyBatch = [
     {
-      batchNumber: 'Batch #3',
+      batchNumber: 3,
       city: 'Chennai',
       numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     },
     {
-      batchNumber: 'Batch #1',
+      batchNumber: 1,
       city: 'Delhi',
       numberOfDays: 20,
       startDate: new Date(),
       endDate: addDays(new Date(), 20),
     },
     {
-      batchNumber: 'Batch #2',
+      batchNumber: 2,
       city: 'Mumbai',
       numberOfDays: 20,
       startDate: new Date(),
@@ -59,7 +59,7 @@ describe('Mongo Queries: Batch', () => {
 
   describe('newBatch', () => {
     const newDocument = {
-      batchNumber: 'Batch #4',
+      batchNumber: 4,
       city: 'Chennai',
       numberOfDays: 20,
       startDate: new Date(),
@@ -88,7 +88,7 @@ describe('Mongo Queries: Batch', () => {
 
   describe('Update batch master', () => {
     const newDocument = {
-      batchNumber: 'Batch #4',
+      batchNumber: 4,
       city: 'Chennai',
       numberOfDays: 20,
       startDate: new Date(),
@@ -106,7 +106,7 @@ describe('Mongo Queries: Batch', () => {
 
     it('should update document to new value', async () => {
       const updatedValue = {
-        batchNumber: 'Batch #4',
+        batchNumber: 4,
         city: 'Delhi',
         numberOfDays: 30,
         startDate: new Date(),
