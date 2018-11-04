@@ -78,6 +78,7 @@ export class StudentProfileEditComponent extends React.Component {
       .map(batch => batch._id);
     const userObj = { ...this.state, batchId };
     delete userObj.loading;
+    delete userObj.changingProfilePic;
 
     this.props.handleSaveBtnClick(userObj);
   }
