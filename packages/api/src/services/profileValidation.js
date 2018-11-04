@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
-import Batch from '../db';
+import { Batch } from '../db';
 
 const ERR_MSGS = require('../../constants/ERR_MSGS');
 
