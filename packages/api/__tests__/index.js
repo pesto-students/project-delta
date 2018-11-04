@@ -243,20 +243,6 @@ describe('POST: /user - update users details if not creates new user', () => {
     });
   });
 
-  it('should send a 400 response when request contains invalid email', (done) => {
-    const mockTestUser = Object.assign({}, testUser);
-    mockTestUser.email = 'abc';
-    request({
-      url,
-      method: 'POST',
-      body: { ...mockTestUser, token },
-      json: true,
-    }).catch((e) => {
-      expect(e.statusCode).toBe(400);
-      done();
-    });
-  });
-
   it('should send a 400 response when first name is missing', (done) => {
     const mockTestUser = Object.assign({ token }, testUser);
     delete mockTestUser.firstName;
@@ -274,20 +260,6 @@ describe('POST: /user - update users details if not creates new user', () => {
   it('should send a 400 response when last name is missing', (done) => {
     const mockTestUser = Object.assign({ token }, testUser);
     delete mockTestUser.lastName;
-    request({
-      url,
-      method: 'POST',
-      body: mockTestUser,
-      json: true,
-    }).catch((e) => {
-      expect(e.statusCode).toBe(400);
-      done();
-    });
-  });
-
-  it('should send a 400 response when email is missing', (done) => {
-    const mockTestUser = Object.assign({ token }, testUser);
-    delete mockTestUser.email;
     request({
       url,
       method: 'POST',
@@ -329,9 +301,9 @@ describe('POST: /user - update users details if not creates new user', () => {
     });
   });
 
-  it('should not update any invalidated value of an existing user like invalid email', (done) => {
+  it('should not update any invalidated value of an existing user like role not in student/instructor', (done) => {
     const updatedValues = {
-      email: '123',
+      role: 'GOD!',
     };
 
     request({

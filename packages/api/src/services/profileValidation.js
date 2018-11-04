@@ -17,7 +17,7 @@ async function profileValidation(user) {
   if (typeof user.lastName !== 'string' || user.lastName.length === 0) {
     return { passed: false, msg: ERR_MSGS.noLastName };
   }
-  if (typeof user.role !== 'string' || user.role.length === 0) {
+  if (typeof user.role !== 'string' || !['student', 'instructor'].includes(user.role)) {
     return { passed: false, msg: ERR_MSGS.noRole };
   }
   if (user.role.toLowerCase() === 'student') {

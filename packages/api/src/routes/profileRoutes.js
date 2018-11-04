@@ -25,11 +25,17 @@ profileRoutes.get('/:id?', isAuthenticated, extractUser, async (req, res) => {
   const projection = {
     city: 1,
     batchNumber: 1,
+    _id: 0, // need to explicitly mention that _id is *not* wanted...***
   };
-  const batchOfUser = await Batch.findOne({ batchId: user.batchId }, projection);
+  const batchOfUser = await Batch.findOne({ _id: ObjectId(user.batchId) }, projection);
+  if (batchOfUser === null) {
+    console.error(`User ${user._id} has invalid batchId`); // eslint-disable-line no-console
+    return res.status(500).json({ error: ERR_MSGS.internalServerError });
+  }
+
   const finalUserDetails = {
     ...user.toObject(),
-    ...batchOfUser.toObject(),
+    ...batchOfUser.toObject(), // ***... to prevent batch._id overwriting user._id here
   };
   return res.json(finalUserDetails);
 });
@@ -46,6 +52,9 @@ profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
     return res.status(400).json({ error: ERR_MSGS.noProfileData });
   }
   const { body } = req;
+  delete body._id;
+  body.email = req.decoded.email; // can't let users change their email!
+
   if (!user) {
     user = new User(body);
   } else {
@@ -67,7 +76,7 @@ profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
   } catch (e) {
     return res.status(500).json({ error: ERR_MSGS.internalServerError });
   }
-  return res.json({ user });
+  return res.json(user);
 });
 
 module.exports = profileRoutes;
