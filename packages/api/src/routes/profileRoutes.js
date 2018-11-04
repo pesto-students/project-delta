@@ -60,9 +60,9 @@ profileRoutes.post('/:id?', isAuthenticated, extractUser, async (req, res) => {
   try {
     await user.save();
   } catch (e) {
-    return res.json({ success: false });
+    return res.status(500).json({ error: ERR_MSGS.internalServerError });
   }
-  return res.json({ success: true });
+  return res.json({ user });
 });
 
 module.exports = profileRoutes;
