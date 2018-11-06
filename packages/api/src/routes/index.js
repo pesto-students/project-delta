@@ -35,6 +35,7 @@ routes.post('/generateToken', (req, res) => {
 
 routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
   const { email, tokenType } = req.decoded;
+  const isNewUser = req.user === null;
 
   if (tokenType === TOKEN_TYPES.emailToken) {
     // give the user a longer-lived token that can be used for future auto-login
@@ -43,7 +44,9 @@ routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
         res.json({
           token: generatedToken,
           authentication: 'success',
-          isNewUser: req.user === null,
+          isNewUser,
+          _id: isNewUser ? undefined : req.user._id,
+          profilePicUrl: isNewUser ? undefined : req.user.profilePicUrl,
           email,
         });
       })
@@ -54,8 +57,11 @@ routes.post('/verifyToken', isAuthenticated, extractUser, (req, res) => {
   } else if (tokenType === TOKEN_TYPES.loginToken) {
     // user already has a login token; we'll just pass it through
     res.json({
+      token: req.token,
       authentication: 'success',
-      isNewUser: req.user === null,
+      isNewUser,
+      _id: isNewUser ? undefined : req.user._id,
+      profilePicUrl: isNewUser ? undefined : req.user.profilePicUrl,
       email,
     });
   } else {
