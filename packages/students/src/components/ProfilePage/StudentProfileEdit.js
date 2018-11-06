@@ -17,15 +17,7 @@ export class StudentProfileEditComponent extends React.Component {
     super(props);
 
     this.state = {
-      _id: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      batchId: '',
-      city: '',
-      batchNumber: '',
-      profilePicUrl: '',
-      ...props.userData,
+      user: { ...props.userData },
       changingProfilePic: false,
       loading: true,
     };
@@ -53,19 +45,37 @@ export class StudentProfileEditComponent extends React.Component {
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.setState({ [name]: name === 'batchNumber' ? Number(value) : value });
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        [name]: name === 'batchNumber' ? Number(value) : value,
+      },
+    }));
   }
 
   handleBatchCityChange(e) {
-    this.setState({ city: e.target.value, batchNumber: '' });
+    const newCity = e.target.value;
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        city: newCity,
+        batchNumber: undefined,
+      },
+    }));
   }
 
   handleProfilePicUpload(e) {
-    const userId = this.state._id;
+    const userId = this.state.user._id;
     const newProfilePic = e.target.files[0];
     this.setState({ changingProfilePic: true });
     uploadFile(newProfilePic, userId)
-      .then(url => this.setState({ changingProfilePic: false, profilePicUrl: url }))
+      .then(url => this.setState(prevState => ({
+        changingProfilePic: false,
+        user: {
+          ...prevState.user,
+          profilePicUrl: url,
+        },
+      })))
       .catch(console.error); // eslint-disable-line no-console
   }
 
@@ -73,20 +83,18 @@ export class StudentProfileEditComponent extends React.Component {
     e.preventDefault();
 
     // update batchId based on current batchCity and batchNumber selection
-    const [batchId] = this.cityWiseBatches[this.state.city]
-      .filter(batch => batch.batchNumber === this.state.batchNumber)
+    const [batchId] = this.cityWiseBatches[this.state.user.city]
+      .filter(batch => batch.batchNumber === this.state.user.batchNumber)
       .map(batch => batch._id);
-    const userObj = { ...this.state, batchId };
-    delete userObj.loading;
-    delete userObj.changingProfilePic;
+    const userObj = { ...this.state.user, batchId };
 
     this.props.handleSaveBtnClick(userObj);
   }
 
   render() {
-    const isNewUser = !this.state._id;
-    const profilePicUrl = this.state.profilePicUrl
-      || getAppropriateDefaultProfilePic(this.state.sex);
+    const isNewUser = !this.state.user._id;
+    const profilePicUrl = this.state.user.profilePicUrl
+      || getAppropriateDefaultProfilePic(this.state.user.sex);
 
     const inputStyles = {
       width: '100%',
@@ -148,7 +156,7 @@ export class StudentProfileEditComponent extends React.Component {
                   <TextField
                     label="First name"
                     name="firstName"
-                    value={this.state.firstName}
+                    value={this.state.user.firstName}
                     onChange={this.handleChange}
                     margin="normal"
                     style={inputStyles}
@@ -160,7 +168,7 @@ export class StudentProfileEditComponent extends React.Component {
                   <TextField
                     label="Last name"
                     name="lastName"
-                    value={this.state.lastName}
+                    value={this.state.user.lastName}
                     onChange={this.handleChange}
                     margin="normal"
                     style={inputStyles}
@@ -174,7 +182,7 @@ export class StudentProfileEditComponent extends React.Component {
                   <TextField
                     label="Email"
                     name="email"
-                    value={this.state.email}
+                    value={this.state.user.email}
                     margin="normal"
                     style={inputStyles}
                     required
@@ -189,7 +197,7 @@ export class StudentProfileEditComponent extends React.Component {
                     select
                     label="Batch City"
                     name="batchCity"
-                    value={this.state.city}
+                    value={this.state.user.city}
                     onChange={this.handleBatchCityChange}
                     margin="normal"
                     InputLabelProps={{ shrink: true }}
@@ -211,7 +219,7 @@ export class StudentProfileEditComponent extends React.Component {
                     select
                     label="Batch #"
                     name="batchNumber"
-                    value={this.state.batchNumber}
+                    value={this.state.user.batchNumber}
                     onChange={this.handleChange}
                     margin="normal"
                     InputLabelProps={{ shrink: true }}
@@ -221,12 +229,12 @@ export class StudentProfileEditComponent extends React.Component {
                   >
                     <option value="">Select # --</option>
                     {!this.state.loading
-                      && this.state.city
-                      && Reflect.has(this.cityWiseBatches, this.state.city)
-                      ? this.cityWiseBatches[this.state.city]
+                      && this.state.user.city
+                      && Reflect.has(this.cityWiseBatches, this.state.user.city)
+                      ? this.cityWiseBatches[this.state.user.city]
                         .map(batch => batch.batchNumber)
                         .map(num => (
-                          <option key={`${this.state.city}|${num}`} value={num}>{num}</option>
+                          <option key={`${this.state.user.city}|${num}`} value={num}>{num}</option>
                         ))
                       : null}
                   </TextField>
@@ -239,13 +247,13 @@ export class StudentProfileEditComponent extends React.Component {
                     type="date"
                     label="Date of Birth"
                     name="dob"
-                    value={this.state.dob}
+                    value={this.state.user.dob}
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
                     }}
                     margin="normal"
-                    style={{ ...inputStyles }}
+                    style={inputStyles}
                   />
                 </Grid>
 
@@ -254,7 +262,7 @@ export class StudentProfileEditComponent extends React.Component {
                     select
                     label="Sex"
                     name="sex"
-                    value={this.state.sex}
+                    value={this.state.user.sex}
                     onChange={this.handleChange}
                     margin="normal"
                     InputLabelProps={{ shrink: true }}
