@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import format from 'date-fns/format';
 
 import { BlockButton } from '../../../../shared-components/BlockButton';
 import { ImageBoxComponent } from '../../../../shared-components/ImageBox';
@@ -16,6 +17,8 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
   if (userData.sex === 'm') sex = 'Male';
   else if (userData.sex === 'f') sex = 'Female';
   else sex = 'A real mystery';
+
+  const dob = userData.dob ? format(userData.dob, 'Do MMMM, YYYY') : 'Unknown (very old)';
 
   return (
     <Grid container direction="column" style={{ height: '100%' }}>
@@ -51,7 +54,7 @@ export function StudentProfileViewComponent({ handleEditBtnClick, userData }) {
           <ProfileDetailComponent name="Name" value={`${userData.firstName} ${userData.lastName}`} />
           <ProfileDetailComponent name="Email" value={userData.email} />
           <ProfileDetailComponent name="Batch" value={`${userData.city} #${userData.batchNumber}`} />
-          <ProfileDetailComponent name="DOB" value={userData.dob || 'Unknown (very old)'} />
+          <ProfileDetailComponent name="DOB" value={dob} />
           <ProfileDetailComponent name="Sex" value={sex} />
 
           <BlockButton onClick={handleEditBtnClick} style={{ marginBottom: '20px' }}>EDIT</BlockButton>
