@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import format from 'date-fns/format';
 
+import { removeToken } from '../../../../shared-utils/services/loginToken';
 import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 import { getUserProfile, updateUserProfile } from '../../services/user';
 import { StudentProfileViewComponent } from './StudentProfileView';
@@ -13,33 +13,32 @@ import { userProfilePropType } from './shared';
 export class ProfilePageComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    const isLoggedIn = !!props.user.email;
+    const isNewUser = !props.user._id;
+    const profileAlreadyRetrieved = !!props.user.firstName;
+
     // eslint-disable-next-line react/destructuring-assignment
     this.state = {
-      authFailure: false,
-      editing: false,
-      loading: true,
-      user: {},
-      ...this.props.location.state,
+      authFailure: !isLoggedIn,
+      editing: isNewUser,
+      loading: !isNewUser && !profileAlreadyRetrieved,
     };
 
-    this.toggleState = this.toggleState.bind(this);
+    this.toggleEditState = this.toggleEditState.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
   }
 
   componentDidMount() {
-    if (!this.state.editing) {
-      // We got here from the dashboard, so the profile page should be pre-filled
-      //   with the current user's data
+    if (!this.state.authFailure && this.state.loading) {
       getUserProfile()
-        .then(data => this.setState({
-          loading: false,
-          user: {
-            ...data,
-            dob: format(data.dob, 'YYYY-MM-DD'),
-          },
-        }))
+        .then((data) => {
+          this.props.setUserData(data);
+          this.setState({ loading: false });
+        })
         .catch((e) => {
           if (e.name === 'AuthError') {
+            removeToken();
             this.setState({ loading: false, authFailure: true });
           } else if (e.name === 'UserNotFoundError') {
             this.setState({ loading: false, editing: true });
@@ -51,20 +50,28 @@ export class ProfilePageComponent extends React.Component {
     }
   }
 
-  toggleState() {
+  toggleEditState() {
     this.setState(prevState => ({ editing: !prevState.editing }));
   }
 
   updateProfile(newData) {
     updateUserProfile(newData)
-      .then(userData => this.setState({
-        editing: false,
-        user: { ...newData, ...userData, dob: format(userData.dob, 'YYYY-MM-DD') },
-      }))
+      .then((userData) => {
+        this.props.setUserData({
+          ...userData,
+          ...newData, // batchCity and batchNumber come from here
+          _id: userData._id,
+        });
+        this.setState({ editing: false });
+      })
       .catch(console.error); // eslint-disable-line no-console
   }
 
   render() {
+    if (this.state.authFailure) {
+      return <Redirect to="/" />;
+    }
+
     if (this.state.loading) {
       return (
         <Grid container justify="center" alignItems="center" style={{ height: '100%' }}>
@@ -73,39 +80,26 @@ export class ProfilePageComponent extends React.Component {
       );
     }
 
-    if (this.state.authFailure) {
-      return <Redirect to="/" />;
-    }
-
     if (this.state.editing) {
       return (
         <StudentProfileEditComponent
           handleSaveBtnClick={this.updateProfile}
-          handleCancelBtnClick={this.toggleState}
-          userData={this.state.user}
+          handleCancelBtnClick={this.toggleEditState}
+          userData={this.props.user}
         />
       );
     }
 
     return (
       <StudentProfileViewComponent
-        handleEditBtnClick={this.toggleState}
-        userData={this.state.user}
+        handleEditBtnClick={this.toggleEditState}
+        userData={this.props.user}
       />
     );
   }
 }
 
 ProfilePageComponent.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      editing: PropTypes.bool,
-      loading: PropTypes.bool,
-      user: userProfilePropType,
-    }),
-  }),
-};
-
-ProfilePageComponent.defaultProps = {
-  location: { state: { editing: false, loading: true, user: {} } },
+  user: userProfilePropType.isRequired,
+  setUserData: PropTypes.func.isRequired,
 };

@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
-import { LoadingIndicator } from '../../../../shared-components/LoadingIndicator/index';
 import { HTTP } from '../../../../shared-utils/services/http';
 import { getToken } from '../../../../shared-utils/services/loginToken';
 import { LoginForm } from '../../../../shared-components/LoginComponents';
@@ -16,30 +15,7 @@ class LoginContainer extends Component {
     loginStatus: '',
     message: '',
 
-    loading: getToken('token') !== null,
-    existingTokenVerificationDetails: {
-      authSuccess: false,
-      isNewUser: null,
-      email: null,
-    },
-  }
-
-  componentDidMount() {
-    const { loading } = this.state;
-    if (loading) {
-      HTTP.POST('/verifyToken', undefined, undefined, true)
-        .then(res => this.setState({
-          loading: false,
-          existingTokenVerificationDetails: {
-            ...res,
-            authSuccess: !!res.authentication,
-          },
-        }))
-        .catch((e) => {
-          this.setState({ loading: false });
-          console.error(e); // eslint-disable-line no-console
-        });
-    }
+    curToken: getToken('token'),
   }
 
   updateState = (loginStatus, message) => {
@@ -84,36 +60,14 @@ class LoginContainer extends Component {
 
   render() {
     const {
-      loading,
-      existingTokenVerificationDetails: etvDetails,
       isLoggingIn,
       loginStatus,
       message,
+      curToken,
     } = this.state;
 
-    if (loading) {
-      return (
-        <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}>
-          <LoadingIndicator />
-        </Grid>
-      );
-    }
-
-    // if user already has a token, redirect them to profile page or dashboard
-    //   depending on if they are a new user or not
-    if (etvDetails.authSuccess) {
-      if (etvDetails.isNewUser) {
-        return (
-          <Redirect
-            to={{
-              pathname: '/profile',
-              state: { editing: true, loading: false, user: { email: etvDetails.email } },
-            }}
-          />
-        );
-      }
-
-      return <Redirect to="/dashboard" />;
+    if (curToken !== null) {
+      return <Redirect to={`/auth/${curToken}`} />;
     }
 
     return (
