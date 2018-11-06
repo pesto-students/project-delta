@@ -42,7 +42,7 @@ class LoginForm extends Component {
           value={email}
         />
         <BlockButton className="login-button" type="submit" data-testid="signin" isLoading={isLoggingIn}>
-          Signin
+          SIGN IN
         </BlockButton>
       </form>
     );
