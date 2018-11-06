@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { DEFAULT_PROFILE_PIC_URLS as pics } from '../../config';
 
 export const userProfilePropType = PropTypes.shape({
+  _id: PropTypes.string,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   email: PropTypes.string,
@@ -10,6 +11,8 @@ export const userProfilePropType = PropTypes.shape({
   batchNumber: PropTypes.number,
   batchId: PropTypes.string,
   profilePicUrl: PropTypes.string,
+  sex: PropTypes.string,
+  dob: PropTypes.string,
 });
 
 export function getAppropriateDefaultProfilePic(sex) {
