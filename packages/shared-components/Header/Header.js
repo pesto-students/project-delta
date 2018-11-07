@@ -3,22 +3,15 @@ import React from 'react';
 import Divider from '@material-ui/core/Divider';
 
 import { HeaderMenuComponent } from './HeaderMenu';
-import { ImageBoxComponent } from './ImageBox';
+import { ImageBoxComponent } from '../ImageBox';
 
-import logo from './assets/logo.png';
-import defaultMenuBg from './assets/default-profile-pic.jpg';
+import './styles.css';
+import logo from '../assets/logo.png';
+import defaultMenuBg from '../assets/default-profile-pic.jpg';
 
 export class HeaderComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedIn: props.isLoggedIn,
-    };
-  }
-
   render() {
-    const { isLoggedIn } = this.state;
-    const { menuBgUrl, handleProfileBtnClick, handleLogoutBtnClick } = this.props;
+    const { isLoggedIn, menuBgUrl } = this.props;
 
     return (
       <React.Fragment>
@@ -29,19 +22,13 @@ export class HeaderComponent extends React.Component {
         }}
         >
           <div style={{ display: 'flex', alignItems: 'baseline' }}>
-            <h1>Project</h1>
+            <h1>PROJECT</h1>
             <ImageBoxComponent bgUrl={logo} style={{ borderRadius: '0px', marginLeft: '10px' }} />
           </div>
 
-          {!isLoggedIn
-            ? null
-            : (
-              <HeaderMenuComponent
-                bgUrl={menuBgUrl}
-                handleProfileBtnClick={handleProfileBtnClick}
-                handleLogoutBtnClick={handleLogoutBtnClick}
-              />
-            )}
+          {isLoggedIn
+            ? <HeaderMenuComponent bgUrl={menuBgUrl} />
+            : null}
         </header>
         <Divider />
       </React.Fragment>
@@ -52,13 +39,9 @@ export class HeaderComponent extends React.Component {
 HeaderComponent.propTypes = {
   isLoggedIn: PropTypes.bool,
   menuBgUrl: PropTypes.string,
-  handleProfileBtnClick: PropTypes.func,
-  handleLogoutBtnClick: PropTypes.func,
 };
 
 HeaderComponent.defaultProps = {
   isLoggedIn: false,
   menuBgUrl: defaultMenuBg,
-  handleProfileBtnClick: () => undefined,
-  handleLogoutBtnClick: () => undefined,
 };

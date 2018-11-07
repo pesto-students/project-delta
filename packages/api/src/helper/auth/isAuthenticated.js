@@ -9,6 +9,7 @@ function isAuthenticated(req, res, next) {
   if (!token) {
     res.status(401).json({ error: invalidToken });
   } else {
+    req.token = token;
     tokenService.decode(token)
       .then((decoded) => {
         req.decoded = decoded;

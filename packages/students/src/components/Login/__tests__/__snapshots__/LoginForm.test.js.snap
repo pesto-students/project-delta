@@ -19,7 +19,7 @@ exports[`<LoginForm /> matches saved snapshot 1`] = `
     isLoading={false}
     type="submit"
   >
-    Signin
+    SIGN IN
   </WithStyles(BlockButtonComponent)>
 </form>
 `;

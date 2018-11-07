@@ -1,8 +1,9 @@
 import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-import { saveToken } from '../../../../shared-utils/services/loginToken';
+import { saveToken, removeToken } from '../../../../shared-utils/services/loginToken';
 import BoxComponent from '../../../../shared-components/BoxWithImgAndText';
 import { HTTP as httpService } from '../../../../shared-utils/services/http';
 
@@ -16,8 +17,6 @@ export class AuthWaitingComponent extends React.Component {
     this.state = {
       waiting: true,
       authSuccess: false,
-      isNewUser: false,
-      email: null,
     };
 
     this.handleVerifyTokenResponse = this.handleVerifyTokenResponse.bind(this);
@@ -34,14 +33,21 @@ export class AuthWaitingComponent extends React.Component {
 
   handleVerifyTokenResponse(res) {
     const isAuthSuccess = res.authentication === 'success';
+
     if (isAuthSuccess) {
       saveToken(res.token);
+      this.props.setUserData({
+        _id: res._id,
+        email: res.email,
+        profilePicUrl: res.profilePicUrl,
+      });
+    } else {
+      removeToken();
     }
+
     this.setState({
       waiting: false,
-      authSuccess: res.authentication,
-      isNewUser: res.isNewUser,
-      email: res.email,
+      authSuccess: isAuthSuccess,
     });
   }
 
@@ -67,7 +73,7 @@ export class AuthWaitingComponent extends React.Component {
       },
     };
 
-    const { waiting, authSuccess, isNewUser } = this.state;
+    const { waiting, authSuccess } = this.state;
 
     if (waiting) {
       return (
@@ -83,17 +89,10 @@ export class AuthWaitingComponent extends React.Component {
       return <Redirect to="/" />;
     }
 
-    if (isNewUser) {
-      return (
-        <Redirect
-          to={{
-            pathname: '/profile',
-            state: { editing: true, loading: false, user: { email: this.state.email } },
-          }}
-        />
-      );
-    }
-
     return <Redirect to="/dashboard" />;
   }
 }
+
+AuthWaitingComponent.propTypes = {
+  setUserData: PropTypes.func.isRequired,
+};

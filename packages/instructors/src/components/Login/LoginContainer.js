@@ -4,7 +4,7 @@ import isEmail from 'validator/lib/isEmail';
 
 import { NotificationBlock } from '../../../../shared-components/NotificationBlock';
 import { generateToken } from '../../services/login';
-import { HeaderComponent } from '../../../../shared-components/Header';
+import { HeaderComponent } from '../../../../shared-components/Header/Header';
 import { FooterComponent } from '../../../../shared-components/Footer';
 import { LoginForm } from '../../../../shared-components/LoginComponents';
 import { MSGS } from '../../constants/MSGS';
